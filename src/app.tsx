@@ -5,11 +5,10 @@ import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 import type { Component } from "solid-js";
 import { Suspense } from "solid-js";
-import { Portal } from "solid-js/web";
 
-import Nav from "~/components/Nav";
 import Alerts from "./components/core/Alerts";
 import Loader from "./components/core/Loader";
+import { AuthProvider } from "./context/auth";
 import { PortalProvider } from "./context/portal";
 
 import "./app.css";
@@ -28,9 +27,11 @@ const App: Component = () => {
 					<Meta property="og:image:alt" content="Pedro Altamirano" />
 					<Meta property="og:site_name" content="Servigraf" />
 					<PortalProvider>
-						<Suspense>{props.children}</Suspense>
-						<Alerts />
-						<Loader />
+						<AuthProvider>
+							<Suspense>{props.children}</Suspense>
+							<Alerts />
+							<Loader />
+						</AuthProvider>
 					</PortalProvider>
 				</MetaProvider>
 			)}

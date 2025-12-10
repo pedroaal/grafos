@@ -1,11 +1,20 @@
-import { A } from "@solidjs/router";
+import { A, useLocation } from "@solidjs/router";
 import { FaSolidBars } from "solid-icons/fa";
-import { createSignal, type ParentComponent } from "solid-js";
-import useAuth from "~/lib/auth";
+import {
+	createRenderEffect,
+	createSignal,
+	on,
+	type ParentComponent,
+	useContext,
+} from "solid-js";
+import { AuthContext } from "~/context/auth";
 
 const DashboardLayout: ParentComponent = (props) => {
-	const { user, logout } = useAuth();
+	const location = useLocation();
+	const [authStore, { checkAuth, logout }] = useContext(AuthContext);
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
+
+	createRenderEffect(on(() => location.pathname, checkAuth));
 
 	return (
 		<div class="drawer lg:drawer-open">
@@ -32,7 +41,7 @@ const DashboardLayout: ParentComponent = (props) => {
 							<label tabIndex={0} class="btn btn-ghost btn-circle avatar">
 								<div class="w-10 rounded-full bg-neutral text-neutral-content">
 									<span class="text-xl">
-										{user()?.name?.[0]?.toUpperCase() || "U"}
+										{authStore.user?.name?.[0]?.toUpperCase() || "U"}
 									</span>
 								</div>
 							</label>
@@ -54,8 +63,7 @@ const DashboardLayout: ParentComponent = (props) => {
 					</div>
 				</div>
 
-				{/* Page content */}
-				<main class="flex-1 p-6 bg-base-200">{props.children}</main>
+				<main class="flex-1 p-6">{props.children}</main>
 			</div>
 
 			{/* Sidebar */}

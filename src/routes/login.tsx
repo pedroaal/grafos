@@ -1,13 +1,13 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
-import { createSignal } from "solid-js";
+import { createSignal, useContext } from "solid-js";
 import MainLayout from "~/components/layout/Main";
-import useAuth from "~/lib/auth";
+import { AuthContext } from "~/context/auth";
 
-const Login = () => {
+const LoginPage = () => {
 	const [email, setEmail] = createSignal("");
 	const [password, setPassword] = createSignal("");
-	const { login } = useAuth();
+	const [_authStore, { login }] = useContext(AuthContext);
 
 	const handleSubmit = async (e: Event) => {
 		e.preventDefault();
@@ -77,4 +77,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default LoginPage;

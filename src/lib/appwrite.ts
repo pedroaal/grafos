@@ -1,9 +1,6 @@
-import { Account, Client, Storage, TablesDB } from "appwrite";
+import { Account, Client, ID, Storage, TablesDB } from "appwrite";
 
-const client = new Client();
-
-// Configuration from environment variables
-client
+const client = new Client()
 	.setEndpoint(
 		import.meta.env.VITE_APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1",
 	)
@@ -13,4 +10,4 @@ export const account = new Account(client);
 export const tables = new TablesDB(client);
 export const storage = new Storage(client);
 
-export { client };
+export const makeId = () => ID.unique();

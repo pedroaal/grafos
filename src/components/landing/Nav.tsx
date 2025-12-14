@@ -6,7 +6,7 @@ const Nav = () => {
 	const location = useLocation();
 	const current = (path: string) => path === location.pathname;
 
-	const menuItems = [
+	const MenuItems = [
 		{ id: "/about", label: "Sobre Nosotros" },
 		{ id: "/services", label: "Servicios" },
 		{ id: "/gallery", label: "Galería" },
@@ -28,7 +28,7 @@ const Nav = () => {
 			<div class="navbar-end">
 				{/* Desktop Menu */}
 				<ul class="menu menu-horizontal px-1 hidden md:flex">
-					<For each={menuItems}>
+					<For each={MenuItems}>
 						{(item) => (
 							<li classList={{ "menu-disabled": current(item.id) }}>
 								<A

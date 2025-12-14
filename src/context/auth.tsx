@@ -1,11 +1,14 @@
 import { useNavigate } from "@solidjs/router";
 import { createContext, type ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
+import { Routes } from "~/config/routes";
 import { account } from "~/lib/appwrite";
+import type { Users } from "~/types/appwrite";
 import { useApp } from "./app";
 
 type AuthStore = {
-	user: any;
+	session: Record<string, any> | null;
+	user: Users | null;
 };
 
 type AuthActions = {
@@ -15,7 +18,7 @@ type AuthActions = {
 };
 
 export const AuthContext = createContext<[AuthStore, AuthActions]>([
-	{ user: null },
+	{ session: null, user: null },
 	{
 		login: () => {},
 		logout: () => {},
@@ -32,6 +35,7 @@ export const AuthProvider: ParentComponent = (props) => {
 	const navigate = useNavigate();
 	const { addAlert } = useApp();
 	const [store, setStore] = createStore<AuthStore>({
+		session: null,
 		user: null,
 	});
 
@@ -40,9 +44,10 @@ export const AuthProvider: ParentComponent = (props) => {
 			try {
 				await account.createEmailPasswordSession({ email, password });
 				const currentUser = await account.get();
+				setStore("session", currentUser);
 				setStore("user", currentUser);
 				addAlert({ type: "success", message: "Inicio de sesión exitoso" });
-				navigate("/dashboard");
+				navigate(Routes.dashboard);
 				return true;
 			} catch (error: any) {
 				addAlert({
@@ -55,9 +60,10 @@ export const AuthProvider: ParentComponent = (props) => {
 		async logout() {
 			try {
 				await account.deleteSession({ sessionId: "current" });
+				setStore("session", null);
 				setStore("user", null);
 				addAlert({ type: "success", message: "Sesión cerrada" });
-				navigate("/");
+				navigate(Routes.home);
 			} catch (error: any) {
 				addAlert({
 					type: "error",
@@ -72,10 +78,11 @@ export const AuthProvider: ParentComponent = (props) => {
 
 			try {
 				const currentUser = await account.get();
+				setStore("session", currentUser);
 				setStore("user", currentUser);
 			} catch (error) {
 				setStore("user", null);
-				navigate("/");
+				navigate(Routes.login);
 			}
 		},
 	};

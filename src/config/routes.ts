@@ -1,9 +1,9 @@
-export const Routes = {
-	home: "/",
-	login: "/login",
-	dashboard: "/dashboard",
-	orders: "/dashboard/production/orders",
-	clients: "/dashboard/crm/clients",
-};
+export enum Routes {
+	home = "/",
+	login = "/login",
+	dashboard = "/app",
+	orders = "/app/orders",
+	clients = "/app/clients",
+}
 
-export const RoutesApi = {};
+export enum RoutesApi {}

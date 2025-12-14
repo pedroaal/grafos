@@ -14,9 +14,9 @@ type AuthStore = {
 };
 
 type AuthActions = {
-	checkAuth: () => void;
 	login: (email: string, password: string) => void;
 	logout: () => void;
+	getAuth: () => void;
 };
 
 export const AuthContext = createContext<[AuthStore, AuthActions]>([
@@ -24,13 +24,13 @@ export const AuthContext = createContext<[AuthStore, AuthActions]>([
 	{
 		login: () => {},
 		logout: () => {},
-		checkAuth: () => {},
+		getAuth: () => {},
 	},
 ]);
 
 export const useAuth = () => {
-	const [authStore, { login, logout, checkAuth }] = useContext(AuthContext);
-	return { authStore, login, logout, checkAuth };
+	const [authStore, { login, logout, getAuth }] = useContext(AuthContext);
+	return { authStore, login, logout, getAuth };
 };
 
 export const AuthProvider: ParentComponent = (props) => {
@@ -41,59 +41,63 @@ export const AuthProvider: ParentComponent = (props) => {
 		user: null,
 	});
 
-	const actions: AuthActions = {
-		async login(email: string, password: string) {
-			try {
-				await account.createEmailPasswordSession({ email, password });
-				const currentSession = await account.get();
-				const currentUser = await listUsers(currentSession.prefs.companyId, {
-					authId: currentSession.$id,
-				});
-				setStore("session", currentSession);
-				setStore("user", currentUser.rows[0] || null);
-				addAlert({ type: "success", message: "Inicio de sesión exitoso" });
-				navigate(Routes.dashboard);
-				return true;
-			} catch (error: any) {
-				addAlert({
-					type: "error",
-					message: error.message || "Error al iniciar sesión",
-				});
-				return false;
-			}
-		},
-		async logout() {
-			try {
-				await account.deleteSession({ sessionId: "current" });
-				setStore("session", null);
-				setStore("user", null);
-				addAlert({ type: "success", message: "Sesión cerrada" });
-				navigate(Routes.home);
-			} catch (error: any) {
-				addAlert({
-					type: "error",
-					message: error.message || "Error al cerrar sesión",
-				});
-			}
-		},
-		async checkAuth() {
-			if (store.user) {
-				return true;
-			}
+	const getAuth = async () => {
+		try {
+			const currentSession = await account.get();
+			const currentUser = await listUsers(currentSession.prefs.companyId, {
+				authId: currentSession.$id,
+			});
+			setStore("session", currentSession);
+			setStore("user", currentUser.rows[0] || null);
+		} catch (error) {
+			setStore("session", null);
+			setStore("user", null);
+			navigate(Routes.login);
+		}
+	};
 
-			try {
-				const currentUser = await account.get();
-				setStore("session", currentUser);
-				setStore("user", currentUser);
-			} catch (error) {
-				setStore("user", null);
-				navigate(Routes.login);
-			}
-		},
+	const login = async (email: string, password: string) => {
+		try {
+			await account.createEmailPasswordSession({ email, password });
+			getAuth();
+			addAlert({ type: "success", message: "Inicio de sesión exitoso" });
+			navigate(Routes.dashboard);
+			return true;
+		} catch (error: any) {
+			addAlert({
+				type: "error",
+				message: error.message || "Error al iniciar sesión",
+			});
+			return false;
+		}
+	};
+
+	const logout = async () => {
+		try {
+			await account.deleteSession({ sessionId: "current" });
+			setStore("session", null);
+			setStore("user", null);
+			addAlert({ type: "success", message: "Sesión cerrada" });
+			navigate(Routes.home);
+		} catch (error: any) {
+			addAlert({
+				type: "error",
+				message: error.message || "Error al cerrar sesión",
+			});
+		}
 	};
 
 	return (
-		<AuthContext.Provider value={[store, actions]}>
+		<AuthContext.Provider
+			value={[
+				store,
+				{
+					login,
+					logout,
+					getAuth,
+				},
+			]}
+		>
 			{props.children}
 		</AuthContext.Provider>
 	);

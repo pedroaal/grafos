@@ -81,13 +81,13 @@ export type CompanyTypes = Models.Row & {
 
 export type Companies = Models.Row & {
     name: string;
-    companyTypeId: CompanyTypes[];
+    companyTypeId: CompanyTypes;
     status: boolean;
     deletedAt: string | null;
 }
 
 export type Schedules = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     morningArrival: string;
     morningDeparture: string;
@@ -99,13 +99,13 @@ export type Schedules = Models.Row & {
 }
 
 export type CostCenters = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     deletedAt: string | null;
 }
 
 export type Credentials = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     account: string;
     username: string;
     password: string;
@@ -115,7 +115,7 @@ export type Credentials = Models.Row & {
 }
 
 export type Payroll = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     idNumber: string;
     photo: string | null;
     birthDate: string;
@@ -144,7 +144,7 @@ export type Payroll = Models.Row & {
     hireDate: string;
     terminationDate: string | null;
     position: string;
-    costCenterId: CostCenters[];
+    costCenterId: CostCenters;
     socialSecurityEnrollment: string | null;
     socialSecurityEmployerPaid: boolean;
     salary: number;
@@ -154,13 +154,13 @@ export type Payroll = Models.Row & {
     bankAccountNumber: string;
     notes: string | null;
     status: boolean;
-    scheduleId: Schedules[];
+    scheduleId: Schedules;
     canOvertime: boolean;
     deletedAt: string | null;
 }
 
 export type PayrollFamily = Models.Row & {
-    payrollId: Payroll[];
+    payrollId: Payroll;
     relationship: PayrollFamilyRelationship;
     name: string;
     birthDate: string;
@@ -171,7 +171,7 @@ export type PayrollFamily = Models.Row & {
 }
 
 export type PayrollEducation = Models.Row & {
-    payrollId: Payroll[];
+    payrollId: Payroll;
     educationLevel: PayrollEducationEducationLevel;
     institutionName: string;
     startDate: string;
@@ -181,7 +181,7 @@ export type PayrollEducation = Models.Row & {
 }
 
 export type PayrollDocuments = Models.Row & {
-    payrollId: Payroll[];
+    payrollId: Payroll;
     entryNotice: boolean;
     workContract: boolean;
     jobApplication: boolean;
@@ -204,7 +204,7 @@ export type PayrollDocuments = Models.Row & {
 }
 
 export type PayrollReferences = Models.Row & {
-    payrollId: Payroll[];
+    payrollId: Payroll;
     referenceType: boolean;
     companyName: string | null;
     contactName: string;
@@ -218,21 +218,21 @@ export type PayrollReferences = Models.Row & {
 }
 
 export type Equipment = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     status: boolean;
     deletedAt: string | null;
 }
 
 export type PayrollEquipment = Models.Row & {
-    payrollId: Payroll[];
+    payrollId: Payroll;
     deliveryDate: string;
-    equipmentId: Equipment[];
+    equipmentId: Equipment;
     deletedAt: string | null;
 }
 
 export type Profiles = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     description: string;
     status: boolean;
@@ -240,7 +240,7 @@ export type Profiles = Models.Row & {
 }
 
 export type Modules = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     isMain: boolean;
     deletedAt: string | null;
@@ -252,27 +252,27 @@ export type Roles = Models.Row & {
 }
 
 export type ProfileModules = Models.Row & {
-    profileId: Profiles[];
-    moduleId: Modules[];
-    roleId: Roles[];
+    profileId: Profiles;
+    moduleId: Modules;
+    roleId: Roles;
     deletedAt: string | null;
 }
 
 export type Users = Models.Row & {
     authId: string;
     idNumber: string;
-    companyId: Companies[];
-    profileId: Profiles[];
+    companyId: Companies;
     status: boolean;
     reserveOrder: boolean;
     bookAccess: boolean;
     profitAccess: boolean;
     isSuperAdmin: boolean;
     deletedAt: string | null;
+    profileId: Profiles;
 }
 
 export type Attendance = Models.Row & {
-    userId: Users[];
+    userId: Users;
     date: string;
     morningArrival: string;
     morningDeparture: string | null;
@@ -301,15 +301,15 @@ export type CompanyDetails = Models.Row & {
 }
 
 export type ClientCompanies = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string | null;
     ruc: string | null;
     deletedAt: string | null;
 }
 
 export type Contacts = Models.Row & {
-    companyId: Companies[];
-    clientCompanyId: ClientCompanies[];
+    companyId: Companies;
+    clientCompanyId: ClientCompanies;
     activity: string | null;
     title: string | null;
     firstName: string;
@@ -326,25 +326,25 @@ export type Contacts = Models.Row & {
 }
 
 export type Clients = Models.Row & {
-    companyId: Companies[];
-    contactId: Contacts[];
-    clientCompanyId: ClientCompanies[];
+    companyId: Companies;
+    contactId: Contacts;
+    clientCompanyId: ClientCompanies;
     followUp: boolean;
     taxpayerType: ClientsTaxpayerType;
     deletedAt: string | null;
 }
 
 export type UserClients = Models.Row & {
-    userId: Users[];
-    clientId: Clients[];
+    userId: Users;
+    clientId: Clients;
     deletedAt: string | null;
 }
 
 export type Orders = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     orderNumber: number;
-    userId: Users[];
-    clientId: Clients[];
+    userId: Users;
+    clientId: Clients;
     startDate: string;
     endDate: string;
     collectionDate: string | null;
@@ -367,29 +367,29 @@ export type Orders = Models.Row & {
 }
 
 export type Payments = Models.Row & {
-    orderId: Orders[];
+    orderId: Orders;
     date: string;
-    userId: Users[];
+    userId: Users;
     paymentMethod: string;
     amount: number;
     deletedAt: string | null;
 }
 
 export type Areas = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     sortOrder: number;
     deletedAt: string | null;
 }
 
 export type Categories = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     deletedAt: string | null;
 }
 
 export type Suppliers = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     phone: string;
     address: string;
@@ -397,8 +397,8 @@ export type Suppliers = Models.Row & {
 }
 
 export type Processes = Models.Row & {
-    companyId: Companies[];
-    areaId: Areas[];
+    companyId: Companies;
+    areaId: Areas;
     name: string;
     goal: number;
     machineTime: string | null;
@@ -410,8 +410,8 @@ export type Processes = Models.Row & {
 }
 
 export type OrderProcesses = Models.Row & {
-    orderId: Orders[];
-    processId: Processes[];
+    orderId: Orders;
+    processId: Processes;
     frontColors: number;
     backColors: number;
     thousands: number;
@@ -422,28 +422,28 @@ export type OrderProcesses = Models.Row & {
 }
 
 export type UserProcesses = Models.Row & {
-    userId: Users[];
-    processId: Processes[];
+    userId: Users;
+    processId: Processes;
     deletedAt: string | null;
 }
 
 export type Inks = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     color: string;
     deletedAt: string | null;
 }
 
 export type OrderInks = Models.Row & {
-    orderId: Orders[];
-    inkId: Inks[];
+    orderId: Orders;
+    inkId: Inks;
     side: boolean;
     deletedAt: string | null;
 }
 
 export type Materials = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     description: string;
-    categoryId: Categories[];
+    categoryId: Categories;
     isColor: boolean;
     height: number | null;
     width: number | null;
@@ -454,27 +454,27 @@ export type Materials = Models.Row & {
 }
 
 export type MaterialRequests = Models.Row & {
-    orderId: Orders[];
-    materialId: Materials[];
+    orderId: Orders;
+    materialId: Materials;
     quantity: number;
     cutHeight: number;
     cutWidth: number;
     sizes: number;
-    supplierId: Suppliers[];
+    supplierId: Suppliers;
     invoiceNumber: number | null;
     total: number;
     deletedAt: string | null;
 }
 
 export type Taxes = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     percentage: number;
     status: boolean;
     deletedAt: string | null;
 }
 
 export type Withholdings = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     type: boolean;
     percentage: number;
     description: string;
@@ -483,12 +483,12 @@ export type Withholdings = Models.Row & {
 }
 
 export type BillingCompanies = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     email: string;
     validFrom: string;
     validTo: string;
     startNumber: number;
-    taxId: Taxes[];
+    taxId: Taxes;
     businessName: string;
     legalRepresentative: string;
     address: string;
@@ -499,8 +499,8 @@ export type BillingCompanies = Models.Row & {
     sriKey: string | null;
     sriSignatureKey: string | null;
     cashierCode: string;
-    taxWithholdingId: Withholdings[];
-    sourceWithholdingId: Withholdings[];
+    taxWithholdingId: Withholdings;
+    sourceWithholdingId: Withholdings;
     canPrint: boolean;
     logo: string | null;
     status: boolean;
@@ -508,11 +508,11 @@ export type BillingCompanies = Models.Row & {
 }
 
 export type Invoices = Models.Row & {
-    companyId: Companies[];
-    userId: Users[];
+    companyId: Companies;
+    userId: Users;
     invoiceNumber: number;
-    billingCompanyId: BillingCompanies[];
-    clientId: Clients[];
+    billingCompanyId: BillingCompanies;
+    clientId: Clients;
     issueDate: string;
     dueDate: string;
     type: boolean;
@@ -525,9 +525,9 @@ export type Invoices = Models.Row & {
     tax: number;
     taxExempt: number;
     total: number;
-    withholdingId: Withholdings[];
+    withholdingId: Withholdings;
     withholding: number;
-    sourceWithholdingId: Withholdings[];
+    sourceWithholdingId: Withholdings;
     sourceWithholding: number;
     totalPayable: number;
     notes: string | null;
@@ -535,51 +535,51 @@ export type Invoices = Models.Row & {
 }
 
 export type InvoiceWorkOrders = Models.Row & {
-    invoiceId: Invoices[];
-    orderId: Orders[];
+    invoiceId: Invoices;
+    orderId: Orders;
     deletedAt: string | null;
 }
 
 export type AccountingBooks = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     deletedAt: string | null;
 }
 
 export type BookReferences = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     reference: string;
     description: string;
     deletedAt: string | null;
 }
 
 export type UserBook = Models.Row & {
-    userId: Users[];
-    bookId: AccountingBooks[];
+    userId: Users;
+    bookId: AccountingBooks;
     deletedAt: string | null;
 }
 
 export type BankAccounts = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     accountNumber: string;
     deletedAt: string | null;
 }
 
 export type InvoiceProducts = Models.Row & {
-    invoiceId: Invoices[];
+    invoiceId: Invoices;
     quantity: number;
     detail: string;
-    taxId: Taxes[];
+    taxId: Taxes;
     unitPrice: number;
     subtotal: number;
     deletedAt: string | null;
 }
 
 export type BookTransactions = Models.Row & {
-    userId: Users[];
-    bookId: AccountingBooks[];
-    bookReferenceId: BookReferences[];
+    userId: Users;
+    bookId: AccountingBooks;
+    bookReferenceId: BookReferences;
     transactionDate: string;
     beneficiary: string;
     idNumber: string | null;
@@ -587,7 +587,7 @@ export type BookTransactions = Models.Row & {
     transactionType: boolean;
     income: number | null;
     expense: number | null;
-    bankId: BankAccounts[];
+    bankId: BankAccounts;
     accountNumber: string | null;
     checkNumber: string | null;
     deletedAt: string | null;
@@ -595,12 +595,12 @@ export type BookTransactions = Models.Row & {
 
 export type ProductionResets = Models.Row & {
     resetTimestamp: string;
-    userId: Users[];
+    userId: Users;
     deletedAt: string | null;
 }
 
 export type Templates = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     content: string;
     logo: string | null;
@@ -608,21 +608,21 @@ export type Templates = Models.Row & {
 }
 
 export type Activities = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     goal: number | null;
-    templateId: Templates[];
+    templateId: Templates;
     canEvaluate: boolean;
     followUp: boolean;
     deletedAt: string | null;
 }
 
 export type Crm = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     scheduled: string;
-    activityId: Activities[];
-    assignedId: Users[];
-    contactId: Contacts[];
+    activityId: Activities;
+    assignedId: Users;
+    contactId: Contacts;
     status: boolean;
     source: string | null;
     campaign: string | null;
@@ -631,31 +631,31 @@ export type Crm = Models.Row & {
 }
 
 export type Comments = Models.Row & {
-    companyId: Companies[];
-    userId: Users[];
-    contactId: Contacts[];
+    companyId: Companies;
+    userId: Users;
+    contactId: Contacts;
     comment: string;
     deletedAt: string | null;
     parentId: string | null;
 }
 
 export type Notifications = Models.Row & {
-    companyId: Companies[];
-    userId: Users[];
+    companyId: Companies;
+    userId: Users;
     type: string;
     content: string;
     readAt: string | null;
 }
 
 export type ProductCategories = Models.Row & {
-    companyId: Companies[];
+    companyId: Companies;
     name: string;
     parentId: string | null;
 }
 
 export type Products = Models.Row & {
-    companyId: Companies[];
-    categoryId: ProductCategories[];
+    companyId: Companies;
+    categoryId: ProductCategories;
     name: string;
     description: string;
 }

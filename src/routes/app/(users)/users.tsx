@@ -1,6 +1,11 @@
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
-import { FaSolidPencil, FaSolidTrash } from "solid-icons/fa";
+import {
+	FaSolidCheck,
+	FaSolidPencil,
+	FaSolidTrash,
+	FaSolidXmark,
+} from "solid-icons/fa";
 import { createResource, For } from "solid-js";
 import BlueBoard from "~/components/core/BlueBoard";
 import DashboardLayout from "~/components/layout/Dashboard";
@@ -42,11 +47,11 @@ const ClientsPage = () => {
 						<table class="table table-zebra">
 							<thead>
 								<tr>
-									<th>Status</th>
+									<th class="w-1/12">Status</th>
 									<th>Nombre</th>
 									<th>Apellido</th>
 									<th>Perfil</th>
-									<th class="w-4"></th>
+									<th class="w-1/12"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -63,7 +68,13 @@ const ClientsPage = () => {
 								>
 									{(item) => (
 										<tr>
-											<td>{item.status ? "Active" : "Deactive"}</td>
+											<td>
+												{item.status ? (
+													<FaSolidCheck size={24} class="text-success" />
+												) : (
+													<FaSolidXmark size={24} class="text-error" />
+												)}
+											</td>
 											<td>{item.firstName}</td>
 											<td>{item.lastName}</td>
 											<td>{""}</td>

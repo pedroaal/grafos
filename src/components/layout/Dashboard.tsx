@@ -1,5 +1,6 @@
 import { A, useLocation } from "@solidjs/router";
 import {
+	FaSolidBars,
 	FaSolidBell,
 	FaSolidChevronLeft,
 	FaSolidChevronRight,
@@ -17,6 +18,7 @@ import { Dynamic } from "solid-js/web";
 import { Routes } from "~/config/routes";
 import { SidebarLinks } from "~/config/sidebar";
 import { useAuth } from "~/context/auth";
+import { useWindowSize } from "~/hooks/useWindowSize";
 
 const Notifications = [
 	{
@@ -28,6 +30,7 @@ const Notifications = [
 const DashboardLayout: ParentComponent = (props) => {
 	const location = useLocation();
 	const { authStore, getAuth, logout } = useAuth();
+	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
 	createRenderEffect(
@@ -43,12 +46,12 @@ const DashboardLayout: ParentComponent = (props) => {
 	);
 
 	return (
-		<div class="drawer md:drawer-open">
+		<div class="drawer md:drawer-open h-dvh">
 			<input
 				id="sidebar-drawer"
 				type="checkbox"
 				class="drawer-toggle"
-				checked={sidebarOpen()}
+				checked={width() >= 1536 ? true : sidebarOpen()}
 				onChange={(e) => setSidebarOpen(e.currentTarget.checked)}
 			/>
 
@@ -124,7 +127,7 @@ const DashboardLayout: ParentComponent = (props) => {
 							)}
 						</For>
 					</ul>
-					<ul class="menu w-full items-end">
+					<ul class="menu w-full items-end 2xl:hidden">
 						<li>
 							<label for="sidebar-drawer" aria-label="open sidebar">
 								<Switch>
@@ -144,10 +147,17 @@ const DashboardLayout: ParentComponent = (props) => {
 			<div class="drawer-content flex flex-col">
 				{/* Navbar */}
 				<nav class="navbar bg-base-300 w-full sticky top-0 px-4 py-2">
-					<div class="flex-1">
+					<div class="flex-1 flex items-center gap-4">
+						<label
+							for="sidebar-drawer"
+							aria-label="open sidebar"
+							class="md:hidden"
+						>
+							<FaSolidBars size={16} />
+						</label>
 						<span class="text-lg font-bold">Grafos</span>
 					</div>
-					<div class="flex gap-4 items-center">
+					<div class="flex gap-2 items-center">
 						<div class="dropdown dropdown-end">
 							<button
 								tabIndex={0}
@@ -173,7 +183,7 @@ const DashboardLayout: ParentComponent = (props) => {
 							<button
 								tabIndex={0}
 								type="button"
-								class="btn btn-secondary btn-circle avatar"
+								class="btn btn-sm btn-secondary btn-circle avatar"
 							>
 								<span class="text-xl">
 									{authStore.session?.name?.[0]?.toUpperCase() || "U"}

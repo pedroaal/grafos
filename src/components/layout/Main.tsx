@@ -5,9 +5,9 @@ import Nav from "~/components/landing/Nav";
 
 const MainLayout: ParentComponent = (props) => {
 	return (
-		<div class="flex flex-col min-h-screen" data-theme="light">
+		<div class="h-dvh flex flex-col" data-theme="light">
 			<Nav />
-			<main class="flex-1 p-6">{props.children}</main>
+			<main class="flex-1 p-6 overflow-y-auto">{props.children}</main>
 			<Footer />
 		</div>
 	);

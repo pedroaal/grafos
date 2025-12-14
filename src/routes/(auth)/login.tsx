@@ -1,13 +1,19 @@
 import { Title } from "@solidjs/meta";
-import { A } from "@solidjs/router";
-import { createSignal } from "solid-js";
+import { A, useNavigate } from "@solidjs/router";
+import { createRenderEffect, createSignal } from "solid-js";
 import MainLayout from "~/components/layout/Main";
+import { Routes } from "~/config/routes";
 import { useAuth } from "~/context/auth";
 
 const LoginPage = () => {
+	const navigate = useNavigate();
 	const [email, setEmail] = createSignal("");
 	const [password, setPassword] = createSignal("");
-	const { login } = useAuth();
+	const { authStore, login } = useAuth();
+
+	createRenderEffect(async () => {
+		if (authStore.session) navigate(Routes.dashboard);
+	});
 
 	const handleSubmit = async (e: Event) => {
 		e.preventDefault();
@@ -18,12 +24,8 @@ const LoginPage = () => {
 		<>
 			<Title>Login - Grafos</Title>
 			<MainLayout>
-				<div class="hero min-h-screen">
-					<div class="hero-content flex-col md:flex-row-reverse">
-						<div class="text-center md:text-left">
-							<h1 class="text-5xl font-bold">Iniciar Sesión</h1>
-							<p class="py-6">Accede al sistema ERP Grafos</p>
-						</div>
+				<div class="hero h-full">
+					<div class="hero-content">
 						<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 							<form class="card-body" onSubmit={handleSubmit}>
 								<div class="form-control">
@@ -51,11 +53,9 @@ const LoginPage = () => {
 											required
 										/>
 									</label>
-									<label class="label">
-										<a href="#" class="label-text-alt link link-hover">
-											¿Olvidaste tu contraseña?
-										</a>
-									</label>
+									<A href="#" class="label label-text-alt link link-hover">
+										¿Olvidaste tu contraseña?
+									</A>
 								</div>
 								<div class="form-control mt-6">
 									<button type="submit" class="btn btn-primary">

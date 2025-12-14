@@ -269,6 +269,8 @@ export type Users = Models.Row & {
     isSuperAdmin: boolean;
     deletedAt: string | null;
     profileId: Profiles;
+    firstName: string;
+    lastName: string;
 }
 
 export type Attendance = Models.Row & {

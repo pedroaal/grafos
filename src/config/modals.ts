@@ -1,4 +1,4 @@
 export enum Modals {
+	Confirm = "confirm-modal",
 	Order = "order-modal",
-	Order2 = "new-order-modal",
 }

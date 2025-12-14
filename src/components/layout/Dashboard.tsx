@@ -1,11 +1,14 @@
 import { A, useLocation } from "@solidjs/router";
-import { FaSolidBars } from "solid-icons/fa";
+import { FaSolidBars, FaSolidPager } from "solid-icons/fa";
 import {
 	createRenderEffect,
 	createSignal,
+	For,
 	on,
 	type ParentComponent,
 } from "solid-js";
+import { Dynamic } from "solid-js/web";
+import { Routes } from "~/config/routes";
 import { useAuth } from "~/context/auth";
 
 const DashboardLayout: ParentComponent = (props) => {
@@ -15,8 +18,93 @@ const DashboardLayout: ParentComponent = (props) => {
 
 	createRenderEffect(on(() => location.pathname, checkAuth));
 
+	const sidebarLinks = [
+		{
+			href: Routes.dashboard,
+			label: "Dashboard",
+			icon: FaSolidPager,
+		},
+		{
+			href: Routes.dashboard,
+			label: "Produccion",
+			icon: FaSolidPager,
+			children: [
+				{
+					href: Routes.orders,
+					label: "Pedidos",
+				},
+				{
+					href: Routes.orders,
+					label: "Procesos",
+				},
+				{
+					href: Routes.orders,
+					label: "Materiales",
+				},
+			],
+		},
+		{
+			href: Routes.clients,
+			label: "Ventas",
+			icon: FaSolidPager,
+			children: [
+				{
+					href: Routes.clients,
+					label: "Clientes",
+				},
+				{
+					href: Routes.clients,
+					label: "Contactos",
+				},
+				{
+					href: Routes.clients,
+					label: "Actividades",
+				},
+			],
+		},
+		{
+			href: Routes.dashboard,
+			label: "RRHH",
+			icon: FaSolidPager,
+			children: [
+				{
+					href: Routes.dashboard,
+					label: "Nómina",
+					icon: FaSolidPager,
+				},
+				{
+					href: Routes.dashboard,
+					label: "Asistencia",
+					icon: FaSolidPager,
+				},
+			],
+		},
+		{
+			href: Routes.dashboard,
+			label: "Usuarios",
+			icon: FaSolidPager,
+			children: [
+				{
+					href: Routes.dashboard,
+					label: "Perfiles",
+				},
+			],
+		},
+		{
+			href: Routes.dashboard,
+			label: "Sistema",
+			icon: FaSolidPager,
+			children: [
+				{
+					href: Routes.dashboard,
+					label: "Credenciales",
+				},
+			],
+		},
+	];
+
 	return (
-		<div class="drawer lg:drawer-open">
+		<div class="drawer md:drawer-open">
 			<input
 				id="sidebar-drawer"
 				type="checkbox"
@@ -26,14 +114,16 @@ const DashboardLayout: ParentComponent = (props) => {
 			/>
 			<div class="drawer-content flex flex-col">
 				{/* Navbar */}
-				<div class="navbar bg-base-300 w-full">
-					<div class="flex-none lg:hidden">
-						<label for="sidebar-drawer" class="btn btn-square btn-ghost">
-							<FaSolidBars size={24} />
-						</label>
-					</div>
+				<nav class="navbar bg-base-300 w-full">
+					<label
+						for="sidebar-drawer"
+						aria-label="open sidebar"
+						class="btn btn-square btn-ghost"
+					>
+						<FaSolidBars size={24} />
+					</label>
 					<div class="flex-1 px-2 mx-2">
-						<span class="text-lg font-bold">ServiGraf</span>
+						<span class="text-lg font-bold">Grafos</span>
 					</div>
 					<div class="flex-none">
 						<div class="dropdown dropdown-end">
@@ -60,72 +150,35 @@ const DashboardLayout: ParentComponent = (props) => {
 							</ul>
 						</div>
 					</div>
-				</div>
+				</nav>
 
 				<main class="flex-1 p-6">{props.children}</main>
 			</div>
 
 			{/* Sidebar */}
-			<div class="drawer-side">
-				<label for="sidebar-drawer" class="drawer-overlay" />
-				<aside class="bg-base-100 w-80 min-h-full">
-					<div class="py-4 px-6">
-						<h2 class="text-2xl font-bold">Menú</h2>
-					</div>
+			<div class="drawer-side is-drawer-close:overflow-visible">
+				<label
+					for="sidebar-drawer"
+					aria-label="close sidebar"
+					class="drawer-overlay"
+				></label>
+				<div class="min-h-full bg-base-200 is-drawer-close:w-fit is-drawer-open:w-64 gap-2">
 					<ul class="menu p-4 w-full">
-						<li>
-							<A href="/dashboard" activeClass="active">
-								Dashboard
-							</A>
-						</li>
-
-						<li class="menu-title">
-							<span>Producción</span>
-						</li>
-						<li>
-							<A href="/dashboard/produccion/pedidos">Pedidos</A>
-						</li>
-						<li>
-							<A href="/dashboard/produccion/procesos">Procesos</A>
-						</li>
-						<li>
-							<A href="/dashboard/produccion/materiales">Materiales</A>
-						</li>
-
-						<li class="menu-title">
-							<span>CRM / Ventas</span>
-						</li>
-						<li>
-							<A href="/dashboard/ventas/clientes">Clientes</A>
-						</li>
-						<li>
-							<A href="/dashboard/ventas/contactos">Contactos</A>
-						</li>
-						<li>
-							<A href="/dashboard/ventas/actividades">Actividades</A>
-						</li>
-
-						<li class="menu-title">
-							<span>RRHH</span>
-						</li>
-						<li>
-							<A href="/dashboard/rrhh/nomina">Nómina</A>
-						</li>
-						<li>
-							<A href="/dashboard/rrhh/asistencia">Asistencia</A>
-						</li>
-
-						<li class="menu-title">
-							<span>Sistema</span>
-						</li>
-						<li>
-							<A href="/dashboard/sistema/usuarios">Usuarios</A>
-						</li>
-						<li>
-							<A href="/dashboard/sistema/perfiles">Perfiles</A>
-						</li>
+						<For each={sidebarLinks}>
+							{(item) => (
+								<li>
+									<A
+										href={item.href}
+										class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+									>
+										<Dynamic component={item.icon} size={24}></Dynamic>
+										<span class="is-drawer-close:hidden">{item.label}</span>
+									</A>
+								</li>
+							)}
+						</For>
 					</ul>
-				</aside>
+				</div>
 			</div>
 		</div>
 	);

@@ -15,7 +15,7 @@ const Nav = () => {
 	];
 
 	return (
-		<div class="navbar bg-base-100 sticky top-0 z-50 px-4 lg:px-8">
+		<div class="navbar bg-base-100 sticky top-0 z-50 px-4 md:px-8">
 			<div class="navbar-start">
 				<A
 					class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-content font-bold"
@@ -27,7 +27,7 @@ const Nav = () => {
 
 			<div class="navbar-end">
 				{/* Desktop Menu */}
-				<ul class="menu menu-horizontal px-1 hidden lg:flex">
+				<ul class="menu menu-horizontal px-1 hidden md:flex">
 					<For each={menuItems}>
 						{(item) => (
 							<li classList={{ "menu-disabled": current(item.id) }}>
@@ -45,7 +45,7 @@ const Nav = () => {
 				</ul>
 
 				{/* Mobile Menu Button */}
-				<div class="dropdown dropdown-end lg:hidden">
+				<div class="dropdown dropdown-end md:hidden">
 					<div tabindex="0" role="button" class="btn btn-square btn-ghost">
 						<FaSolidBars size={24} />
 					</div>

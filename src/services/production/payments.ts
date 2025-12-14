@@ -9,7 +9,7 @@ export const listPayments = async (options?: {
 	dateFrom?: string;
 	dateTo?: string;
 }) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (options?.orderId) queries.push(Query.equal("orderId", options.orderId));
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.dateFrom)

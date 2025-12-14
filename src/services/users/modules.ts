@@ -7,10 +7,7 @@ export const listModules = async (companyId: string) => {
 	const res = await tables.listRows<Modules>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.MODULES,
-		queries: [
-			Query.equal("deletedAt", false),
-			Query.equal("companyId", companyId),
-		],
+		queries: [Query.isNull("deletedAt"), Query.equal("companyId", companyId)],
 	});
 	return res;
 };

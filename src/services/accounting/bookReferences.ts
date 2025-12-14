@@ -7,10 +7,7 @@ export const listBookReferences = async (companyId: string) => {
 	const res = await tables.listRows<BookReferences>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.BOOK_REFERENCES,
-		queries: [
-			Query.equal("deletedAt", false),
-			Query.equal("companyId", companyId),
-		],
+		queries: [Query.isNull("deletedAt"), Query.equal("companyId", companyId)],
 	});
 	return res;
 };

@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { PayrollEducation } from "~/types/appwrite";
 
 export const listPayrollEducation = async (payrollId?: string) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (payrollId) queries.push(Query.equal("payrollId", payrollId));
 
 	const res = await tables.listRows<PayrollEducation>({

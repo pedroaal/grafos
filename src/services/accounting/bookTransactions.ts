@@ -12,7 +12,7 @@ export const listBookTransactions = async (
 	},
 ) => {
 	const queries = [
-		Query.equal("deletedAt", false),
+		Query.isNull("deletedAt"),
 		Query.equal("companyId", companyId),
 	];
 	if (options?.dateFrom)

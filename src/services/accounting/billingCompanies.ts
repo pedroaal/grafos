@@ -7,10 +7,7 @@ export const listBillingCompanies = async (companyId: string) => {
 	const res = await tables.listRows<BillingCompanies>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.BILLING_COMPANIES,
-		queries: [
-			Query.equal("deletedAt", false),
-			Query.equal("companyId", companyId),
-		],
+		queries: [Query.isNull("deletedAt"), Query.equal("companyId", companyId)],
 	});
 	return res;
 };

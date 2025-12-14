@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { UserBook } from "~/types/appwrite";
 
 export const listUserBooks = async (userId?: string) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (userId) queries.push(Query.equal("userId", userId));
 
 	const res = await tables.listRows<UserBook>({

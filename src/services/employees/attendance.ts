@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { Attendance } from "~/types/appwrite";
 
 export const listAttendance = async (userId?: string, date?: string) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (userId) queries.push(Query.equal("userId", userId));
 	if (date) queries.push(Query.equal("date", date));
 

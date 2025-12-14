@@ -11,7 +11,7 @@ export const listNotifications = async (
 	},
 ) => {
 	const queries = [
-		Query.equal("deletedAt", false),
+		Query.isNull("deletedAt"),
 		Query.equal("companyId", companyId),
 	];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));

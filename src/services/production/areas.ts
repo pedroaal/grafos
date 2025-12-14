@@ -10,7 +10,7 @@ export const listAreas = async (
 	},
 ) => {
 	const queries = [
-		Query.equal("deletedAt", false),
+		Query.isNull("deletedAt"),
 		Query.equal("companyId", companyId),
 	];
 	if (options?.sort) queries.push(Query.orderAsc("sortOrder"));

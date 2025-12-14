@@ -7,10 +7,7 @@ export const listProductionResets = async (companyId: string) => {
 	const res = await tables.listRows<ProductionResets>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.PRODUCTION_RESETS,
-		queries: [
-			Query.equal("deletedAt", false),
-			Query.equal("companyId", companyId),
-		],
+		queries: [Query.isNull("deletedAt"), Query.equal("companyId", companyId)],
 	});
 
 	return res;

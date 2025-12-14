@@ -12,7 +12,7 @@ export const listProcesses = async (
 	},
 ) => {
 	const queries = [
-		Query.equal("deletedAt", false),
+		Query.isNull("deletedAt"),
 		Query.equal("companyId", companyId),
 	];
 	if (options?.parentId)

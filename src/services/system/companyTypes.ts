@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { CompanyTypes } from "~/types/appwrite";
 
 export const listCompanyTypes = async (search?: string) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (search) queries.push(Query.search("name", search));
 
 	const res = await tables.listRows<CompanyTypes>({

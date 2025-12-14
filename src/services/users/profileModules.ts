@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { ProfileModules } from "~/types/appwrite";
 
 export const listProfileModules = async (profileId?: string) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (profileId) queries.push(Query.equal("profileId", profileId));
 
 	const res = await tables.listRows<ProfileModules>({

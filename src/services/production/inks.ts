@@ -10,7 +10,7 @@ export const listInks = async (
 	},
 ) => {
 	const queries = [
-		Query.equal("deletedAt", false),
+		Query.isNull("deletedAt"),
 		Query.equal("companyId", companyId),
 	];
 

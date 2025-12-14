@@ -7,7 +7,7 @@ export const listUserClients = async (options?: {
 	userId?: string;
 	clientId?: string;
 }) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.clientId)
 		queries.push(Query.equal("clientId", options.clientId));

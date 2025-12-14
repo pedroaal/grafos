@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { InvoiceProducts } from "~/types/appwrite";
 
 export const listInvoiceProducts = async (invoiceId?: string) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (invoiceId) queries.push(Query.equal("invoiceId", invoiceId));
 
 	const res = await tables.listRows<InvoiceProducts>({

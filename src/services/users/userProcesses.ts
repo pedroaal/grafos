@@ -7,7 +7,7 @@ export const listUserProcesses = async (options?: {
 	userId?: string;
 	processId?: string;
 }) => {
-	const queries = [Query.equal("deletedAt", false)];
+	const queries = [Query.isNull("deletedAt")];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.processId)
 		queries.push(Query.equal("processId", options.processId));

@@ -53,7 +53,7 @@ const Nav = () => {
 						tabindex="-1"
 						class="menu menu-compact dropdown-content mt-2 p-2 shadow bg-base-100 rounded-box w-52"
 					>
-						<For each={menuItems}>
+						<For each={MenuItems}>
 							{(item) => (
 								<li classList={{ "menu-disabled": current(item.id) }}>
 									<A

@@ -22,7 +22,7 @@ const LoginPage = () => {
 					<div class="hero-content flex-col md:flex-row-reverse">
 						<div class="text-center md:text-left">
 							<h1 class="text-5xl font-bold">Iniciar Sesión</h1>
-							<p class="py-6">Accede al sistema ERP ServiGraf V2</p>
+							<p class="py-6">Accede al sistema ERP Grafos</p>
 						</div>
 						<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 							<form class="card-body" onSubmit={handleSubmit}>

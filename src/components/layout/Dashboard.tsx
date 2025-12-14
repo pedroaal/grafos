@@ -182,7 +182,7 @@ const DashboardLayout: ParentComponent = (props) => {
 					</div>
 				</nav>
 
-				<main class="flex-1 p-6">{props.children}</main>
+				<main class="flex-1 p-6 space-y-6">{props.children}</main>
 
 				{/* Footer */}
 				<footer class="footer footer-center p-4 bg-base-300 text-base-content">

@@ -1,4 +1,5 @@
 import { Title } from "@solidjs/meta";
+import { FaSolidPlus } from "solid-icons/fa";
 import { createSignal, For } from "solid-js";
 import DashboardLayout from "~/components/layout/Dashboard";
 
@@ -18,28 +19,15 @@ const ClientsPage = () => {
 
 	return (
 		<>
-			<Title>Clientes - Grafos V2</Title>
+			<Title>Clientes - Grafos</Title>
 
 			<DashboardLayout>
 				<div class="space-y-6">
 					<div class="flex justify-between items-center">
 						<h1 class="text-3xl font-bold">Gestión de Clientes</h1>
-						<button class="btn btn-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="h-5 w-5 mr-2"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 4v16m8-8H4"
-								/>
-							</svg>
-							Nuevo Cliente
+						<button type="button" class="btn btn-primary">
+							<FaSolidPlus size={16} />
+							Nuevo
 						</button>
 					</div>
 

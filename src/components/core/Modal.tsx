@@ -1,7 +1,8 @@
 import { FaSolidXmark } from "solid-icons/fa";
-import { type JSX, type ParentComponent, Show, useContext } from "solid-js";
+import { type JSX, type ParentComponent, Show } from "solid-js";
 import { Portal } from "solid-js/web";
-import { PortalContext } from "~/context/portal";
+import { Modals } from "~/config/modals";
+import { useApp } from "~/context/app";
 
 export interface ModalProps {
 	id: string;
@@ -10,11 +11,11 @@ export interface ModalProps {
 }
 
 export const Modal: ParentComponent<ModalProps> = (props) => {
-	const [store, { closeModal }] = useContext(PortalContext);
+	const { appStore, closeModal } = useApp();
 
 	return (
 		<Portal mount={document.getElementById("modals")!}>
-			<Show when={store.showModal === props.id}>
+			<Show when={appStore.showModal === props.id}>
 				<div class="modal modal-open">
 					<div class="modal-box relative max-w-5xl">
 						<button
@@ -47,7 +48,7 @@ export interface ConfirmModalProps {
 
 export const ConfirmModal: ParentComponent<ConfirmModalProps> = (props) => {
 	return (
-		<Modal title={props.title || "Confirmar"}>
+		<Modal title={props.title || "Confirmar"} id={Modals.Confirm}>
 			<p class="py-4">{props.message}</p>
 			<div class="modal-action">
 				<button class="btn" type="button" onClick={props.onCancel}>

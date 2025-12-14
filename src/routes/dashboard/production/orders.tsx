@@ -1,10 +1,9 @@
 import { Title } from "@solidjs/meta";
-import { createSignal, For, useContext } from "solid-js";
+import { createSignal, For } from "solid-js";
 import DashboardLayout from "~/components/layout/Dashboard";
-import NewOrderModal from "~/components/production/NewModal";
 import OrderModal from "~/components/production/OrderModal";
 import { Modals } from "~/config/modals";
-import { PortalContext } from "~/context/portal";
+import { useApp } from "~/context/app";
 
 interface Pedido {
 	id: string;
@@ -20,7 +19,7 @@ const OrdersPage = () => {
 	const [pedidos, setPedidos] = createSignal<Pedido[]>([
 		// Example data - in real app this would come from Appwrite
 	]);
-	const [_store, { openModal }] = useContext(PortalContext);
+	const { openModal } = useApp();
 
 	const statusClass = (status: string) => {
 		switch (status) {
@@ -151,7 +150,6 @@ const OrdersPage = () => {
 				</div>
 
 				<OrderModal />
-				<NewOrderModal />
 			</DashboardLayout>
 		</>
 	);

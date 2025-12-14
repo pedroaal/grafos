@@ -5,14 +5,14 @@ import {
 	FaSolidTriangleExclamation,
 	FaSolidX,
 } from "solid-icons/fa";
-import { type Component, For, Show, useContext } from "solid-js";
+import { type Component, For, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 
-import { PortalContext } from "~/context/portal";
+import { useApp } from "~/context/app";
 import type { IAlert } from "~/types/alert";
 
 const Alert: Component<IAlert> = (props) => {
-	const [_store, { removeAlert }] = useContext(PortalContext);
+	const { removeAlert } = useApp();
 
 	const alertClass = () => {
 		const baseClass = "alert shadow-lg";
@@ -63,14 +63,14 @@ const Alert: Component<IAlert> = (props) => {
 };
 
 const Alerts: Component = () => {
-	const [store] = useContext(PortalContext);
+	const { appStore } = useApp();
 
 	return (
 		<Portal mount={document.getElementById("alerts")!}>
-			<Show when={store.alerts.length}>
+			<Show when={appStore.alerts.length}>
 				<div class="fixed top-4 right-4 w-92 z-50">
 					<div class="flex flex-col gap-3 w-full">
-						<For each={store.alerts}>{(alert) => <Alert {...alert} />}</For>
+						<For each={appStore.alerts}>{(alert) => <Alert {...alert} />}</For>
 					</div>
 				</div>
 			</Show>

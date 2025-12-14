@@ -1,13 +1,13 @@
-import { Show, useContext } from "solid-js";
+import { Show } from "solid-js";
 import { Portal } from "solid-js/web";
-import { PortalContext } from "~/context/portal";
+import { useApp } from "~/context/app";
 
 const Loader = () => {
-	const [store] = useContext(PortalContext);
+	const { appStore } = useApp();
 
 	return (
 		<Portal mount={document.getElementById("loader")!}>
-			<Show when={store.loaders.length}>
+			<Show when={appStore.loaders.length}>
 				<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<div class="bg-base-100 p-8 rounded-lg shadow-xl flex flex-col items-center gap-4">
 						<span class="loading loading-spinner loading-lg"></span>

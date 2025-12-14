@@ -1,10 +1,9 @@
-import { useContext } from "solid-js";
 import { Modals } from "~/config/modals";
-import { PortalContext } from "~/context/portal";
+import { useApp } from "~/context/app";
 import { Modal } from "../core/Modal";
 
 const OrderModal = () => {
-	const [_store, { openModal, closeModal }] = useContext(PortalContext);
+	const { openModal, closeModal } = useApp();
 
 	return (
 		<Modal title="Nuevo Pedido" id={Modals.Order}>

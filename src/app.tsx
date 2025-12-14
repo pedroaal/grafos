@@ -8,8 +8,8 @@ import { Suspense } from "solid-js";
 
 import Alerts from "./components/core/Alerts";
 import Loader from "./components/core/Loader";
+import { AppProvider } from "./context/app";
 import { AuthProvider } from "./context/auth";
-import { PortalProvider } from "./context/portal";
 
 import "./app.css";
 
@@ -26,13 +26,13 @@ const App: Component = () => {
 					<Meta property="og:image" content="/favicon.ico" />
 					<Meta property="og:image:alt" content="Pedro Altamirano" />
 					<Meta property="og:site_name" content="Servigraf" />
-					<PortalProvider>
+					<AppProvider>
 						<AuthProvider>
 							<Suspense>{props.children}</Suspense>
 							<Alerts />
 							<Loader />
 						</AuthProvider>
-					</PortalProvider>
+					</AppProvider>
 				</MetaProvider>
 			)}
 		>

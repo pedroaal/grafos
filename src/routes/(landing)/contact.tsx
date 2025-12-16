@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
 import { createSignal, Show } from "solid-js";
-import MainLayout from "~/components/layout/Main";
+import LandingLayout from "~/components/layout/Landing";
 
 const ContactPage = () => {
 	const [formData, setFormData] = createSignal({
@@ -24,7 +24,7 @@ const ContactPage = () => {
 	return (
 		<>
 			<Title>Contact - Grafos</Title>
-			<MainLayout>
+			<LandingLayout>
 				<div>
 					<div
 						class="hero min-h-[400px] relative"
@@ -250,7 +250,7 @@ const ContactPage = () => {
 						</div>
 					</div>
 				</div>
-			</MainLayout>
+			</LandingLayout>
 		</>
 	);
 };

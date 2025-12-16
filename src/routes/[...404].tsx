@@ -1,12 +1,12 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
-import MainLayout from "~/components/layout/Main";
+import LandingLayout from "~/components/layout/Landing";
 
 const NotFoundPage = () => {
 	return (
 		<>
 			<Title>Not Found - Grafos</Title>
-			<MainLayout>
+			<LandingLayout>
 				<h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
 					Not Found
 				</h1>
@@ -31,7 +31,7 @@ const NotFoundPage = () => {
 						About Page
 					</A>
 				</p>
-			</MainLayout>
+			</LandingLayout>
 		</>
 	);
 };

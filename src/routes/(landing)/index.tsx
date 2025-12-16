@@ -1,12 +1,12 @@
 import { Title } from "@solidjs/meta";
-import MainLayout from "~/components/layout/Main";
+import LandingLayout from "~/components/layout/Landing";
 
 const HomePage = () => {
 	return (
 		<>
 			<Title>ServiGraf</Title>
 
-			<MainLayout>
+			<LandingLayout>
 				<div class="hero h-full">
 					<div class="hero-content text-center">
 						<div class="max-w-2xl">
@@ -21,7 +21,7 @@ const HomePage = () => {
 						</div>
 					</div>
 				</div>
-			</MainLayout>
+			</LandingLayout>
 		</>
 	);
 };

@@ -1,7 +1,7 @@
 import { Title } from "@solidjs/meta";
 import { A, useNavigate } from "@solidjs/router";
 import { createRenderEffect, createSignal } from "solid-js";
-import MainLayout from "~/components/layout/Main";
+import LandingLayout from "~/components/layout/Landing";
 import { Routes } from "~/config/routes";
 import { useAuth } from "~/context/auth";
 
@@ -24,7 +24,7 @@ const LoginPage = () => {
 	return (
 		<>
 			<Title>Login - Grafos</Title>
-			<MainLayout>
+			<LandingLayout>
 				<div class="hero h-full">
 					<div class="hero-content">
 						<div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
@@ -73,7 +73,7 @@ const LoginPage = () => {
 						</div>
 					</div>
 				</div>
-			</MainLayout>
+			</LandingLayout>
 		</>
 	);
 };

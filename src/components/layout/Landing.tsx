@@ -3,7 +3,7 @@ import type { ParentComponent } from "solid-js";
 import Footer from "~/components/landing/Footer";
 import Nav from "~/components/landing/Nav";
 
-const MainLayout: ParentComponent = (props) => {
+const LandingLayout: ParentComponent = (props) => {
 	return (
 		<div class="h-dvh flex flex-col" data-theme="light">
 			<Nav />
@@ -13,4 +13,4 @@ const MainLayout: ParentComponent = (props) => {
 	);
 };
 
-export default MainLayout;
+export default LandingLayout;

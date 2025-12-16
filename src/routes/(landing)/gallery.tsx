@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
 import { For } from "solid-js";
-import MainLayout from "~/components/layout/Main";
+import LandingLayout from "~/components/layout/Landing";
 
 const GalleryPage = () => {
 	const images = [
@@ -21,7 +21,7 @@ const GalleryPage = () => {
 	return (
 		<>
 			<Title>Gallery - Grafos</Title>
-			<MainLayout>
+			<LandingLayout>
 				<div>
 					<div
 						class="hero min-h-[400px] relative"
@@ -54,7 +54,7 @@ const GalleryPage = () => {
 						</div>
 					</div>
 				</div>
-			</MainLayout>
+			</LandingLayout>
 		</>
 	);
 };

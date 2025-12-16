@@ -1,11 +1,11 @@
 import { Title } from "@solidjs/meta";
-import MainLayout from "~/components/layout/Main";
+import LandingLayout from "~/components/layout/Landing";
 
 const AboutPage = () => {
 	return (
 		<>
 			<Title>About - Grafos</Title>
-			<MainLayout>
+			<LandingLayout>
 				<div>
 					<div
 						class="hero min-h-[400px] relative"
@@ -58,7 +58,7 @@ const AboutPage = () => {
 						</div>
 					</div>
 				</div>
-			</MainLayout>
+			</LandingLayout>
 		</>
 	);
 };

@@ -11,47 +11,47 @@ const OrderModal = () => {
 				<div class="form-control">
 					<label class="label">
 						<span class="label-text">Cliente</span>
+						<select class="select select-bordered">
+							<option disabled selected>
+								Seleccionar cliente
+							</option>
+							<option>Cliente 1</option>
+							<option>Cliente 2</option>
+						</select>
 					</label>
-					<select class="select select-bordered">
-						<option disabled selected>
-							Seleccionar cliente
-						</option>
-						<option>Cliente 1</option>
-						<option>Cliente 2</option>
-					</select>
 				</div>
 
 				<div class="form-control">
 					<label class="label">
 						<span class="label-text">Descripción</span>
+						<textarea
+							class="textarea textarea-bordered"
+							placeholder="Descripción del pedido"
+						/>
 					</label>
-					<textarea
-						class="textarea textarea-bordered"
-						placeholder="Descripción del pedido"
-					/>
 				</div>
 
 				<div class="grid grid-cols-2 gap-4">
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text">Fecha Pedido</span>
+							<input type="date" class="input input-bordered" />
 						</label>
-						<input type="date" class="input input-bordered" />
 					</div>
 
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text">Fecha Entrega</span>
+							<input type="date" class="input input-bordered" />
 						</label>
-						<input type="date" class="input input-bordered" />
 					</div>
 				</div>
 
 				<div class="form-control">
 					<label class="label">
 						<span class="label-text">Cantidad</span>
+						<input type="number" class="input input-bordered" placeholder="0" />
 					</label>
-					<input type="number" class="input input-bordered" placeholder="0" />
 				</div>
 
 				<div class="modal-action">

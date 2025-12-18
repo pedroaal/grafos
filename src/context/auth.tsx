@@ -56,7 +56,7 @@ export const AuthProvider: ParentComponent = (props) => {
 			setStore("user", currentUser.rows[0] || null);
 			if (options?.navigateOnSuccess) navigate(Routes.dashboard);
 			return true;
-		} catch (error) {
+		} catch {
 			setStore("session", null);
 			setStore("user", null);
 			if (options?.navigateOnFail) navigate(Routes.login);

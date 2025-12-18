@@ -46,11 +46,11 @@ const Nav = () => {
 
 				{/* Mobile Menu Button */}
 				<div class="dropdown dropdown-end md:hidden">
-					<div tabindex="0" role="button" class="btn btn-square btn-ghost">
+					<div tabindex={0} role="button" class="btn btn-square btn-ghost">
 						<FaSolidBars size={24} />
 					</div>
 					<ul
-						tabindex="-1"
+						tabindex={0}
 						class="menu menu-compact dropdown-content mt-2 p-2 shadow bg-base-100 rounded-box w-52"
 					>
 						<For each={MenuItems}>

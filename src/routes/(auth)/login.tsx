@@ -21,7 +21,7 @@ const LoginPage = () => {
 		getAuth({ navigateOnSuccess: true });
 	});
 
-	const [form, { Form, Field }] = createForm<LoginForm>({
+	const [_form, { Form, Field }] = createForm<LoginForm>({
 		initialValues: {
 			email: "",
 			password: "",

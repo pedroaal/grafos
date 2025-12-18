@@ -34,12 +34,12 @@ export const syncProfileModules = async (
 	const promises = modules.map((mod) =>
 		tables.createRow<ProfileModules>({
 			databaseId: DATABASE_ID,
-			tableId: TABLES. PROFILE_MODULES,
+			tableId: TABLES.PROFILE_MODULES,
 			rowId: makeId(),
 			data: {
-				profileId,
-				moduleId: mod.moduleId,
-				roleId: mod. roleId,
+				profileId: [profileId],
+				moduleId: [mod.moduleId],
+				roleId: [mod.roleId],
 				deletedAt: null,
 			},
 		}),

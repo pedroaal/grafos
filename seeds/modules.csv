@@ -1,0 +1,39 @@
+$id,companyId,name,isMain
+admin_dashboard,693f16130037483207d3,"Resumen administrativo",true
+intern_production,693f16130037483207d3,"Producción Interna",false
+extern_production,693f16130037483207d3,"Producción Externa",false
+total_production,693f16130037483207d3,"Producción total",false
+total_billing,693f16130037483207d3,"Facturación total",false
+utilities,693f16130037483207d3,"Utilidades",false
+material_request,693f16130037483207d3,"Solicitud de Material",false
+clients_follower,693f16130037483207d3,"Clientes",false
+material_client,693f16130037483207d3,"Material_cliente",false
+annual_report,693f16130037483207d3,"Reporte Anual",false
+admin,693f16130037483207d3,"Administracion",true
+billing,693f16130037483207d3,"Facturacion",false
+accounting_books,693f16130037483207d3,"Libros admin",false
+user_books,693f16130037483207d3,"Libro usuario",false
+payroll,693f16130037483207d3,"Nómina",false
+attendance,693f16130037483207d3,"Asistencia",false
+attendance_report,693f16130037483207d3,"Reporte de asistencia",false
+production,693f16130037483207d3,"Produccion",true
+duplicate_order,693f16130037483207d3,"Duplicar pedido",false
+order_report,693f16130037483207d3,"Reporte pedidos",false
+payment_report,693f16130037483207d3,"Reporte pagos",false
+processes_report,693f16130037483207d3,"Reporte maquinas",false
+processes,693f16130037483207d3,"Procesos",false
+materials,693f16130037483207d3,"Materiales",false
+reset_production,693f16130037483207d3,"Reset producción",false
+sales,693f16130037483207d3,"Ventas",true
+activities,693f16130037483207d3,"Actividades",false
+contacts,693f16130037483207d3,"Contactos",false
+templates,693f16130037483207d3,"Plantillas",false
+evaluation,693f16130037483207d3,"Evaluacion",false
+users,693f16130037483207d3,"Usuarios",true
+profiles,693f16130037483207d3,"Perfiles",false
+system,693f16130037483207d3,"Sistema",true
+billing_companies,693f16130037483207d3,"Facturación",false
+credentials,693f16130037483207d3,"Claves",false
+store,693f16130037483207d3,"Tienda",true
+cloud,693f16130037483207d3,"Cloud",true
+mail,693f16130037483207d3,"Mail",true

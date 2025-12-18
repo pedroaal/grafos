@@ -1,0 +1,8 @@
+companyId,type,percentage,description,status
+693f16130037483207d3,"tax",0,'default',true
+693f16130037483207d3,"tax",30,'default',true
+693f16130037483207d3,"tax",70,'default',true
+693f16130037483207d3,"tax",100,'default',true
+693f16130037483207d3,"source",0,'default',true
+693f16130037483207d3,"source",1.75,'default',true
+693f16130037483207d3,"source",2.75,'default',true

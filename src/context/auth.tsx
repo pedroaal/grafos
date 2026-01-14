@@ -19,17 +19,17 @@ interface IGetAuthOptions {
 }
 
 type AuthActions = {
-	login: (email: string, password: string) => void;
+	login: (email: string, password: string) => Promise<boolean>;
 	logout: () => void;
-	getAuth: (options: IGetAuthOptions) => void;
+	getAuth: (options: IGetAuthOptions) => Promise<boolean>;
 };
 
 export const AuthContext = createContext<[AuthStore, AuthActions]>([
 	{ session: null, user: null },
 	{
-		login: () => {},
+		login: async () => false,
 		logout: () => {},
-		getAuth: () => {},
+		getAuth: async () => false,
 	},
 ]);
 

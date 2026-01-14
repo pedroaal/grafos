@@ -14,9 +14,9 @@ type AppStore = {
 };
 
 type AppActions = {
-	addAlert: (alert: Omit<IAlert, "id">, options?: IAlertOptions) => void;
+	addAlert: (alert: Omit<IAlert, "id">, options?: IAlertOptions) => string;
 	removeAlert: (id: string) => void;
-	addLoader: () => void;
+	addLoader: () => string;
 	removeLoader: (id: string) => void;
 	openModal: (id: string) => void;
 	closeModal: () => void;
@@ -25,12 +25,12 @@ type AppActions = {
 export const AppContext = createContext<[AppStore, AppActions]>([
 	{ alerts: [], loaders: [], showModal: null },
 	{
-		addAlert: () => {},
-		removeAlert: () => {},
-		addLoader: () => {},
-		removeLoader: () => {},
-		openModal: () => {},
-		closeModal: () => {},
+		addAlert: () => "",
+		removeAlert: () => null,
+		addLoader: () => "",
+		removeLoader: () => null,
+		openModal: () => null,
+		closeModal: () => null,
 	},
 ]);
 

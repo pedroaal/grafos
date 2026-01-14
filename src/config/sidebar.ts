@@ -122,7 +122,7 @@ export const SidebarLinks: SidebarLink[] = [
 			},
 			{
 				href: Routes.users,
-				label: "Users",
+				label: "Usuarios",
 			},
 		],
 	},

@@ -4,12 +4,12 @@ import DashboardLayout from "~/components/layout/Dashboard";
 const DashboardPage = () => {
 	return (
 		<>
-			<Title>Clientes - Grafos</Title>
+			<Title>Dashboard - Grafos</Title>
 
 			<DashboardLayout>
 				<div class="space-y-6">
 					<div class="flex justify-between items-center">
-						<h1 class="text-3xl font-bold">Gestión de Clientes</h1>
+						<h1 class="text-3xl font-bold">Dashboard</h1>
 						<button class="btn btn-primary">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"

@@ -4,14 +4,14 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { Areas } from "~/types/appwrite";
 
 export const listAreas = async (
-	companyId: string,
+	tenantId: string,
 	options?: {
 		sort?: "asc" | "desc";
 	},
 ) => {
 	const queries = [
 		Query.isNull("deletedAt"),
-		Query.equal("companyId", companyId),
+		Query.equal("tenantId", tenantId),
 	];
 	if (options?.sort) queries.push(Query.orderAsc("sortOrder"));
 

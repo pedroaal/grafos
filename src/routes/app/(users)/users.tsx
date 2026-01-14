@@ -19,8 +19,8 @@ const UsersPage = () => {
 	const { authStore } = useAuth();
 
 	const [users] = createResource(
-		() => authStore.session?.prefs.companyId || "",
-		(companyId) => listUsers(companyId),
+		() => authStore.user?.tenantId || "",
+		(tenantId) => listUsers(tenantId),
 	);
 
 	const goToUser = (userId: string) => {

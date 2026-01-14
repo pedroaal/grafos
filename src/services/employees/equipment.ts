@@ -3,11 +3,11 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Equipment } from "~/types/appwrite";
 
-export const listEquipment = async (companyId: string) => {
+export const listEquipment = async (tenantId: string) => {
 	const res = await tables.listRows<Equipment>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.EQUIPMENT,
-		queries: [Query.isNull("deletedAt"), Query.equal("companyId", companyId)],
+		queries: [Query.isNull("deletedAt"), Query.equal("tenantId", tenantId)],
 	});
 	return res;
 };

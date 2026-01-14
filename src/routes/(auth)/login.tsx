@@ -17,7 +17,7 @@ const LoginPage = () => {
 	const { authStore, login, getAuth } = useAuth();
 
 	createRenderEffect(() => {
-		if (authStore.session) navigate(Routes.dashboard);
+		if (authStore.user?.tenantId) navigate(Routes.dashboard);
 		getAuth({ navigateOnSuccess: true });
 	});
 

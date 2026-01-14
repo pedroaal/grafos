@@ -4,7 +4,7 @@ import { createContext, type ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Routes } from "~/config/routes";
 import { account } from "~/lib/appwrite";
-import { listUsers } from "~/services/users/users";
+import { getUserByAuthId } from "~/services/users/users";
 import type { Users } from "~/types/appwrite";
 import { useApp } from "./app";
 
@@ -49,9 +49,8 @@ export const AuthProvider: ParentComponent = (props) => {
 	const getAuth = async (options: IGetAuthOptions) => {
 		try {
 			const currentSession = await account.get();
-			const currentUser = await listUsers(currentSession.prefs.companyId, {
-				authId: currentSession.$id,
-			});
+			debugger;
+			const currentUser = await getUserByAuthId(currentSession.$id);
 			setStore("session", currentSession);
 			setStore("user", currentUser.rows[0] || null);
 			if (options?.navigateOnSuccess) navigate(Routes.dashboard);

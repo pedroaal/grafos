@@ -21,8 +21,8 @@ const ProfilesPage = () => {
 	const { addAlert } = useApp();
 
 	const [profiles, { refetch }] = createResource(
-		() => authStore.session?.prefs.companyId || "",
-		(companyId) => listProfiles(companyId),
+		() => authStore.user?.tenantId || "",
+		(tenantId) => listProfiles(tenantId),
 	);
 
 	const goToProfile = (profileId: string) => {

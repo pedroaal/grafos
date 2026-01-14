@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { Activities } from "~/types/appwrite";
 
 export const listActivities = async (
-	companyId: string,
+	tenantId: string,
 	options?: {
 		canEvaluate?: boolean;
 		followUp?: boolean;
@@ -12,7 +12,7 @@ export const listActivities = async (
 ) => {
 	const queries = [
 		Query.isNull("deletedAt"),
-		Query.equal("companyId", companyId),
+		Query.equal("tenantId", tenantId),
 	];
 	if (options?.canEvaluate)
 		queries.push(Query.equal("canEvaluate", options.canEvaluate));

@@ -31,7 +31,7 @@ const ProfileSchema = object({
 	status: boolean(),
 });
 
-type ProfileForm = Omit<Profiles, "$id" | "companyId" | "deletedAt">;
+type ProfileForm = Omit<Profiles, "$id" | "tenantId" | "deletedAt">;
 
 const ProfilePage = () => {
 	const params = useParams();
@@ -55,7 +55,7 @@ const ProfilePage = () => {
 	});
 
 	const [modules] = createResource(
-		() => authStore.session?.prefs.companyId || "",
+		() => authStore.user?.tenantId || "",
 		listModules,
 	);
 	const [roles] = createResource(listRoles);
@@ -172,7 +172,7 @@ const ProfilePage = () => {
 		try {
 			const payload = {
 				...formValues,
-				companyId: authStore.session?.prefs.companyId || "",
+				tenantId: authStore.user?.tenantId || "",
 				deletedAt: null,
 			};
 

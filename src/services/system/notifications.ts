@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { Notifications } from "~/types/appwrite";
 
 export const listNotifications = async (
-	companyId: string,
+	tenantId: string,
 	options?: {
 		userId?: string;
 		unreadOnly?: boolean;
@@ -12,7 +12,7 @@ export const listNotifications = async (
 ) => {
 	const queries = [
 		Query.isNull("deletedAt"),
-		Query.equal("companyId", companyId),
+		Query.equal("tenantId", tenantId),
 	];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.unreadOnly) queries.push(Query.isNull("readAt"));

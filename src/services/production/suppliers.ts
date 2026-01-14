@@ -4,14 +4,14 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { Suppliers } from "~/types/appwrite";
 
 export const listSuppliers = async (
-	companyId: string,
+	tenantId: string,
 	options?: {
 		search?: string;
 	},
 ) => {
 	const queries = [
 		Query.isNull("deletedAt"),
-		Query.equal("companyId", companyId),
+		Query.equal("tenantId", tenantId),
 	];
 	if (options?.search) queries.push(Query.contains("name", options.search));
 

@@ -3,11 +3,11 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { CompanyDetails } from "~/types/appwrite";
 
-export const getCompanyDetailsByCompany = async (companyId: string) => {
+export const getCompanyDetailsByCompany = async (tenantId: string) => {
 	const res = await tables.listRows<CompanyDetails>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.COMPANY_DETAILS,
-		queries: [Query.equal("companyId", companyId)],
+		queries: [Query.equal("tenantId", tenantId)],
 	});
 	return res;
 };

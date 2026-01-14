@@ -4,14 +4,14 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { Users } from "~/types/appwrite";
 
 export const listUsers = async (
-	companyId: string,
+	tenantId: string,
 	options?: {
 		authId?: string;
 	},
 ) => {
 	const queries = [
 		Query.isNull("deletedAt"),
-		Query.equal("companyId", companyId),
+		Query.equal("tenantId", tenantId),
 		Query.select(['*', 'profileId.name'])
 	];
 	if (options?.authId) {
@@ -25,11 +25,20 @@ export const listUsers = async (
 	return res;
 };
 
-export const getUser = async (id: string) => {
+export const getUser = async (rowId: string) => {
 	const res = await tables.getRow<Users>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.USERS,
-		rowId: id,
+		rowId,
+	});
+	return res;
+};
+
+export const getUserByAuthId = async (authId: string) => {
+	const res = await tables.listRows<Users>({
+		databaseId: DATABASE_ID,
+		tableId: TABLES.USERS,
+		queries: [Query.equal("authId", authId)],
 	});
 	return res;
 };
@@ -44,20 +53,21 @@ export const createUser = async (payload: Users) => {
 	return res;
 };
 
-export const updateUser = async (id: string, payload: Partial<Users>) => {
+export const updateUser = async (rowId: string, payload: Partial<Users>) => {
 	const res = await tables.updateRow<Users>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.USERS,
-		rowId: id,
+		rowId,
 		data: payload,
 	});
 	return res;
 };
 
-export const deleteUser = (id: string) => {
-	return tables.deleteRow({
+export const deleteUser = (rowId: string) => {
+	return tables.updateRow<Users>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.USERS,
-		rowId: id,
+		rowId,
+		data: { deletedAt: new Date().toISOString() },
 	});
 };

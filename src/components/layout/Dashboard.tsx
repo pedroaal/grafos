@@ -1,4 +1,4 @@
-import { A, useLocation } from "@solidjs/router";
+import { A, useLocation, useNavigate } from "@solidjs/router";
 import {
 	FaSolidBars,
 	FaSolidBell,
@@ -29,7 +29,8 @@ const Notifications = [
 
 const DashboardLayout: ParentComponent = (props) => {
 	const location = useLocation();
-	const { authStore, getAuth, logout } = useAuth();
+	const navigate = useNavigate();
+	const { authStore, logout } = useAuth();
 	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
@@ -37,10 +38,10 @@ const DashboardLayout: ParentComponent = (props) => {
 		on(
 			() => location.pathname,
 			() => {
-				if (!authStore.session)
-					getAuth({
-						navigateOnFail: true,
-					});
+				if (!authStore.session || !authStore.user) {
+					navigate(Routes.login);
+					return;
+				}
 			},
 		),
 	);
@@ -186,7 +187,7 @@ const DashboardLayout: ParentComponent = (props) => {
 								class="btn btn-sm btn-secondary btn-circle avatar"
 							>
 								<span class="text-xl">
-									{authStore.session?.name?.[0]?.toUpperCase() || "U"}
+									{authStore.user?.firstName?.[0]?.toUpperCase() || "U"}
 								</span>
 							</button>
 							<ul

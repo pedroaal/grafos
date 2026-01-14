@@ -3,11 +3,11 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Profiles } from "~/types/appwrite";
 
-export const listProfiles = async (companyId: string) => {
+export const listProfiles = async (tenantId: string) => {
 	const res = await tables.listRows<Profiles>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.PROFILES,
-		queries: [Query.isNull("deletedAt"), Query.equal("companyId", companyId)],
+		queries: [Query.isNull("deletedAt"), Query.equal("tenantId", tenantId)],
 	});
 	return res;
 };

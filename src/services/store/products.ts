@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { Products } from "~/types/appwrite";
 
 export const listProducts = async (
-	companyId: string,
+	tenantId: string,
 	options?: {
 		categoryId?: string;
 		search?: string;
@@ -12,7 +12,7 @@ export const listProducts = async (
 ) => {
 	const queries = [
 		Query.isNull("deletedAt"),
-		Query.equal("companyId", companyId),
+		Query.equal("tenantId", tenantId),
 	];
 	if (options?.categoryId)
 		queries.push(Query.equal("categoryId", options.categoryId));

@@ -2,37 +2,23 @@ import type { Component } from "solid-js";
 import { type JSX, splitProps } from "solid-js";
 
 interface IProps {
-	name: string;
 	label?: string;
-	placeholder?: string;
 	checked?: boolean;
-	error?: string;
+	placeholder?: string;
 	required?: boolean;
-	class?: string;
-	containerClass?: string;
-	labelClass?: string;
-	errorClass?: string;
+	disabled?: boolean;
+	readonly?: boolean;
+	name: string;
+	error?: string;
+	autofocus?: boolean;
 	ref: (element: HTMLInputElement) => void;
 	onInput: JSX.EventHandler<HTMLInputElement, InputEvent>;
 	onChange: JSX.EventHandler<HTMLInputElement, Event>;
 	onBlur: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-	disabled?: boolean;
-	readonly?: boolean;
 }
 
 const Checkbox: Component<IProps> = (props) => {
-	const [, checkboxProps] = splitProps(props, [
-		"checked",
-		"label",
-		"error",
-		"class",
-		"containerClass",
-		"labelClass",
-		"errorClass",
-		"required",
-		"disabled",
-		"readonly",
-	]);
+	const [, checkboxProps] = splitProps(props, ["label", "error"]);
 
 	return (
 		<fieldset class="fieldset">
@@ -40,7 +26,6 @@ const Checkbox: Component<IProps> = (props) => {
 				<input
 					{...checkboxProps}
 					id={props.name}
-					checked={!!props.checked}
 					type="checkbox"
 					class="checkbox"
 					classList={{ "checkbox-error": !!props.error }}
@@ -49,6 +34,7 @@ const Checkbox: Component<IProps> = (props) => {
 					aria-errormessage={props.error ? `${props.name}-error` : undefined}
 				/>
 				{props.label}
+				{props.required && <span class="required">*</span>}
 			</label>
 			{props.error && <p class="legend text-error">{props.error}</p>}
 		</fieldset>

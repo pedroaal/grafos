@@ -6,7 +6,7 @@ interface IProps {
 	label?: string;
 	placeholder?: string;
 	checked?: boolean;
-	error: string;
+	error?: string;
 	required?: boolean;
 	class?: string;
 	containerClass?: string;
@@ -40,14 +40,13 @@ const Checkbox: Component<IProps> = (props) => {
 				<input
 					{...checkboxProps}
 					id={props.name}
-					checked={props.checked || false}
+					checked={!!props.checked}
 					type="checkbox"
 					class="checkbox"
 					classList={{ "checkbox-error": !!props.error }}
 					aria-invalid={!!props.error}
+					aria-describedby={props.error ? `${props.name}-error` : undefined}
 					aria-errormessage={props.error ? `${props.name}-error` : undefined}
-					disabled={props.disabled}
-					readonly={props.readonly}
 				/>
 				{props.label}
 			</label>

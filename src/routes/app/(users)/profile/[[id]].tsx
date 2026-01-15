@@ -179,7 +179,10 @@ const ProfilePage = () => {
 				profileId = params.id!;
 				addAlert({ type: "success", message: "Perfil actualizado con éxito" });
 			} else {
-				const newProfile = await createProfile(payload as Profiles);
+				const newProfile = await createProfile(
+					payload as Profiles,
+					authStore.tenantId!,
+				);
 				profileId = newProfile.$id;
 				addAlert({ type: "success", message: "Perfil creado con éxito" });
 			}

@@ -1,4 +1,4 @@
-import { Account, Client, ID, Storage, TablesDB } from "appwrite";
+import { Account, Client, ID, Storage, TablesDB, Teams } from "appwrite";
 
 const ENDPOINT =
 	import.meta.env.VITE_APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1";
@@ -11,6 +11,7 @@ const client = new Client()
 	.setDevKey(DEV_KEY);
 
 export const account = new Account(client);
+export const teams = new Teams(client);
 export const tables = new TablesDB(client);
 export const storage = new Storage(client);
 

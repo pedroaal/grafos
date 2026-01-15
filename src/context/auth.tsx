@@ -3,7 +3,7 @@ import type { Models } from "appwrite";
 import { createContext, type ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Routes } from "~/config/routes";
-import { account } from "~/lib/appwrite";
+import { account, teams } from "~/lib/appwrite";
 import { getUserByAuthId } from "~/services/users/users";
 import type { Users } from "~/types/appwrite";
 import { useApp } from "./app";
@@ -11,6 +11,7 @@ import { useApp } from "./app";
 type AuthStore = {
 	session: Models.User | null;
 	user: Users | null;
+	tenantId: string | null;
 };
 
 interface IGetAuthOptions {
@@ -25,7 +26,7 @@ type AuthActions = {
 };
 
 export const AuthContext = createContext<[AuthStore, AuthActions]>([
-	{ session: null, user: null },
+	{ session: null, user: null, tenantId: null },
 	{
 		login: async () => false,
 		logout: () => {},
@@ -44,15 +45,22 @@ export const AuthProvider: ParentComponent = (props) => {
 	const [store, setStore] = createStore<AuthStore>({
 		session: null,
 		user: null,
+		tenantId: null,
 	});
 
 	const getAuth = async (options: IGetAuthOptions) => {
 		try {
 			const currentSession = await account.get();
-			debugger;
 			const currentUser = await getUserByAuthId(currentSession.$id);
-			setStore("session", currentSession);
-			setStore("user", currentUser.rows[0] || null);
+			const teamsList = await teams.list();
+			const tenantId = teamsList.teams[0]?.$id || null;
+
+			setStore({
+				session: currentSession,
+				user: currentUser.rows[0] || null,
+				tenantId: tenantId,
+			});
+
 			if (options?.navigateOnSuccess) navigate(Routes.dashboard);
 			return true;
 		} catch {

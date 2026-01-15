@@ -1,4 +1,4 @@
-import { Query } from "appwrite";
+import { Permission, Query, Role } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Users } from "~/types/appwrite";
@@ -41,12 +41,17 @@ export const getUserByAuthId = async (authId: string) => {
 	return res;
 };
 
-export const createUser = async (payload: Users) => {
+export const createUser = async (payload: Users, tenantId: string) => {
 	const res = await tables.createRow<Users>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.USERS,
 		rowId: makeId(),
 		data: payload,
+		permissions: [
+			Permission.read(Role.team(tenantId)),
+			Permission.update(Role.team(tenantId)),
+			Permission.delete(Role.team(tenantId)),
+		]
 	});
 	return res;
 };

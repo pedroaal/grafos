@@ -1,5 +1,5 @@
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { tables } from "~/lib/appwrite";
 import type { Roles } from "~/types/appwrite";
 
 export const listRoles = async () => {

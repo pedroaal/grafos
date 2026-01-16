@@ -5,6 +5,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
+import TrueFalse from "~/components/core/TrueFalse";
 import DashboardLayout from "~/components/layout/Dashboard";
 import AreaModal from "~/components/production/AreaModal";
 import ProcessModal from "~/components/production/ProcessModal";
@@ -105,8 +106,12 @@ const ProcessesPage = () => {
 									<td>{item.name}</td>
 									<td>{item.areaId?.name || ""}</td>
 									<td>{item.goal}</td>
-									<td>{item.internal}</td>
-									<td>{item.followUp}</td>
+									<td>
+										<TrueFalse value={item.internal} />
+									</td>
+									<td>
+										<TrueFalse value={item.followUp} />
+									</td>
 									<td>
 										<RowActions
 											onEdit={() => editRow(Modals.Process, item.$id)}

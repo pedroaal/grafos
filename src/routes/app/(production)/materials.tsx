@@ -5,6 +5,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
+import TrueFalse from "~/components/core/TrueFalse";
 import DashboardLayout from "~/components/layout/Dashboard";
 import CategoryModal from "~/components/production/CategoryModal";
 import MaterialModal from "~/components/production/MaterialModal";
@@ -107,12 +108,18 @@ const ConfigPage = () => {
 								<tr>
 									<td>{item.categoryId?.name || ""}</td>
 									<td>{item.name}</td>
-									<td>{item.isColor}</td>
+									<td>
+										<TrueFalse value={item.hasColor} />
+									</td>
 									<td>{item.height}</td>
 									<td>{item.width}</td>
 									<td>{item.price}</td>
-									<td>{item.hasUv}</td>
-									<td>{item.isLaminated}</td>
+									<td>
+										<TrueFalse value={item.hasUv} />
+									</td>
+									<td>
+										<TrueFalse value={item.hasLaminated} />
+									</td>
 									<td>
 										<RowActions
 											onEdit={() => editRow(Modals.Process, item.$id)}

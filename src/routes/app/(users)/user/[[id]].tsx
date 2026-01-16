@@ -24,7 +24,7 @@ const UserSchema = object({
 	firstName: string(),
 	lastName: string(),
 	profileId: string(),
-	status: boolean(),
+	active: boolean(),
 	reserveOrder: boolean(),
 	bookAccess: boolean(),
 	profitAccess: boolean(),
@@ -50,7 +50,7 @@ const UserPage = () => {
 			firstName: "",
 			lastName: "",
 			profileId: "",
-			status: true,
+			active: true,
 			reserveOrder: false,
 			bookAccess: false,
 			profitAccess: false,
@@ -81,7 +81,7 @@ const UserPage = () => {
 					profileId: user.profileId ?? "",
 					firstName: user.firstName,
 					lastName: user.lastName,
-					status: user.status,
+					active: user.active,
 					reserveOrder: user.reserveOrder,
 					bookAccess: user.bookAccess,
 					profitAccess: user.profitAccess,
@@ -206,7 +206,7 @@ const UserPage = () => {
 								</Field>
 							</div>
 							<div class="md:col-span-1">
-								<Field name="status" type="boolean">
+								<Field name="active" type="boolean">
 									{(field, props) => (
 										<Checkbox
 											{...props}

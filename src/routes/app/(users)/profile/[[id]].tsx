@@ -29,7 +29,7 @@ import type { Modules, Profiles } from "~/types/appwrite";
 const ProfileSchema = object({
 	name: string(),
 	description: string(),
-	status: boolean(),
+	active: boolean(),
 });
 
 type ProfileForm = Omit<Profiles, "$id" | "deletedAt">;
@@ -51,7 +51,7 @@ const ProfilePage = () => {
 		initialValues: {
 			name: "",
 			description: "",
-			status: true,
+			active: true,
 		},
 	});
 
@@ -84,7 +84,7 @@ const ProfilePage = () => {
 				setValues(form, {
 					name: profileData.name || "",
 					description: profileData.description || "",
-					status: profileData.status ?? true,
+					active: profileData.active ?? true,
 				});
 			},
 		),
@@ -264,7 +264,7 @@ const ProfilePage = () => {
 							</div>
 
 							<div class="md:col-span-1 flex items-end">
-								<Field name="status" type="boolean">
+								<Field name="active" type="boolean">
 									{(field, props) => (
 										<Checkbox
 											{...props}

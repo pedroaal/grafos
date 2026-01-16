@@ -1,6 +1,5 @@
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
-import { FaSolidCheck, FaSolidXmark } from "solid-icons/fa";
 import { createResource, For } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
@@ -8,6 +7,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import EmptyTable from "~/components/core/EmptyTable";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
+import TrueFalse from "~/components/core/TrueFalse";
 import DashboardLayout from "~/components/layout/Dashboard";
 
 import { Routes } from "~/config/routes";
@@ -58,7 +58,7 @@ const ProfilesPage = () => {
 				>
 					<Table
 						headers={[
-							{ label: "Status", class: "w-1/12" },
+							{ label: "Activo", class: "w-1/12" },
 							{ label: "Nombre" },
 							{ label: "Descripción" },
 							{ label: "", class: "w-1/12" },
@@ -68,11 +68,7 @@ const ProfilesPage = () => {
 							{(item) => (
 								<tr>
 									<td>
-										{item.status ? (
-											<FaSolidCheck size={24} class="text-success" />
-										) : (
-											<FaSolidXmark size={24} class="text-error" />
-										)}
+										<TrueFalse value={item.active} color />
 									</td>
 									<td>{item.name}</td>
 									<td>{item.description}</td>

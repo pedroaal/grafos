@@ -11,6 +11,7 @@ import { createResource, For } from "solid-js";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import EmptyTable from "~/components/core/EmptyTable";
+import Table from "~/components/core/Table";
 import DashboardLayout from "~/components/layout/Dashboard";
 
 import { Routes } from "~/config/routes";
@@ -65,59 +66,51 @@ const ProfilesPage = () => {
 						},
 					]}
 				>
-					<div class="overflow-x-auto">
-						<table class="table table-zebra">
-							<thead>
+					<Table
+						headers={[
+							{ label: "Status", class: "w-1/12" },
+							{ label: "Nombre" },
+							{ label: "Descripción" },
+							{ label: "", class: "w-1/12" },
+						]}
+					>
+						<For each={profiles()?.rows} fallback={<EmptyTable colspan={4} />}>
+							{(item) => (
 								<tr>
-									<th class="w-1/12">Status</th>
-									<th>Nombre</th>
-									<th>Descripción</th>
-									<th class="w-1/12" />
+									<td>
+										{item.status ? (
+											<FaSolidCheck size={24} class="text-success" />
+										) : (
+											<FaSolidXmark size={24} class="text-error" />
+										)}
+									</td>
+									<td>{item.name}</td>
+									<td>{item.description}</td>
+									<td>
+										<div class="flex gap-2">
+											<button
+												type="button"
+												class="btn btn-sm btn-square btn-ghost"
+												onClick={[goToProfile, item.$id]}
+											>
+												<FaSolidPencil size={16} />
+											</button>
+											<button
+												type="button"
+												class="btn btn-sm btn-square btn-ghost btn-error"
+												onClick={[
+													handleDelete,
+													{ profileId: item.$id, name: item.name },
+												]}
+											>
+												<FaSolidTrash size={16} />
+											</button>
+										</div>
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								<For
-									each={profiles()?.rows}
-									fallback={<EmptyTable colspan={4} />}
-								>
-									{(item) => (
-										<tr>
-											<td>
-												{item.status ? (
-													<FaSolidCheck size={24} class="text-success" />
-												) : (
-													<FaSolidXmark size={24} class="text-error" />
-												)}
-											</td>
-											<td>{item.name}</td>
-											<td>{item.description}</td>
-											<td>
-												<div class="flex gap-2">
-													<button
-														type="button"
-														class="btn btn-sm btn-square btn-ghost"
-														onClick={[goToProfile, item.$id]}
-													>
-														<FaSolidPencil size={16} />
-													</button>
-													<button
-														type="button"
-														class="btn btn-sm btn-square btn-ghost btn-error"
-														onClick={[
-															handleDelete,
-															{ profileId: item.$id, name: item.name },
-														]}
-													>
-														<FaSolidTrash size={16} />
-													</button>
-												</div>
-											</td>
-										</tr>
-									)}
-								</For>
-							</tbody>
-						</table>
-					</div>
+							)}
+						</For>
+					</Table>
 				</BlueBoard>
 			</DashboardLayout>
 		</>

@@ -7,6 +7,7 @@ import * as v from "valibot";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
+import Table from "~/components/core/Table";
 import DashboardLayout from "~/components/layout/Dashboard";
 
 import { Routes } from "~/config/routes";
@@ -345,163 +346,154 @@ const OrderPage = () => {
 								<FaSolidPlus size={16} />
 							</button>
 						</div>
-						<div class="overflow-x-auto">
-							<table class="table table-zebra w-full">
-								<thead>
+						<Table
+							headers={[
+								{ label: "" },
+								{ label: "Material" },
+								{ label: "Cantidad", class: "text-center" },
+								{ label: "Corte A", class: "text-center" },
+								{ label: "Corte An", class: "text-center" },
+								{ label: "Tamaños", class: "text-center" },
+								{ label: "Proveedor", class: "text-center" },
+								{ label: "Factura", class: "text-center" },
+								{ label: "Total", class: "text-center" },
+							]}
+							footer={
+								<tr>
+									<td colspan={8} class="text-right font-bold">
+										Total material $
+									</td>
+									<td class="text-center font-bold">
+										{materialTotal().toFixed(4)}
+									</td>
+								</tr>
+							}
+						>
+							<For each={materials()}>
+								{(m, i) => (
 									<tr>
-										<th>Material</th>
-										<th class="text-center">Cantidad</th>
-										<th class="text-center">Corte A</th>
-										<th class="text-center">Corte An</th>
-										<th class="text-center">Tamaños</th>
-										<th class="text-center">Proveedor</th>
-										<th class="text-center">Factura</th>
-										<th class="text-center">Total</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<For each={materials()}>
-										{(m, i) => (
-											<tr>
-												<td>
-													<button
-														type="button"
-														class="btn btn-ghost btn-sm"
-														onClick={() => removeMaterial(i())}
-													>
-														✕
-													</button>
-												</td>
-												<td>
-													<input
-														class="input input-sm w-full"
-														type="text"
-														value={m.material_id || ""}
-														onInput={(e) =>
-															updateMaterial(i(), {
-																material_id: (e.target as HTMLInputElement)
-																	.value,
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														value={m.cantidad || 0}
-														onInput={(e) =>
-															updateMaterial(i(), {
-																cantidad: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														step="0.01"
-														value={m.corte_alto || 0}
-														onInput={(e) =>
-															updateMaterial(i(), {
-																corte_alto: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														step="0.01"
-														value={m.corte_ancho || 0}
-														onInput={(e) =>
-															updateMaterial(i(), {
-																corte_ancho: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														value={m.tamanios || 0}
-														onInput={(e) =>
-															updateMaterial(i(), {
-																tamanios: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm"
-														type="text"
-														value={m.proveedor_id || ""}
-														onInput={(e) =>
-															updateMaterial(i(), {
-																proveedor_id: (e.target as HTMLInputElement)
-																	.value,
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														value={m.factura || 0}
-														onInput={(e) =>
-															updateMaterial(i(), {
-																factura: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center fixFloat"
-														type="number"
-														step="0.0001"
-														value={m.total || 0}
-														onInput={(e) => {
-															updateMaterial(i(), {
-																total: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															});
-														}}
-													/>
-												</td>
-											</tr>
-										)}
-									</For>
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan={8} class="text-right font-bold">
-											Total material $
+										<td>
+											<button
+												type="button"
+												class="btn btn-ghost btn-sm"
+												onClick={() => removeMaterial(i())}
+											>
+												✕
+											</button>
 										</td>
-										<td class="text-center font-bold">
-											{materialTotal().toFixed(4)}
+										<td>
+											<input
+												class="input input-sm w-full"
+												type="text"
+												value={m.material_id || ""}
+												onInput={(e) =>
+													updateMaterial(i(), {
+														material_id: (e.target as HTMLInputElement).value,
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												value={m.cantidad || 0}
+												onInput={(e) =>
+													updateMaterial(i(), {
+														cantidad: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												step="0.01"
+												value={m.corte_alto || 0}
+												onInput={(e) =>
+													updateMaterial(i(), {
+														corte_alto: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												step="0.01"
+												value={m.corte_ancho || 0}
+												onInput={(e) =>
+													updateMaterial(i(), {
+														corte_ancho: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												value={m.tamanios || 0}
+												onInput={(e) =>
+													updateMaterial(i(), {
+														tamanios: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm"
+												type="text"
+												value={m.proveedor_id || ""}
+												onInput={(e) =>
+													updateMaterial(i(), {
+														proveedor_id: (e.target as HTMLInputElement).value,
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												value={m.factura || 0}
+												onInput={(e) =>
+													updateMaterial(i(), {
+														factura: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center fixFloat"
+												type="number"
+												step="0.0001"
+												value={m.total || 0}
+												onInput={(e) => {
+													updateMaterial(i(), {
+														total: Number((e.target as HTMLInputElement).value),
+													});
+												}}
+											/>
 										</td>
 									</tr>
-								</tfoot>
-							</table>
-						</div>
+								)}
+							</For>
+						</Table>
 					</div>
 
 					{/* Processes */}
@@ -523,134 +515,125 @@ const OrderPage = () => {
 								<FaSolidPlus size={16} />
 							</button>
 						</div>
-						<div class="overflow-x-auto">
-							<table class="table table-zebra w-full">
-								<thead>
+						<Table
+							headers={[
+								{ label: "" },
+								{ label: "Proceso" },
+								{ label: "T", class: "text-center" },
+								{ label: "R", class: "text-center" },
+								{ label: "Mill", class: "text-center" },
+								{ label: "V/U", class: "text-center" },
+								{ label: "Total", class: "text-center" },
+								{ label: "Terminado", class: "text-center" },
+							]}
+							footer={
+								<tr>
+									<td colspan={6} class="text-right font-bold">
+										Total Pedido $
+									</td>
+									<td class="text-center font-bold">
+										{processesTotal().toFixed(4)}
+									</td>
+									<td></td>
+								</tr>
+							}
+						>
+							<For each={processes()}>
+								{(p, i) => (
 									<tr>
-										<th>Proceso</th>
-										<th class="text-center">T</th>
-										<th class="text-center">R</th>
-										<th class="text-center">Mill</th>
-										<th class="text-center">V/U</th>
-										<th class="text-center">Total</th>
-										<th class="text-center">Terminado</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<For each={processes()}>
-										{(p, i) => (
-											<tr>
-												<td>
-													<button
-														type="button"
-														class="btn btn-ghost btn-sm"
-														onClick={() => removeProcess(i())}
-													>
-														✕
-													</button>
-												</td>
-												<td>
-													<input
-														class="input input-sm"
-														type="text"
-														value={p.proceso_id || ""}
-														onInput={(e) =>
-															updateProcess(i(), {
-																proceso_id: (e.target as HTMLInputElement)
-																	.value,
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														value={p.tiro || 0}
-														onInput={(e) =>
-															updateProcess(i(), {
-																tiro: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														value={p.retiro || 0}
-														onInput={(e) =>
-															updateProcess(i(), {
-																retiro: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														value={p.millar || 0}
-														onInput={(e) =>
-															updateProcess(i(), {
-																millar: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														class="input input-sm text-center"
-														type="number"
-														step="0.0001"
-														value={p.valor_unitario || 0}
-														onInput={(e) =>
-															updateProcess(i(), {
-																valor_unitario: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-												<td class="text-center">{(p.total || 0).toFixed(4)}</td>
-												<td class="text-center">
-													<input
-														type="checkbox"
-														class="checkbox"
-														checked={p.terminado || false}
-														onChange={(e) =>
-															updateProcess(i(), {
-																terminado: (e.target as HTMLInputElement)
-																	.checked,
-															})
-														}
-													/>
-												</td>
-											</tr>
-										)}
-									</For>
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan={6} class="text-right font-bold">
-											Total Pedido $
+										<td>
+											<button
+												type="button"
+												class="btn btn-ghost btn-sm"
+												onClick={() => removeProcess(i())}
+											>
+												✕
+											</button>
 										</td>
-										<td class="text-center font-bold">
-											{processesTotal().toFixed(4)}
+										<td>
+											<input
+												class="input input-sm"
+												type="text"
+												value={p.proceso_id || ""}
+												onInput={(e) =>
+													updateProcess(i(), {
+														proceso_id: (e.target as HTMLInputElement).value,
+													})
+												}
+											/>
 										</td>
-										<td></td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												value={p.tiro || 0}
+												onInput={(e) =>
+													updateProcess(i(), {
+														tiro: Number((e.target as HTMLInputElement).value),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												value={p.retiro || 0}
+												onInput={(e) =>
+													updateProcess(i(), {
+														retiro: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												value={p.millar || 0}
+												onInput={(e) =>
+													updateProcess(i(), {
+														millar: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												class="input input-sm text-center"
+												type="number"
+												step="0.0001"
+												value={p.valor_unitario || 0}
+												onInput={(e) =>
+													updateProcess(i(), {
+														valor_unitario: Number(
+															(e.target as HTMLInputElement).value,
+														),
+													})
+												}
+											/>
+										</td>
+										<td class="text-center">{(p.total || 0).toFixed(4)}</td>
+										<td class="text-center">
+											<input
+												type="checkbox"
+												class="checkbox"
+												checked={p.terminado || false}
+												onChange={(e) =>
+													updateProcess(i(), {
+														terminado: (e.target as HTMLInputElement).checked,
+													})
+												}
+											/>
+										</td>
 									</tr>
-								</tfoot>
-							</table>
-						</div>
+								)}
+							</For>
+						</Table>
 					</div>
 
 					{/* Payments */}
@@ -672,88 +655,16 @@ const OrderPage = () => {
 								<FaSolidPlus size={16} />
 							</button>
 						</div>
-						<div class="overflow-x-auto">
-							<table class="table table-zebra w-full">
-								<thead>
-									<tr>
-										<th>Acción</th>
-										<th>Fecha</th>
-										<th>Usuario</th>
-										<th>Forma de pago</th>
-										<th class="text-right">Valor $</th>
-									</tr>
-								</thead>
-								<tbody>
-									<For each={payments()}>
-										{(a, i) => (
-											<tr>
-												<td>
-													<button
-														type="button"
-														class="btn btn-ghost btn-sm"
-														onClick={() => removePayment(i())}
-													>
-														✕
-													</button>
-												</td>
-												<td>
-													<input
-														type="date"
-														class="input input-sm"
-														value={a.fecha || ""}
-														onInput={(e) =>
-															updatePayment(i(), {
-																fecha: (e.target as HTMLInputElement).value,
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														type="text"
-														class="input input-sm"
-														value={a.usuario_nombre || ""}
-														onInput={(e) =>
-															updatePayment(i(), {
-																usuario_nombre: (e.target as HTMLInputElement)
-																	.value,
-															})
-														}
-													/>
-												</td>
-												<td>
-													<input
-														type="text"
-														class="input input-sm"
-														value={a.forma_pago || ""}
-														onInput={(e) =>
-															updatePayment(i(), {
-																forma_pago: (e.target as HTMLInputElement)
-																	.value,
-															})
-														}
-													/>
-												</td>
-												<td class="text-right">
-													<input
-														type="number"
-														class="input input-sm text-right"
-														step="0.0001"
-														value={a.valor || 0}
-														onInput={(e) =>
-															updatePayment(i(), {
-																valor: Number(
-																	(e.target as HTMLInputElement).value,
-																),
-															})
-														}
-													/>
-												</td>
-											</tr>
-										)}
-									</For>
-								</tbody>
-								<tfoot>
+						<Table
+							headers={[
+								{ label: "" },
+								{ label: "Fecha" },
+								{ label: "Usuario" },
+								{ label: "Forma de pago" },
+								{ label: "Valor $", class: "text-right" },
+							]}
+							footer={
+								<>
 									<tr>
 										<td colspan={4} class="text-right font-bold">
 											Abonos $
@@ -768,9 +679,75 @@ const OrderPage = () => {
 										</td>
 										<td class="text-right font-bold">{total().toFixed(4)}</td>
 									</tr>
-								</tfoot>
-							</table>
-						</div>
+								</>
+							}
+						>
+							<For each={payments()}>
+								{(a, i) => (
+									<tr>
+										<td>
+											<button
+												type="button"
+												class="btn btn-ghost btn-sm"
+												onClick={() => removePayment(i())}
+											>
+												✕
+											</button>
+										</td>
+										<td>
+											<input
+												type="date"
+												class="input input-sm"
+												value={a.fecha || ""}
+												onInput={(e) =>
+													updatePayment(i(), {
+														fecha: (e.target as HTMLInputElement).value,
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												type="text"
+												class="input input-sm"
+												value={a.usuario_nombre || ""}
+												onInput={(e) =>
+													updatePayment(i(), {
+														usuario_nombre: (e.target as HTMLInputElement)
+															.value,
+													})
+												}
+											/>
+										</td>
+										<td>
+											<input
+												type="text"
+												class="input input-sm"
+												value={a.forma_pago || ""}
+												onInput={(e) =>
+													updatePayment(i(), {
+														forma_pago: (e.target as HTMLInputElement).value,
+													})
+												}
+											/>
+										</td>
+										<td class="text-right">
+											<input
+												type="number"
+												class="input input-sm text-right"
+												step="0.0001"
+												value={a.valor || 0}
+												onInput={(e) =>
+													updatePayment(i(), {
+														valor: Number((e.target as HTMLInputElement).value),
+													})
+												}
+											/>
+										</td>
+									</tr>
+								)}
+							</For>
+						</Table>
 					</div>
 				</BlueBoard>
 			</DashboardLayout>

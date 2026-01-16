@@ -341,7 +341,6 @@ export type Orders = Models.Row & {
     cutWidth: number;
     numberingStart: number;
     numberingEnd: number;
-
     materialTotal: number;
     orderTotal: number;
     paymentAmount: number;
@@ -421,7 +420,7 @@ export type OrderInks = Models.Row & {
 }
 
 export type Materials = Models.Row & {
-    description: string;
+    name: string;
     categoryId: Categories;
     isColor: boolean;
     height: number | null;

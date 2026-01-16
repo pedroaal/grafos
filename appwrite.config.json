@@ -3143,7 +3143,7 @@
             "rowSecurity": false,
             "columns": [
                 {
-                    "key": "description",
+                    "key": "name",
                     "type": "string",
                     "required": true,
                     "array": false,

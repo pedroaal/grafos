@@ -10,6 +10,7 @@ export enum Routes {
 	taxes = "/app/taxes",
 	// production
 	orders = "/app/orders",
+	order = "/app/order",
 	processes = "/app/processes",
 	materials = "/app/materials",
 	config = "/app/config",
@@ -33,4 +34,4 @@ export enum Routes {
 	credentials = "/app/credentials",
 }
 
-export enum RoutesApi {}
+export enum RoutesApi { }

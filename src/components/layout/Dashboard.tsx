@@ -34,6 +34,8 @@ const DashboardLayout: ParentComponent = (props) => {
 	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
+	const iconsSize = () => (sidebarOpen() ? 16 : 24);
+
 	createRenderEffect(
 		on(
 			() => location.pathname,
@@ -79,7 +81,10 @@ const DashboardLayout: ParentComponent = (props) => {
 									<Match when={!item.children || item.children.length === 0}>
 										<li>
 											<A href={item.href}>
-												<Dynamic component={item.icon} size={24}></Dynamic>
+												<Dynamic
+													component={item.icon}
+													size={iconsSize()}
+												></Dynamic>
 												<span class="is-drawer-close:hidden">{item.label}</span>
 											</A>
 										</li>
@@ -88,7 +93,10 @@ const DashboardLayout: ParentComponent = (props) => {
 										<div class="dropdown dropdown-right is-drawer-open:hidden">
 											<li>
 												<button tabindex={0} type="button">
-													<Dynamic component={item.icon} size={24}></Dynamic>
+													<Dynamic
+														component={item.icon}
+														size={iconsSize()}
+													></Dynamic>
 												</button>
 												<ul
 													tabindex={0}
@@ -107,7 +115,10 @@ const DashboardLayout: ParentComponent = (props) => {
 										<li>
 											<details class="is-drawer-close:hidden">
 												<summary>
-													<Dynamic component={item.icon} size={24}></Dynamic>
+													<Dynamic
+														component={item.icon}
+														size={iconsSize()}
+													></Dynamic>
 													<span>{item.label}</span>
 												</summary>
 												<ul>

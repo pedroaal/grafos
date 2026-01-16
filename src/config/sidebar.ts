@@ -56,16 +56,24 @@ export const SidebarLinks: SidebarLink[] = [
 				label: "Pedidos",
 			},
 			{
+				href: Routes.ordersReport,
+				label: "Reporte de Pedidos",
+			},
+			{
+				href: Routes.paymentsReport,
+				label: "Reporte de Pagos",
+			},
+			{
+				href: Routes.processesReport,
+				label: "Reporte de Procesos",
+			},
+			{
 				href: Routes.processes,
 				label: "Procesos",
 			},
 			{
 				href: Routes.materials,
 				label: "Materiales",
-			},
-			{
-				href: Routes.config,
-				label: "Configuración",
 			},
 		],
 	},

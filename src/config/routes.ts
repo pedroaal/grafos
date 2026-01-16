@@ -13,7 +13,9 @@ export enum Routes {
 	order = "/app/order",
 	processes = "/app/processes",
 	materials = "/app/materials",
-	config = "/app/config",
+	ordersReport = "/app/report/orders",
+	paymentsReport = "/app/report/payments",
+	processesReport = "/app/report/processes",
 	// sales
 	clients = "/app/clients",
 	contacts = "/app/contacts",

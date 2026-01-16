@@ -136,8 +136,12 @@ const UserPage = () => {
 				<Breadcrumb
 					links={[
 						{ label: "Usuarios" },
-						{ label: "Usuario", route: Routes.users },
-						{ label: user()?.firstName ?? "Nuevo" },
+						{ label: "Usuarios", route: Routes.users },
+						{
+							label: user()
+								? `${user()?.firstName} ${user()?.lastName}`
+								: "Nuevo",
+						},
 					]}
 				/>
 				<BlueBoard

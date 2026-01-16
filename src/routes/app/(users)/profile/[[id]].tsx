@@ -215,7 +215,7 @@ const ProfilePage = () => {
 				<Breadcrumb
 					links={[
 						{ label: "Usuarios" },
-						{ label: "Perfil", route: Routes.profiles },
+						{ label: "Perfiles", route: Routes.profiles },
 						{ label: profile()?.name ?? "Nuevo" },
 					]}
 				/>

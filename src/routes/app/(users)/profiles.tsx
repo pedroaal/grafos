@@ -12,7 +12,6 @@ import EmptyTable from "~/components/core/EmptyTable";
 import DashboardLayout from "~/components/layout/Dashboard";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
 import { deleteProfile, listProfiles } from "~/services/users/profiles";
 
 const ProfilesPage = () => {

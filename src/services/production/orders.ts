@@ -1,4 +1,4 @@
-import { Query } from "appwrite";
+import { Permission, Query, Role } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Orders } from "~/types/appwrite";
@@ -13,6 +13,7 @@ export const listOrders = async (
 	},
 ) => {
 	const queries = [
+		Query.select(['*', 'clientId.companyId.name', 'processes.$id']),
 		Query.isNull("deletedAt"),
 	];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
@@ -41,12 +42,17 @@ export const getOrder = async (id: string) => {
 	return res;
 };
 
-export const createOrder = async (payload: Orders) => {
+export const createOrder = async (tenantId: string, payload: Orders) => {
 	const res = await tables.createRow<Orders>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.ORDERS,
 		rowId: makeId(),
 		data: payload,
+		permissions: [
+			Permission.read(Role.team(tenantId)),
+			Permission.update(Role.team(tenantId)),
+			Permission.delete(Role.team(tenantId)),
+		],
 	});
 	return res;
 };
@@ -62,9 +68,12 @@ export const updateOrder = async (id: string, payload: Partial<Orders>) => {
 };
 
 export const deleteOrder = (id: string) => {
-	return tables.deleteRow({
+	return tables.updateRow<Orders>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.ORDERS,
 		rowId: id,
+		data: {
+			deletedAt: new Date().toISOString(),
+		},
 	});
 };

@@ -5,12 +5,12 @@ import type { OrderProcesses } from "~/types/appwrite";
 
 export const listOrderProcesses = async (options?: {
 	orderId?: string;
-	status?: boolean;
+	done?: boolean;
 }) => {
 	const queries = [Query.isNull("deletedAt")];
 	if (options?.orderId) queries.push(Query.equal("orderId", options.orderId));
-	if (options?.status !== undefined)
-		queries.push(Query.equal("status", options.status));
+	if (options?.done !== undefined)
+		queries.push(Query.equal("done", options.done));
 
 	const res = await tables.listRows<OrderProcesses>({
 		databaseId: DATABASE_ID,

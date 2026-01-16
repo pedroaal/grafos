@@ -1,9 +1,9 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
-import type { MaterialRequests } from "~/types/appwrite";
+import type { OrderMaterials } from "~/types/appwrite";
 
-export const listMaterialRequests = async (options?: {
+export const listOrderMaterials = async (options?: {
 	orderId?: string;
 	supplierId?: string;
 }) => {
@@ -12,27 +12,27 @@ export const listMaterialRequests = async (options?: {
 	if (options?.supplierId)
 		queries.push(Query.equal("supplierId", options.supplierId));
 
-	const res = await tables.listRows<MaterialRequests>({
+	const res = await tables.listRows<OrderMaterials>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.MATERIAL_REQUESTS,
+		tableId: TABLES.ORDER_MATERIALS,
 		queries,
 	});
 	return res;
 };
 
 export const getMaterialRequest = async (id: string) => {
-	const res = await tables.getRow<MaterialRequests>({
+	const res = await tables.getRow<OrderMaterials>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.MATERIAL_REQUESTS,
+		tableId: TABLES.ORDER_MATERIALS,
 		rowId: id,
 	});
 	return res;
 };
 
-export const createMaterialRequest = async (payload: MaterialRequests) => {
-	const res = await tables.createRow<MaterialRequests>({
+export const createMaterialRequest = async (payload: OrderMaterials) => {
+	const res = await tables.createRow<OrderMaterials>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.MATERIAL_REQUESTS,
+		tableId: TABLES.ORDER_MATERIALS,
 		rowId: makeId(),
 		data: payload,
 	});
@@ -41,11 +41,11 @@ export const createMaterialRequest = async (payload: MaterialRequests) => {
 
 export const updateMaterialRequest = async (
 	id: string,
-	payload: Partial<MaterialRequests>,
+	payload: Partial<OrderMaterials>,
 ) => {
-	const res = await tables.updateRow<MaterialRequests>({
+	const res = await tables.updateRow<OrderMaterials>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.MATERIAL_REQUESTS,
+		tableId: TABLES.ORDER_MATERIALS,
 		rowId: id,
 		data: payload,
 	});
@@ -55,7 +55,7 @@ export const updateMaterialRequest = async (
 export const deleteMaterialRequest = (id: string) => {
 	return tables.deleteRow({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.MATERIAL_REQUESTS,
+		tableId: TABLES.ORDER_MATERIALS,
 		rowId: id,
 	});
 };

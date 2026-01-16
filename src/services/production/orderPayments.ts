@@ -1,9 +1,9 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
-import type { Payments } from "~/types/appwrite";
+import type { OrderPayments } from "~/types/appwrite";
 
-export const listPayments = async (options?: {
+export const listOrderPayments = async (options?: {
 	orderId?: string;
 	userId?: string;
 	dateFrom?: string;
@@ -16,9 +16,9 @@ export const listPayments = async (options?: {
 		queries.push(Query.greaterThan("date", options.dateFrom));
 	if (options?.dateTo) queries.push(Query.lessThan("date", options.dateTo));
 
-	const res = await tables.listRows<Payments>({
+	const res = await tables.listRows<OrderPayments>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.PAYMENTS,
+		tableId: TABLES.ORDER_PAYMENTS,
 		queries,
 	});
 
@@ -26,28 +26,28 @@ export const listPayments = async (options?: {
 };
 
 export const getPayment = async (id: string) => {
-	const res = await tables.getRow<Payments>({
+	const res = await tables.getRow<OrderPayments>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.PAYMENTS,
+		tableId: TABLES.ORDER_PAYMENTS,
 		rowId: id,
 	});
 	return res;
 };
 
-export const createPayment = async (payload: Payments) => {
-	const res = await tables.createRow<Payments>({
+export const createPayment = async (payload: OrderPayments) => {
+	const res = await tables.createRow<OrderPayments>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.PAYMENTS,
+		tableId: TABLES.ORDER_PAYMENTS,
 		rowId: makeId(),
 		data: payload,
 	});
 	return res;
 };
 
-export const updatePayment = async (id: string, payload: Partial<Payments>) => {
-	const res = await tables.updateRow<Payments>({
+export const updatePayment = async (id: string, payload: Partial<OrderPayments>) => {
+	const res = await tables.updateRow<OrderPayments>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.PAYMENTS,
+		tableId: TABLES.ORDER_PAYMENTS,
 		rowId: id,
 		data: payload,
 	});
@@ -57,7 +57,7 @@ export const updatePayment = async (id: string, payload: Partial<Payments>) => {
 export const deletePayment = (id: string) => {
 	return tables.deleteRow({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.PAYMENTS,
+		tableId: TABLES.ORDER_PAYMENTS,
 		rowId: id,
 	});
 };

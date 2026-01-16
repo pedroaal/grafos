@@ -58,8 +58,8 @@ export enum ClientsTaxpayerType {
 export enum OrdersStatus {
     PENDING = "pending",
     PAID = "paid",
-    NULLIFIED = "nullified",
-    OTHER = "other"
+    OTHER = "other",
+    CANCELED = "canceled"
 }
 
 export enum WithholdingsType {
@@ -287,15 +287,14 @@ export type CompanyDetails = Models.Row & {
     deletedAt: string | null;
 }
 
-export type ClientCompanies = Models.Row & {
-    name: string | null;
-    ruc: string | null;
+export type Companies = Models.Row & {
+    name: string;
+    ruc: string;
     deletedAt: string | null;
+    activity: string;
 }
 
 export type Contacts = Models.Row & {
-    clientCompanyId: ClientCompanies;
-    activity: string | null;
     title: string | null;
     firstName: string;
     lastName: string;
@@ -308,14 +307,15 @@ export type Contacts = Models.Row & {
     email: string | null;
     website: string | null;
     deletedAt: string | null;
+    companyId: Companies;
 }
 
 export type Clients = Models.Row & {
     contactId: Contacts;
-    clientCompanyId: ClientCompanies;
     followUp: boolean;
     taxpayerType: ClientsTaxpayerType;
     deletedAt: string | null;
+    companyId: Companies;
 }
 
 export type UserClients = Models.Row & {
@@ -325,7 +325,7 @@ export type UserClients = Models.Row & {
 }
 
 export type Orders = Models.Row & {
-    orderNumber: number;
+    number: number;
     userId: Users;
     clientId: Clients;
     startDate: string;
@@ -347,13 +347,14 @@ export type Orders = Models.Row & {
     balance: number;
     notes: string | null;
     deletedAt: string | null;
+    processes: OrderProcesses[];
 }
 
-export type Payments = Models.Row & {
+export type OrderPayments = Models.Row & {
     orderId: Orders;
     date: string;
     userId: Users;
-    paymentMethod: string;
+    method: string;
     amount: number;
     deletedAt: string | null;
 }
@@ -384,7 +385,7 @@ export type OrderProcesses = Models.Row & {
     thousands: number;
     unitPrice: number;
     total: number;
-    status: boolean;
+    done: boolean;
     deletedAt: string | null;
 }
 
@@ -394,7 +395,7 @@ export type Processes = Models.Row & {
     goal: number;
     machineTime: string | null;
     operatorTime: string | null;
-    type: boolean;
+    internal: boolean;
     followUp: boolean;
     deletedAt: string | null;
     parentId: string | null;
@@ -430,7 +431,7 @@ export type Materials = Models.Row & {
     deletedAt: string | null;
 }
 
-export type MaterialRequests = Models.Row & {
+export type OrderMaterials = Models.Row & {
     orderId: Orders;
     materialId: Materials;
     quantity: number;

@@ -1,3 +1,4 @@
+import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Companies } from "~/types/appwrite";
@@ -6,6 +7,7 @@ export const listCompanies = async () => {
 	const res = await tables.listRows<Companies>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.COMPANIES,
+		queries: [Query.isNull("deletedAt")],
 	});
 	return res;
 };

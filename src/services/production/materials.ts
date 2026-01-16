@@ -10,6 +10,7 @@ export const listMaterials = async (
 	},
 ) => {
 	const queries = [
+		Query.select(["*", "categoryId.name"]),
 		Query.isNull("deletedAt"),
 	];
 	if (options?.categoryId)

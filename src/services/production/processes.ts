@@ -11,6 +11,7 @@ export const listProcesses = async (
 	},
 ) => {
 	const queries = [
+		Query.select(["*", "areaId.name"]),
 		Query.isNull("deletedAt"),
 	];
 	if (options?.parentId)

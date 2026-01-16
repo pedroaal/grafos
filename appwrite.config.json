@@ -2253,7 +2253,7 @@
             "rowSecurity": true,
             "columns": [
                 {
-                    "key": "orderNumber",
+                    "key": "number",
                     "type": "integer",
                     "required": true,
                     "array": false,
@@ -2508,7 +2508,7 @@
             ]
         },
         {
-            "$id": "payments",
+            "$id": "order-payments",
             "$permissions": [
                 "create(\"users\")",
                 "read(\"users\")",
@@ -2516,7 +2516,7 @@
                 "delete(\"users\")"
             ],
             "databaseId": "6939a3d8001b326ff905",
-            "name": "Payments",
+            "name": "Order Payments",
             "enabled": true,
             "rowSecurity": false,
             "columns": [
@@ -2553,7 +2553,7 @@
                     "side": "parent"
                 },
                 {
-                    "key": "paymentMethod",
+                    "key": "method",
                     "type": "string",
                     "required": true,
                     "array": false,
@@ -2761,6 +2761,18 @@
             "rowSecurity": false,
             "columns": [
                 {
+                    "key": "orderId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "orders",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "processes",
+                    "onDelete": "cascade",
+                    "side": "child"
+                },
+                {
                     "key": "processId",
                     "type": "relationship",
                     "required": false,
@@ -2831,18 +2843,6 @@
                     "array": false,
                     "format": "",
                     "default": null
-                },
-                {
-                    "key": "orderId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "orders",
-                    "relationType": "oneToMany",
-                    "twoWay": true,
-                    "twoWayKey": "processes",
-                    "onDelete": "cascade",
-                    "side": "child"
                 }
             ],
             "indexes": [
@@ -2952,15 +2952,6 @@
             ],
             "indexes": [
                 {
-                    "key": "internalIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "internal"
-                    ],
-                    "orders": []
-                },
-                {
                     "key": "parentIdx",
                     "type": "key",
                     "status": "available",
@@ -2970,6 +2961,15 @@
                     "orders": [
                         "ASC"
                     ]
+                },
+                {
+                    "key": "internalIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "internal"
+                    ],
+                    "orders": []
                 }
             ]
         },

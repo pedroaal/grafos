@@ -64,7 +64,7 @@ const ContactPage = () => {
 									</div>
 								</Show>
 
-								<div class="space-y-4">
+								<div>
 									<input
 										type="text"
 										placeholder="Nombre"
@@ -104,7 +104,7 @@ const ContactPage = () => {
 									<span class="font-extrabold">Servi</span>Graf
 								</h1>
 
-								<div class="space-y-4 text-gray-700">
+								<div class="text-gray-700">
 									<div class="flex items-start gap-3">
 										<svg
 											class="w-6 h-6 mt-1"

@@ -20,9 +20,8 @@ const ClientsPage = () => {
 	return (
 		<>
 			<Title>Clientes - Grafos</Title>
-
 			<DashboardLayout>
-				<div class="space-y-6">
+				<div>
 					<div class="flex justify-between items-center">
 						<h1 class="text-3xl font-bold">Gestión de Clientes</h1>
 						<button type="button" class="btn btn-primary">

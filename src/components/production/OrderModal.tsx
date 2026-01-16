@@ -7,7 +7,7 @@ const OrderModal = () => {
 
 	return (
 		<Modal title="Nuevo Pedido" id={Modals.Order}>
-			<form class="space-y-4">
+			<form>
 				<div class="form-control">
 					<label class="label">
 						<span class="label-text">Cliente</span>

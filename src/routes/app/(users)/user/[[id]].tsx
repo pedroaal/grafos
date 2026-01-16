@@ -103,12 +103,17 @@ const UserPage = () => {
 				await updateUser(params.id!, payload);
 				addAlert({ type: "success", message: "Usuario actualizado con éxito" });
 			} else {
-				debugger;
+				// create appwrite account
 				const authId = await createAccount(
 					"pedro@altamirano.me",
 					"andres72257225",
 				);
-				await createUser({ ...payload, authId } as Users);
+
+				// create tenant membership
+				// await createMembership(authId, authStore.tenantId!);
+
+				// create db user
+				await createUser({ ...payload, authId } as Users, authStore.tenantId!);
 				addAlert({ type: "success", message: "Usuario creado con éxito" });
 			}
 

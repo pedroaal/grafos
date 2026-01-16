@@ -64,7 +64,7 @@ const DashboardLayout: ParentComponent = (props) => {
 					class="drawer-overlay"
 				></label>
 				<div class="min-h-full bg-base-200 is-drawer-close:w-16 is-drawer-open:w-64 flex flex-col justify-between">
-					<ul class="menu w-full">
+					<ul class="menu w-full gap-2">
 						<Switch>
 							<Match when={sidebarOpen()}>
 								<img src="/logo" alt="logo" class="mb-4" />
@@ -145,9 +145,9 @@ const DashboardLayout: ParentComponent = (props) => {
 				</div>
 			</div>
 
-			<div class="drawer-content flex flex-col">
+			<div class="drawer-content flex flex-col max-h-dvh">
 				{/* Navbar */}
-				<nav class="navbar bg-base-300 w-full sticky top-0 px-4 py-2 z-10">
+				<nav class="navbar bg-base-300 w-full sticky top-0 px-4 py-2">
 					<div class="flex-1 flex items-center gap-4">
 						<label
 							for="sidebar-drawer"
@@ -207,12 +207,14 @@ const DashboardLayout: ParentComponent = (props) => {
 					</div>
 				</nav>
 
-				<main class="flex-1 p-6">{props.children}</main>
+				<main class="flex-1 p-6 overflow-y-auto">
+					<div class="flex flex-col gap-4">{props.children}</div>
+				</main>
 
 				{/* Footer */}
 				<footer class="footer footer-center p-4 bg-base-300 text-base-content">
 					<div>
-						<p>© 2025 Pedro Altamirano. All rights reserved.</p>
+						<p>© 2025 Pedro Altamirano.</p>
 					</div>
 				</footer>
 			</div>

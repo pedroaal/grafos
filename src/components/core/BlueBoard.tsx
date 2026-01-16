@@ -53,22 +53,20 @@ const BlueBoard: ParentComponent<IProps> = (props) => {
 								</A>
 							)}
 						</For>
+					</div>
 
+					<div class="flex gap-2">
 						<For each={props.modals ?? []}>
 							{(item) => (
 								<button
 									type="button"
-									class="btn btn-primary btn-link btn-sm"
+									class="btn btn-primary btn-outline btn-sm"
 									onClick={[openModal, item.key]}
 								>
 									{item.label}
-									<FaSolidChevronRight size={16} />
 								</button>
 							)}
 						</For>
-					</div>
-
-					<div class="flex gap-2">
 						<For each={props.actions ?? []}>
 							{(item) => (
 								<button

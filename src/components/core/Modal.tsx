@@ -28,7 +28,7 @@ export const Modal: ParentComponent<ModalProps> = (props) => {
 						{props.title && (
 							<h3 class="font-bold text-lg mb-4">{props.title}</h3>
 						)}
-						<div class="py-4">{props.children}</div>
+						{props.children}
 					</div>
 					<div class="modal-backdrop" role="button" onClick={closeModal} />
 				</div>
@@ -38,20 +38,30 @@ export const Modal: ParentComponent<ModalProps> = (props) => {
 };
 
 export interface ConfirmModalProps {
+	id?: string;
 	title?: string;
 	message: string;
 	onConfirm: () => void;
-	onCancel: () => void;
+	onCancel?: () => void;
 	confirmText?: string;
 	cancelText?: string;
 }
 
 export const ConfirmModal: ParentComponent<ConfirmModalProps> = (props) => {
+	const { closeModal } = useApp();
+
 	return (
-		<Modal title={props.title || "Confirmar"} id={Modals.Confirm}>
-			<p class="py-4">{props.message}</p>
+		<Modal title={props.title || "Confirmar"} id={props.id || Modals.Confirm}>
+			<div class="flex flex-col gap-2">
+				<p>{props.message}</p>
+				{props.children}
+			</div>
 			<div class="modal-action">
-				<button class="btn" type="button" onClick={props.onCancel}>
+				<button
+					class="btn"
+					type="button"
+					onClick={props.onCancel || closeModal}
+				>
 					{props.cancelText || "Cancelar"}
 				</button>
 				<button class="btn btn-primary" type="button" onClick={props.onConfirm}>

@@ -14,7 +14,7 @@ interface IProps {
 const Table: ParentComponent<IProps> = (props) => {
 	return (
 		<div class="overflow-x-auto">
-			<table class="table table-zebra">
+			<table class="table table-zebra w-full">
 				<thead>
 					<tr>
 						<For each={props.headers}>

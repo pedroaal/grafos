@@ -67,13 +67,13 @@ const PaymentsSection: Component<IProps> = (props) => {
 				footer={
 					<>
 						<tr>
-							<td colspan={4} class="text-right font-bold">
+							<td colspan={3} class="text-right font-bold">
 								Abonos $
 							</td>
 							<td class="text-right font-bold">{total().toFixed(4)}</td>
 						</tr>
 						<tr>
-							<td colspan={4} class="text-right font-bold">
+							<td colspan={3} class="text-right font-bold">
 								Saldo $
 							</td>
 							<td class="text-right font-bold">{props.balance().toFixed(4)}</td>
@@ -117,7 +117,7 @@ const PaymentsSection: Component<IProps> = (props) => {
 									}
 								/>
 							</td>
-							<td class="text-right">
+							<td>
 								<Input
 									name="amount"
 									type="number"

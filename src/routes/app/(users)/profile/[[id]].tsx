@@ -13,18 +13,18 @@ import DashboardLayout from "~/components/layout/Dashboard";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
-import { listModules } from "~/services/users/modules";
+import { listFeatures } from "~/services/users/features";
 import {
-	listProfileModules,
-	syncProfileModules,
-} from "~/services/users/profileModules";
+	listProfileFeatures,
+	syncProfileFeatures,
+} from "~/services/users/profileFeatures";
 import {
 	createProfile,
 	getProfile,
 	updateProfile,
 } from "~/services/users/profiles";
 import { listRoles } from "~/services/users/roles";
-import type { Modules, Profiles } from "~/types/appwrite";
+import type { Features, Profiles } from "~/types/appwrite";
 
 const ProfileSchema = object({
 	name: string(),
@@ -42,7 +42,7 @@ const ProfilePage = () => {
 
 	const isEdit = () => Boolean(params.id);
 
-	const [selectedModules, setSelectedModules] = createSignal<
+	const [selectedFeatures, setSelectedFeatures] = createSignal<
 		Record<string, string>
 	>({});
 
@@ -55,13 +55,13 @@ const ProfilePage = () => {
 		},
 	});
 
-	const [modules] = createResource(listModules);
+	const [features] = createResource(listFeatures);
 	const [roles] = createResource(listRoles);
 
 	const [profile] = createResource(() => params.id ?? "", getProfile);
-	const [profileModules] = createResource(
+	const [profileFeatures] = createResource(
 		() => params.id ?? "",
-		listProfileModules,
+		listProfileFeatures,
 	);
 
 	const roleLevels = () => {
@@ -92,23 +92,23 @@ const ProfilePage = () => {
 
 	createEffect(
 		on(
-			() => profileModules(),
-			(profileModules) => {
-				if (!profileModules?.rows) return;
+			() => profileFeatures(),
+			(profileFeatures) => {
+				if (!profileFeatures?.rows) return;
 
 				const moduleMap: Record<string, string> = {};
-				for (const pm of profileModules.rows) {
+				for (const pm of profileFeatures.rows) {
 					moduleMap[pm.moduleId] = pm.roleId;
 				}
 
-				setSelectedModules(moduleMap);
+				setSelectedFeatures(moduleMap);
 			},
 		),
 	);
 
 	const hasRole = (moduleId: string, roleId: string): boolean => {
 		return (
-			roleLevels()[selectedModules()[moduleId] || ""] >= roleLevels()[roleId]
+			roleLevels()[selectedFeatures()[moduleId] || ""] >= roleLevels()[roleId]
 		);
 	};
 
@@ -119,7 +119,7 @@ const ProfilePage = () => {
 	};
 
 	const handleCheckboxChange = (moduleId: string, roleId: string) => {
-		setSelectedModules((prev) => {
+		setSelectedFeatures((prev) => {
 			const current = prev[moduleId] || "";
 			const newState = { ...prev };
 
@@ -138,12 +138,12 @@ const ProfilePage = () => {
 	};
 
 	const toggleAll = (roleId: string) => {
-		const allModules = modules()?.rows || [];
-		const allChecked = allModules.every((m) => hasRole(m.$id, roleId));
+		const allFeatures = features()?.rows || [];
+		const allChecked = allFeatures.every((m) => hasRole(m.$id, roleId));
 
-		setSelectedModules((prev) => {
+		setSelectedFeatures((prev) => {
 			const newState = { ...prev };
-			for (const module of allModules) {
+			for (const module of allFeatures) {
 				if (allChecked) {
 					if (roleLevels()[newState[module.$id]] >= roleLevels()[roleId]) {
 						newState[module.$id] = getRole(roleLevels()[roleId] - 1);
@@ -187,14 +187,14 @@ const ProfilePage = () => {
 				addAlert({ type: "success", message: "Perfil creado con éxito" });
 			}
 
-			const moduleRelations = Object.entries(selectedModules()).map(
+			const moduleRelations = Object.entries(selectedFeatures()).map(
 				([moduleId, roleId]) => ({
 					moduleId,
 					roleId,
 				}),
 			);
 
-			await syncProfileModules(profileId, moduleRelations);
+			await syncProfileFeatures(profileId, moduleRelations);
 
 			navigate(Routes.profiles);
 		} catch (error: any) {
@@ -277,7 +277,7 @@ const ProfilePage = () => {
 						</div>
 					</Form>
 
-					{/* Modules Permissions Table */}
+					{/* Features Permissions Table */}
 					<div class="overflow-x-auto">
 						<table class="table table-zebra table-sm">
 							<thead>
@@ -299,8 +299,8 @@ const ProfilePage = () => {
 								</tr>
 							</thead>
 							<tbody>
-								<For each={modules()?.rows}>
-									{(module: Modules) => (
+								<For each={features()?.rows}>
+									{(module: Features) => (
 										<tr>
 											<td class={module.isMain ? "" : "pl-10"}>
 												{module.name}

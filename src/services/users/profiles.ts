@@ -27,9 +27,10 @@ export const createProfile = async (payload: Profiles, tenantId: string) => {
 		rowId: makeId(),
 		data: payload,
 		permissions: [
-			Permission.read(Role.team(tenantId)),
-			Permission.update(Role.team(tenantId)),
-			Permission.delete(Role.team(tenantId)),
+			Permission.read(Role.team(tenantId, ["admin", "user", "viewer"])),
+			Permission.create(Role.team(tenantId, ["admin", "user"])),
+			Permission.update(Role.team(tenantId, ["admin", "user"])),
+			Permission.delete(Role.team(tenantId, ["admin"])),
 		],
 	});
 	return res;

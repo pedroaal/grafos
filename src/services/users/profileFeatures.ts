@@ -1,30 +1,30 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
-import type { ProfileModules } from "~/types/appwrite";
+import type { ProfileFeatures } from "~/types/appwrite";
 
-export const listProfileModules = async (profileId?: string) => {
+export const listProfileFeatures = async (profileId?: string) => {
 	const queries = [];
 	if (profileId) queries.push(Query.equal("profileId", profileId));
 
-	const res = await tables.listRows<ProfileModules>({
+	const res = await tables.listRows<ProfileFeatures>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.PROFILE_MODULES,
+		tableId: TABLES.PROFILE_FEATURES,
 		queries,
 	});
 	return res;
 };
 
-export const syncProfileModules = async (
+export const syncProfileFeatures = async (
 	profileId: string,
 	modules: Array<{ moduleId: string; roleId: string }>,
 ) => {
-	const existing = await listProfileModules(profileId);
+	const existing = await listProfileFeatures(profileId);
 	await Promise.all(
 		existing.rows.map((item) =>
 			tables.deleteRow({
 				databaseId: DATABASE_ID,
-				tableId: TABLES.PROFILE_MODULES,
+				tableId: TABLES.PROFILE_FEATURES,
 				rowId: item.$id,
 			}),
 		),
@@ -32,14 +32,13 @@ export const syncProfileModules = async (
 
 	// Create new relations
 	const promises = modules.map((mod) =>
-		tables.createRow<ProfileModules>({
+		tables.createRow<ProfileFeatures>({
 			databaseId: DATABASE_ID,
-			tableId: TABLES.PROFILE_MODULES,
+			tableId: TABLES.PROFILE_FEATURES,
 			rowId: makeId(),
 			data: {
 				profileId,
 				moduleId: mod.moduleId,
-				roleId: mod.roleId,
 			},
 		}),
 	);

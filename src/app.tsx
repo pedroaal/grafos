@@ -14,8 +14,8 @@ import { AuthProvider } from "./context/auth";
 import "./app.css";
 
 const App: Component = () => {
-	// injectSpeedInsights();
-	// inject();
+	injectSpeedInsights();
+	inject();
 
 	return (
 		<Router

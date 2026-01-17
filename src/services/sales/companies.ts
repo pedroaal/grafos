@@ -1,4 +1,3 @@
-import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Companies } from "~/types/appwrite";

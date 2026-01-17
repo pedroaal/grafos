@@ -1529,7 +1529,7 @@
             ]
         },
         {
-            "$id": "profile-feature",
+            "$id": "profile-features",
             "$permissions": [
                 "create(\"users\")",
                 "read(\"users\")",

@@ -1,6 +1,5 @@
-import { Permission, Role } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Profiles } from "~/types/appwrite";
 
 export const listProfiles = async () => {
@@ -20,18 +19,13 @@ export const getProfile = async (id: string) => {
 	return res;
 };
 
-export const createProfile = async (payload: Profiles, tenantId: string) => {
+export const createProfile = async (tenantId: string, payload: Profiles) => {
 	const res = await tables.createRow<Profiles>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.PROFILES,
 		rowId: makeId(),
 		data: payload,
-		permissions: [
-			Permission.read(Role.team(tenantId, ["admin", "user", "viewer"])),
-			Permission.create(Role.team(tenantId, ["admin", "user"])),
-			Permission.update(Role.team(tenantId, ["admin", "user"])),
-			Permission.delete(Role.team(tenantId, ["admin"])),
-		],
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

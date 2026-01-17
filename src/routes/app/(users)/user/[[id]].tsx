@@ -113,7 +113,7 @@ const UserPage = () => {
 				// await createMembership(authId, authStore.tenantId!);
 
 				// create db user
-				await createUser({ ...payload, authId } as Users, authStore.tenantId!);
+				await createUser(authStore.tenantId!, { ...payload, authId } as Users);
 				addAlert({ type: "success", message: "Usuario creado con éxito" });
 			}
 

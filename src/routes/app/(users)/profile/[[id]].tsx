@@ -80,8 +80,10 @@ const ProfilePage = () => {
 		on(
 			() => profileFeatures(),
 			(profileFeatures) => {
-				if (!profileFeatures?.rows) return;
-				const features = profileFeatures?.rows.map((item) => item.featureId);
+				if (!profileFeatures?.rows || !isEdit()) return;
+
+				const features =
+					profileFeatures?.rows.map((item) => item.featureId) || [];
 				setSelectedFeatures(features);
 			},
 		),
@@ -116,8 +118,8 @@ const ProfilePage = () => {
 				addAlert({ type: "success", message: "Perfil actualizado con éxito" });
 			} else {
 				const newProfile = await createProfile(
-					formValues as Profiles,
 					authStore.tenantId!,
+					formValues as Profiles,
 				);
 				profileId = newProfile.$id;
 				addAlert({ type: "success", message: "Perfil creado con éxito" });

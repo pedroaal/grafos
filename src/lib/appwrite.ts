@@ -1,4 +1,13 @@
-import { Account, Client, ID, Storage, TablesDB, Teams } from "appwrite";
+import {
+	Account,
+	Client,
+	ID,
+	Permission,
+	Role,
+	Storage,
+	TablesDB,
+	Teams,
+} from "appwrite";
 
 const ENDPOINT =
 	import.meta.env.VITE_APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1";
@@ -16,3 +25,10 @@ export const tables = new TablesDB(client);
 export const storage = new Storage(client);
 
 export const makeId = () => ID.unique();
+
+export const getPermissions = (tenantId: string) => [
+	Permission.read(Role.team(tenantId)),
+	Permission.update(Role.team(tenantId, "user")),
+	Permission.update(Role.team(tenantId, "admin")),
+	Permission.delete(Role.team(tenantId, "admin")),
+];

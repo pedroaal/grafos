@@ -1,6 +1,6 @@
-import { Permission, Query, Role } from "appwrite";
+import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { makeId, tables, getPermissions } from "~/lib/appwrite";
 import type { Orders } from "~/types/appwrite";
 
 export const listOrders = async (options?: {
@@ -45,11 +45,7 @@ export const createOrder = async (tenantId: string, payload: Orders) => {
 		tableId: TABLES.ORDERS,
 		rowId: makeId(),
 		data: payload,
-		permissions: [
-			Permission.read(Role.team(tenantId)),
-			Permission.update(Role.team(tenantId)),
-			Permission.delete(Role.team(tenantId)),
-		],
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

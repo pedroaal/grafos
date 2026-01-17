@@ -1,12 +1,6 @@
 export const DATABASE_ID =
 	import.meta.env.VITE_APPWRITE_DATABASE_ID || "public";
 
-export enum Roles {
-	ADMIN = "admin",
-	USER = "user",
-	VIEWER = "viewer",
-}
-
 export enum TABLES {
 	// Accounting
 	TAXES = "taxes",

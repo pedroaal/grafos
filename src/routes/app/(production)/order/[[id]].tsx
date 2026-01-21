@@ -2,7 +2,14 @@ import { createForm, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import { createSignal } from "solid-js";
-import * as v from "valibot";
+import {
+	boolean,
+	nullable,
+	number,
+	object,
+	string,
+	enum as venum,
+} from "valibot";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
@@ -32,28 +39,28 @@ enum OrdersStatus {
 	CANCELED = "canceled",
 }
 
-const OrderSchema = v.object({
-	number: v.number(),
+const OrderSchema = object({
+	number: number(),
 	// userId: Users,
-	clientId: v.string(),
-	startDate: v.string(),
-	endDate: v.string(),
-	collectionDate: v.nullable(v.string()),
-	priority: v.boolean(),
-	status: v.enum(OrdersStatus),
-	quotedPrice: v.number(),
-	description: v.string(),
-	paperType: v.nullable(v.string()),
-	quantity: v.number(),
-	cutHeight: v.number(),
-	cutWidth: v.number(),
-	numberingStart: v.number(),
-	numberingEnd: v.number(),
-	materialTotal: v.number(),
-	orderTotal: v.number(),
-	paymentAmount: v.number(),
-	balance: v.number(),
-	notes: v.nullable(v.string()),
+	clientId: string(),
+	startDate: string(),
+	endDate: string(),
+	collectionDate: nullable(string()),
+	priority: boolean(),
+	status: venum(OrdersStatus),
+	quotedPrice: number(),
+	description: string(),
+	paperType: nullable(string()),
+	quantity: number(),
+	cutHeight: number(),
+	cutWidth: number(),
+	numberingStart: number(),
+	numberingEnd: number(),
+	materialTotal: number(),
+	orderTotal: number(),
+	paymentAmount: number(),
+	balance: number(),
+	notes: nullable(string()),
 });
 
 type OrderForm = Omit<Orders, "$id" | "userId" | "processes" | "clientId"> & {

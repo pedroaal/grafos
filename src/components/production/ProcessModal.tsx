@@ -1,4 +1,5 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import type { Models } from "appwrite";
 import { createEffect, createResource } from "solid-js";
 import { boolean, nullable, number, object, string } from "valibot";
 import Checkbox from "~/components/core/Checkbox";
@@ -33,7 +34,7 @@ const ProcessSchema = object({
 	parentId: nullable(string()),
 });
 
-type ProcessForm = Omit<Processes, "$id" | "areaId" | "parentId"> & {
+type ProcessForm = Omit<Processes, keyof Models.Row | "areaId" | "parentId"> & {
 	areaId: string;
 	parentId?: string | null;
 };

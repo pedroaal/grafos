@@ -1,6 +1,7 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
+import type { Models } from "appwrite";
 import { createEffect, createResource, createSignal, For, on } from "solid-js";
 import { boolean, object, string } from "valibot";
 
@@ -31,7 +32,7 @@ const ProfileSchema = object({
 	active: boolean(),
 });
 
-type ProfileForm = Omit<Profiles, "$id">;
+type ProfileForm = Omit<Profiles, keyof Models.Row>;
 
 const ProfilePage = () => {
 	const params = useParams();

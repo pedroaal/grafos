@@ -1,3 +1,4 @@
+import type { Models } from "appwrite";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
 import { type Accessor, type Component, For, type Setter } from "solid-js";
 
@@ -12,7 +13,10 @@ interface IProps {
 	balance: Accessor<number>;
 }
 
-export type PaymentForm = Omit<OrderPayments, "$id" | "orderId" | "userId">;
+export type PaymentForm = Omit<
+	OrderPayments,
+	keyof Models.Row | "orderId" | "userId"
+>;
 
 const paymentDefault: PaymentForm = {
 	date: "",

@@ -1,6 +1,7 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
+import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { boolean, object, string } from "valibot";
 
@@ -28,10 +29,9 @@ const UserSchema = object({
 	reserveOrder: boolean(),
 	bookAccess: boolean(),
 	profitAccess: boolean(),
-	isSuperAdmin: boolean(),
 });
 
-type UserForm = Omit<Users, "authId" | "profileId"> & {
+type UserForm = Omit<Users, keyof Models.Row | "authId" | "profileId"> & {
 	profileId: string;
 };
 
@@ -54,7 +54,6 @@ const UserPage = () => {
 			reserveOrder: false,
 			bookAccess: false,
 			profitAccess: false,
-			isSuperAdmin: false,
 		},
 	});
 
@@ -85,7 +84,6 @@ const UserPage = () => {
 					reserveOrder: user.reserveOrder,
 					bookAccess: user.bookAccess,
 					profitAccess: user.profitAccess,
-					isSuperAdmin: user.isSuperAdmin,
 				});
 			},
 		),
@@ -240,16 +238,6 @@ const UserPage = () => {
 										<Checkbox
 											{...props}
 											label="Utilidades"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-								<Field name="isSuperAdmin" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Administrador"
 											checked={field.value}
 											error={field.error}
 										/>

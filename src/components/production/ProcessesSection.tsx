@@ -1,3 +1,4 @@
+import type { Models } from "appwrite";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
 import { type Accessor, type Component, For, type Setter } from "solid-js";
 
@@ -14,7 +15,7 @@ interface IProps {
 
 export type ProcessForm = Omit<
 	OrderProcesses,
-	"$id" | "orderId" | "processId"
+	keyof Models.Row | "orderId" | "processId"
 > & {
 	processId: string;
 };

@@ -1,4 +1,5 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import type { Models } from "appwrite";
 import { createEffect, createResource } from "solid-js";
 import { number, object, string } from "valibot";
 import Input from "~/components/core/Input";
@@ -19,7 +20,7 @@ const AreaSchema = object({
 	sortOrder: number(),
 });
 
-type AreaForm = Omit<Areas, "$id">;
+type AreaForm = Omit<Areas, keyof Models.Row>;
 
 const AreaModal = (props: IProps) => {
 	const { authStore } = useAuth();

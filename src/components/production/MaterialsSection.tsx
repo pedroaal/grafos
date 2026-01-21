@@ -1,3 +1,4 @@
+import type { Models } from "appwrite";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
 import { type Accessor, type Component, For, type Setter } from "solid-js";
 
@@ -13,7 +14,7 @@ interface IProps {
 
 export type MaterialForm = Omit<
 	OrderMaterials,
-	"$id" | "orderId" | "materialId" | "supplierId"
+	keyof Models.Row | "orderId" | "materialId" | "supplierId"
 > & { materialId: string; supplierId: string };
 
 const materialDefault: MaterialForm = {

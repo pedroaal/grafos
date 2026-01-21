@@ -1,7 +1,7 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import type { Models } from "appwrite";
 import { createEffect, createResource } from "solid-js";
 import { object, string } from "valibot";
-
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
@@ -23,7 +23,7 @@ const CategorySchema = object({
 	name: string(),
 });
 
-type CategoryForm = Omit<Categories, "$id">;
+type CategoryForm = Omit<Categories, keyof Models.Row>;
 
 const CategoryModal = (props: IProps) => {
 	const { authStore } = useAuth();

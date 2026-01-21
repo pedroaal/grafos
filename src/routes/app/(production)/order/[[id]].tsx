@@ -1,6 +1,7 @@
 import { createForm, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
+import type { Models } from "appwrite";
 import { createSignal } from "solid-js";
 import {
 	boolean,
@@ -63,7 +64,10 @@ const OrderSchema = object({
 	notes: nullable(string()),
 });
 
-type OrderForm = Omit<Orders, "$id" | "userId" | "processes" | "clientId"> & {
+type OrderForm = Omit<
+	Orders,
+	keyof Models.Row | "userId" | "processes" | "clientId"
+> & {
 	clientId: string;
 };
 const ordersDefault = {

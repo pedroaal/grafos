@@ -1,7 +1,7 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import type { Models } from "appwrite";
 import { createEffect, createResource } from "solid-js";
 import { boolean, nullable, number, object, string } from "valibot";
-
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
@@ -33,7 +33,7 @@ const MaterialSchema = object({
 	hasLaminated: boolean(),
 });
 
-type MaterialForm = Omit<Materials, "$id" | "categoryId"> & {
+type MaterialForm = Omit<Materials, keyof Models.Row | "categoryId"> & {
 	categoryId: string;
 };
 
@@ -54,7 +54,8 @@ const MaterialModal = (props: IProps) => {
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
 	const [material] = createResource(
-		() => appStore.showModal === Modals.Material
+		() =>
+			appStore.showModal === Modals.Material
 				? appStore.modalProps?.id || ""
 				: false,
 		getMaterial,

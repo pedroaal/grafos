@@ -12,34 +12,54 @@ import ProcessModal from "~/components/production/ProcessModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { listAreas } from "~/services/production/areas";
-import { deleteOrder } from "~/services/production/orders";
-import { listProcesses } from "~/services/production/processes";
+import { deleteArea, listAreas } from "~/services/production/areas";
+import { deleteProcess, listProcesses } from "~/services/production/processes";
 
 const ProcessesPage = () => {
 	const { addAlert, openModal } = useApp();
 
-	const [areas, { refetchAreas }] = createResource({}, listAreas);
-	const [processes, { refetchProcesses }] = createResource({}, listProcesses);
+	const [areas, { refetch: refetchAreas }] = createResource({}, listAreas);
+	const [processes, { refetch: refetchProcesses }] = createResource(
+		{},
+		listProcesses,
+	);
 
 	const editRow = (modalId: string, id: string) => {
 		openModal(modalId, { id });
 	};
 
-	const handleDelete = async (orderId: string, name: string) => {
+	const handleAreaDelete = async (areaId: string, name: string) => {
 		const confirm = window.confirm(
-			`¿Está seguro de eliminar la orden "${name}"? `,
+			`¿Está seguro de eliminar el área "${name}"? `,
 		);
 		if (!confirm) return;
 
 		try {
-			await deleteOrder(orderId);
-			addAlert({ type: "success", message: "Orden eliminada con éxito" });
-			// refetch();
+			await deleteArea(areaId);
+			addAlert({ type: "success", message: "Área eliminada con éxito" });
+			refetchAreas();
 		} catch (error: any) {
 			addAlert({
 				type: "error",
-				message: error.message || "Error al eliminar orden",
+				message: error.message || "Error al eliminar área",
+			});
+		}
+	};
+
+	const handleProcessDelete = async (processId: string, name: string) => {
+		const confirm = window.confirm(
+			`¿Está seguro de eliminar el proceso "${name}"? `,
+		);
+		if (!confirm) return;
+
+		try {
+			await deleteProcess(processId);
+			addAlert({ type: "success", message: "Proceso eliminado con éxito" });
+			refetchProcesses();
+		} catch (error: any) {
+			addAlert({
+				type: "error",
+				message: error.message || "Error al eliminar proceso",
 			});
 		}
 	};
@@ -73,7 +93,7 @@ const ProcessesPage = () => {
 									<td>
 										<RowActions
 											onEdit={() => editRow(Modals.Area, item.$id)}
-											onDelete={() => handleDelete(item.$id, item.name)}
+											onDelete={() => handleAreaDelete(item.$id, item.name)}
 										/>
 									</td>
 								</tr>
@@ -115,7 +135,7 @@ const ProcessesPage = () => {
 									<td>
 										<RowActions
 											onEdit={() => editRow(Modals.Process, item.$id)}
-											onDelete={() => handleDelete(item.$id, item.name)}
+											onDelete={() => handleProcessDelete(item.$id, item.name)}
 										/>
 									</td>
 								</tr>
@@ -123,8 +143,8 @@ const ProcessesPage = () => {
 						</For>
 					</Table>
 				</BlueBoard>
-				<AreaModal />
-				<ProcessModal />
+				<AreaModal onSuccess={() => refetchAreas()} />
+				<ProcessModal onSuccess={() => refetchProcesses()} />
 			</DashboardLayout>
 		</>
 	);

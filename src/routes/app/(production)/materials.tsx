@@ -12,37 +12,60 @@ import MaterialModal from "~/components/production/MaterialModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { listCategories } from "~/services/production/categories";
-import { listMaterials } from "~/services/production/materials";
-import { deleteOrder } from "~/services/production/orders";
+import {
+	deleteCategory,
+	listCategories,
+} from "~/services/production/categories";
+import { deleteMaterial, listMaterials } from "~/services/production/materials";
 
-const ConfigPage = () => {
+const MaterialsPage = () => {
 	const { addAlert, openModal } = useApp();
 
-	const [categories, { refetchCategories }] = createResource(
+	const [categories, { refetch: refetchCategories }] = createResource(
 		{},
 		listCategories,
 	);
-	const [materials, { refetchMaterials }] = createResource({}, listMaterials);
+	const [materials, { refetch: refetchMaterials }] = createResource(
+		{},
+		listMaterials,
+	);
 
 	const editRow = (modalId: string, id: string) => {
 		openModal(modalId, { id });
 	};
 
-	const handleDelete = async (orderId: string, name: string) => {
+	const handleCategoryDelete = async (categoryId: string, name: string) => {
 		const confirm = window.confirm(
-			`¿Está seguro de eliminar la orden "${name}"? `,
+			`¿Está seguro de eliminar la categoría "${name}"? `,
 		);
 		if (!confirm) return;
 
 		try {
-			await deleteOrder(orderId);
-			addAlert({ type: "success", message: "Orden eliminada con éxito" });
-			// refetch();
+			await deleteCategory(categoryId);
+			addAlert({ type: "success", message: "Categoría eliminada con éxito" });
+			refetchCategories();
 		} catch (error: any) {
 			addAlert({
 				type: "error",
-				message: error.message || "Error al eliminar orden",
+				message: error.message || "Error al eliminar categoría",
+			});
+		}
+	};
+
+	const handleMaterialDelete = async (materialId: string, name: string) => {
+		const confirm = window.confirm(
+			`¿Está seguro de eliminar el material "${name}"? `,
+		);
+		if (!confirm) return;
+
+		try {
+			await deleteMaterial(materialId);
+			addAlert({ type: "success", message: "Material eliminado con éxito" });
+			refetchMaterials();
+		} catch (error: any) {
+			addAlert({
+				type: "error",
+				message: error.message || "Error al eliminar material",
 			});
 		}
 	};
@@ -73,7 +96,7 @@ const ConfigPage = () => {
 									<td>
 										<RowActions
 											onEdit={() => editRow(Modals.Category, item.$id)}
-											onDelete={() => handleDelete(item.$id, item.name)}
+											onDelete={() => handleCategoryDelete(item.$id, item.name)}
 										/>
 									</td>
 								</tr>
@@ -122,8 +145,8 @@ const ConfigPage = () => {
 									</td>
 									<td>
 										<RowActions
-											onEdit={() => editRow(Modals.Process, item.$id)}
-											onDelete={() => handleDelete(item.$id, item.name)}
+											onEdit={() => editRow(Modals.Material, item.$id)}
+											onDelete={() => handleMaterialDelete(item.$id, item.name)}
 										/>
 									</td>
 								</tr>
@@ -131,11 +154,11 @@ const ConfigPage = () => {
 						</For>
 					</Table>
 				</BlueBoard>
-				<CategoryModal />
-				<MaterialModal />
+				<CategoryModal onSuccess={() => refetchCategories()} />
+				<MaterialModal onSuccess={() => refetchMaterials()} />
 			</DashboardLayout>
 		</>
 	);
 };
 
-export default ConfigPage;
+export default MaterialsPage;

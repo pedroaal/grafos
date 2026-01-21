@@ -1,6 +1,6 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Areas } from "~/types/appwrite";
 
 export const listAreas = async (options?: { sort?: "asc" | "desc" }) => {
@@ -25,12 +25,14 @@ export const getArea = async (id: string) => {
 	return res;
 };
 
-export const createArea = async (payload: Areas) => {
+export const createArea = async (tenantId: string, payload: Areas) => {
 	const res = await tables.createRow<Areas>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.AREAS,
 		rowId: makeId(),
 		data: payload,
+
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

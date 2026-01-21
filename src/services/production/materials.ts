@@ -1,6 +1,6 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Materials } from "~/types/appwrite";
 
 export const listMaterials = async (options?: {
@@ -30,12 +30,13 @@ export const getMaterial = async (id: string) => {
 	return res;
 };
 
-export const createMaterial = async (payload: Materials) => {
+export const createMaterial = async (tenantId: string, payload: Materials) => {
 	const res = await tables.createRow<Materials>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.MATERIALS,
 		rowId: makeId(),
 		data: payload,
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

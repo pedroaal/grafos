@@ -1,6 +1,6 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Categories } from "~/types/appwrite";
 
 export const listCategories = async (options?: { search?: string }) => {
@@ -26,12 +26,13 @@ export const getCategory = async (id: string) => {
 	return res;
 };
 
-export const createCategory = async (payload: Categories) => {
+export const createCategory = async (tenantId: string, payload: Categories) => {
 	const res = await tables.createRow<Categories>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.CATEGORIES,
 		rowId: makeId(),
 		data: payload,
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

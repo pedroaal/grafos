@@ -1,6 +1,6 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Suppliers } from "~/types/appwrite";
 
 export const listSuppliers = async (options?: { search?: string }) => {
@@ -25,12 +25,13 @@ export const getSupplier = async (id: string) => {
 	return res;
 };
 
-export const createSupplier = async (payload: Suppliers) => {
+export const createSupplier = async (tenantId: string, payload: Suppliers) => {
 	const res = await tables.createRow<Suppliers>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.SUPPLIERS,
 		rowId: makeId(),
 		data: payload,
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

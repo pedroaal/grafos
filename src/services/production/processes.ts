@@ -1,6 +1,6 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Processes } from "~/types/appwrite";
 
 export const listProcesses = async (options?: {
@@ -34,12 +34,13 @@ export const getProcess = async (id: string) => {
 	return res;
 };
 
-export const createProcess = async (payload: Processes) => {
+export const createProcess = async (tenantId: string, payload: Processes) => {
 	const res = await tables.createRow<Processes>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.PROCESSES,
 		rowId: makeId(),
 		data: payload,
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

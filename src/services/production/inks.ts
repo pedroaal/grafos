@@ -1,6 +1,6 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Inks } from "~/types/appwrite";
 
 export const listInks = async (options?: { search?: string }) => {
@@ -26,12 +26,13 @@ export const getInk = async (id: string) => {
 	return res;
 };
 
-export const createInk = async (payload: Inks) => {
+export const createInk = async (tenantId: string, payload: Inks) => {
 	const res = await tables.createRow<Inks>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.INKS,
 		rowId: makeId(),
 		data: payload,
+		permissions: getPermissions(tenantId),
 	});
 	return res;
 };

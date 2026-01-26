@@ -39,6 +39,15 @@ export const getOrder = async (id: string) => {
 	return res;
 };
 
+export const getOrderNumber = async () => {
+	const res = await tables.listRows<Orders>({
+		databaseId: DATABASE_ID,
+		tableId: TABLES.ORDERS,
+		queries: [Query.orderDesc("number"), Query.limit(1)],
+	});
+	return res.rows[0]?.number || null;
+}
+
 export const createOrder = async (tenantId: string, payload: Orders) => {
 	const res = await tables.createRow<Orders>({
 		databaseId: DATABASE_ID,

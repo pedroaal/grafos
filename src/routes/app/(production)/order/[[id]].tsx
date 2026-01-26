@@ -1,8 +1,9 @@
-import { createForm, valiForm } from "@modular-forms/solid";
+import { createForm, setValues, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
-import { createSignal } from "solid-js";
+import dayjs from "dayjs";
+import { createEffect, createResource, createSignal, on } from "solid-js";
 import {
 	boolean,
 	nullable,
@@ -31,7 +32,10 @@ import ProcessesSection, {
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
-import type { Orders } from "~/types/appwrite";
+import { getMaterial } from "~/services/production/materials";
+import { getOrder, getOrderNumber } from "~/services/production/orders";
+import { listClients } from "~/services/sales/clients";
+import type { Contacts, Orders } from "~/types/appwrite";
 
 enum OrdersStatus {
 	PENDING = "pending",
@@ -42,7 +46,6 @@ enum OrdersStatus {
 
 const OrderSchema = object({
 	number: number(),
-	// userId: Users,
 	clientId: string(),
 	startDate: string(),
 	endDate: string(),
@@ -73,8 +76,8 @@ type OrderForm = Omit<
 const ordersDefault = {
 	number: 0,
 	clientId: "",
-	startDate: "",
-	endDate: "",
+	startDate: dayjs().format("YYYY-MM-DD"),
+	endDate: dayjs().add(3, "day").format("YYYY-MM-DD"),
 	collectionDate: null,
 	priority: false,
 	status: OrdersStatus.PENDING,
@@ -100,13 +103,27 @@ const OrderPage = () => {
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
+	const orderStatuses = () => [
+		{ key: OrdersStatus.PENDING, label: "Pendiente" },
+		{ key: OrdersStatus.PAID, label: "Pagado" },
+		{ key: OrdersStatus.CANCELED, label: "Cancelado" },
+		{ key: OrdersStatus.OTHER, label: "Otro" },
+	];
 
 	const [form, { Form, Field }] = createForm<OrderForm>({
 		validate: valiForm(OrderSchema),
 		initialValues: ordersDefault,
 	});
 
-	// Repeated sections
+	const [clients] = createResource({}, listClients);
+	const [phone, setPhone] = createSignal<string>("");
+
+	const [orderNumber] = createResource(getOrderNumber);
+	const [order] = createResource(params.id, getOrder);
+	// const [orderMaterials] = createResource(params.id, getOrderMaterials);
+	// const [orderProcesses] = createResource(params.id, getOrderProcesses);
+	// const [orderPayments] = createResource(params.id, getOrderPayments);
+
 	const [materials, setMaterials] = createSignal<MaterialForm[]>([]);
 	const [processes, setProcesses] = createSignal<ProcessForm[]>([]);
 	const [payments, setPayments] = createSignal<PaymentForm[]>([]);
@@ -114,8 +131,57 @@ const OrderPage = () => {
 	const processesTotal = () =>
 		processes().reduce((sum, item) => sum + (Number(item.total) || 0), 0);
 	const paymentsTotal = () =>
-		payments().reduce((sum, item) => sum + (Number(item.valor) || 0), 0);
+		payments().reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
 	const balance = () => processesTotal() - paymentsTotal();
+
+	const formatClientPhone = (contact: Partial<Contacts>) =>
+		[contact?.phone, contact?.mobile].filter(Boolean).join(" / ");
+
+	createEffect(
+		on(
+			() => orderNumber(),
+			(orderNumber) => {
+				if (!orderNumber || isEdit()) return;
+
+				setValues(form, {
+					number: orderNumber + 1,
+				});
+			},
+		),
+	);
+
+	createEffect(
+		on(
+			() => order(),
+			(order) => {
+				if (!order || !isEdit()) return;
+
+				setValues(form, {
+					number: order.number,
+					clientId: order.clientId?.$id || "",
+					startDate: order.startDate,
+					endDate: order.endDate,
+					collectionDate: order.collectionDate,
+					priority: order.priority,
+					status: order.status,
+					quotedPrice: order.quotedPrice,
+					description: order.description,
+					paperType: order.paperType,
+					quantity: order.quantity,
+					cutHeight: order.cutHeight,
+					cutWidth: order.cutWidth,
+					numberingStart: order.numberingStart,
+					numberingEnd: order.numberingEnd,
+					materialTotal: order.materialTotal,
+					orderTotal: order.orderTotal,
+					paymentAmount: order.paymentAmount,
+					balance: order.balance,
+					notes: order.notes,
+				});
+				setPhone(formatClientPhone(order.clientId?.contactId));
+			},
+		),
+	);
 
 	const handleSubmit = (formValues: OrderForm) => {
 		const loader = addLoader();
@@ -179,6 +245,47 @@ const OrderPage = () => {
 					<Form id="order-form" onSubmit={handleSubmit}>
 						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
 							<div class="md:col-span-3">
+								<Field name="number" type="number">
+									{(field, props) => (
+										<Input
+											{...props}
+											type="number"
+											label="Numero"
+											value={field.value}
+											error={field.error}
+											required
+											readOnly
+										/>
+									)}
+								</Field>
+							</div>
+							<div class="md:col-span-5"></div>
+							<div class="md:col-span-2">
+								<Field name="priority" type="boolean">
+									{(field, props) => (
+										<Checkbox
+											{...props}
+											label="Prioritario"
+											checked={field.value}
+											error={field.error}
+										/>
+									)}
+								</Field>
+							</div>
+							<div class="md:col-span-2">
+								<Field name="status">
+									{(field, props) => (
+										<Select
+											{...props}
+											options={orderStatuses()}
+											label="Estado"
+											value={field.value}
+											error={field.error}
+										/>
+									)}
+								</Field>
+							</div>
+							<div class="md:col-span-3">
 								<Field name="startDate">
 									{(field, props) => (
 										<Input
@@ -205,69 +312,7 @@ const OrderPage = () => {
 									)}
 								</Field>
 							</div>
-							<div class="md:col-span-3">
-								<Field name="priority" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Prioritario"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="status">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={[]}
-											label="Estado"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="clientId">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={[]}
-											label="Cliente"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-4">
-								<Input
-									name="clientPhone"
-									type="text"
-									label="Telefono"
-									value=""
-									readOnly
-								/>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="description">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Descripción"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+							<div class="md:col-span-4"></div>
 							<div class="md:col-span-2">
 								<Field name="quotedPrice" type="number">
 									{(field, props) => (
@@ -283,6 +328,60 @@ const OrderPage = () => {
 								</Field>
 							</div>
 
+							<div class="md:col-span-4">
+								<Field name="clientId">
+									{(field, props) => (
+										<Select
+											{...props}
+											options={
+												clients()?.rows.map((client) => ({
+													key: client.$id,
+													label:
+														`${client.contactId?.firstName} ${client.contactId?.lastName} (${client.companyId?.name})` ||
+														"",
+												})) || []
+											}
+											label="Cliente"
+											value={field.value}
+											error={field.error}
+											onChange={(ev) => {
+												props.onChange(ev);
+												const value = (ev.target as HTMLSelectElement).value;
+												const client = clients()?.rows.find(
+													(client) => client.$id === value,
+												);
+												setPhone(formatClientPhone(client?.contactId || {}));
+											}}
+											required
+										/>
+									)}
+								</Field>
+							</div>
+							<div class="md:col-span-4">
+								<Input
+									name="clientPhone"
+									type="text"
+									label="Telefono"
+									value={phone()}
+									readOnly
+								/>
+							</div>
+							<div class="md:col-span-4"></div>
+
+							<div class="md:col-span-6">
+								<Field name="description">
+									{(field, props) => (
+										<Input
+											{...props}
+											type="text"
+											label="Descripción"
+											value={field.value}
+											error={field.error}
+										/>
+									)}
+								</Field>
+							</div>
+
 							<div class="md:col-span-6">
 								<Field name="paperType">
 									{(field, props) => (
@@ -290,7 +389,7 @@ const OrderPage = () => {
 											{...props}
 											type="text"
 											label="Material (papel)"
-											value={field.value}
+											value={field.value || ""}
 											error={field.error}
 										/>
 									)}

@@ -3,13 +3,15 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Clients } from "~/types/appwrite";
 
-export const listClients = async (options?: {
-	clientCompanyId?: string;
+export const listClients = async (options: {
+	companyId?: string;
 	followUp?: boolean;
 }) => {
-	const queries = [];
-	if (options?.clientCompanyId)
-		queries.push(Query.equal("clientCompanyId", options.clientCompanyId));
+	const queries = [
+		Query.select(["*", "companyId.name", "contactId.firstName", "contactId.lastName", "contactId.phone", "contactId.mobile", "contactId.email"]),
+	];
+	if (options?.companyId)
+		queries.push(Query.equal("companyId", options.companyId));
 	if (typeof options?.followUp === "boolean")
 		queries.push(Query.equal("followUp", options.followUp));
 

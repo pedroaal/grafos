@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";

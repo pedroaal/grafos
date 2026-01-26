@@ -1,5 +1,5 @@
 import { Title } from "@solidjs/meta";
-import LandingLayout from "~/components/layout/Landing";
+import LandingLayout from "~/components/layouts/Landing";
 
 const AboutPage = () => {
 	return (

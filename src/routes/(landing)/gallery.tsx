@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
 import { For } from "solid-js";
-import LandingLayout from "~/components/layout/Landing";
+import LandingLayout from "~/components/layouts/Landing";
 
 const GalleryPage = () => {
 	const images = [

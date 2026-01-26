@@ -1,5 +1,5 @@
 import { Title } from "@solidjs/meta";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 
 const DashboardPage = () => {
 	return (

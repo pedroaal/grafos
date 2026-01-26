@@ -13,7 +13,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import { ConfirmModal } from "~/components/core/Modal";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Modals } from "~/config/modals";
 import { Routes } from "~/config/routes";

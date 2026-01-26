@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
-import LandingLayout from "~/components/layout/Landing";
+import LandingLayout from "~/components/layouts/Landing";
 
 const NotFoundPage = () => {
 	return (

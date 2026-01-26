@@ -6,7 +6,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 import CategoryModal from "~/components/production/CategoryModal";
 import MaterialModal from "~/components/production/MaterialModal";
 

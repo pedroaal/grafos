@@ -3,7 +3,7 @@ import { Title } from "@solidjs/meta";
 import { A, useNavigate } from "@solidjs/router";
 import { createRenderEffect } from "solid-js";
 import Input from "~/components/core/Input";
-import LandingLayout from "~/components/layout/Landing";
+import LandingLayout from "~/components/layouts/Landing";
 import { Routes } from "~/config/routes";
 import { useAuth } from "~/context/auth";
 

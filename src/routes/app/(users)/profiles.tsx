@@ -8,7 +8,7 @@ import EmptyTable from "~/components/core/EmptyTable";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";

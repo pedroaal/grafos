@@ -9,7 +9,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";

@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
 import { createSignal, Show } from "solid-js";
-import LandingLayout from "~/components/layout/Landing";
+import LandingLayout from "~/components/layouts/Landing";
 
 const ContactPage = () => {
 	const [formData, setFormData] = createSignal({

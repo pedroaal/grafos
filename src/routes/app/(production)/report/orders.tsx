@@ -12,7 +12,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { listOrders } from "~/services/production/orders";

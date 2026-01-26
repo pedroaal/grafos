@@ -1,7 +1,7 @@
 import { Title } from "@solidjs/meta";
 import { FaSolidPlus } from "solid-icons/fa";
 import { createSignal, For } from "solid-js";
-import DashboardLayout from "~/components/layout/Dashboard";
+import DashboardLayout from "~/components/layouts/Dashboard";
 
 interface Cliente {
 	id: string;

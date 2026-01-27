@@ -1,4 +1,4 @@
-import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
@@ -32,8 +32,24 @@ import ProcessesSection, {
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
-import { getMaterial } from "~/services/production/materials";
-import { getOrder, getOrderNumber } from "~/services/production/orders";
+import {
+	listOrderMaterials,
+	syncOrderMaterials,
+} from "~/services/production/orderMaterials";
+import {
+	listOrderPayments,
+	syncOrderPayments,
+} from "~/services/production/orderPayments";
+import {
+	listOrderProcesses,
+	syncOrderProcesses,
+} from "~/services/production/orderProcesses";
+import {
+	createOrder,
+	getOrder,
+	getOrderNumber,
+	updateOrder,
+} from "~/services/production/orders";
 import { listClients } from "~/services/sales/clients";
 import type { Contacts, Orders } from "~/types/appwrite";
 
@@ -49,7 +65,7 @@ const OrderSchema = object({
 	clientId: string(),
 	startDate: string(),
 	endDate: string(),
-	collectionDate: nullable(string()),
+	// collectionDate: nullable(string()),
 	priority: boolean(),
 	status: venum(OrdersStatus),
 	quotedPrice: number(),
@@ -60,10 +76,10 @@ const OrderSchema = object({
 	cutWidth: number(),
 	numberingStart: number(),
 	numberingEnd: number(),
-	materialTotal: number(),
-	orderTotal: number(),
-	paymentAmount: number(),
-	balance: number(),
+	// materialTotal: number(),
+	// orderTotal: number(),
+	// paymentAmount: number(),
+	// balance: number(),
 	notes: nullable(string()),
 });
 
@@ -78,7 +94,7 @@ const ordersDefault = {
 	clientId: "",
 	startDate: dayjs().format("YYYY-MM-DD"),
 	endDate: dayjs().add(3, "day").format("YYYY-MM-DD"),
-	collectionDate: null,
+	// collectionDate: null,
 	priority: false,
 	status: OrdersStatus.PENDING,
 	quotedPrice: 0,
@@ -89,10 +105,10 @@ const ordersDefault = {
 	cutWidth: 0,
 	numberingStart: 0,
 	numberingEnd: 0,
-	materialTotal: 0,
-	orderTotal: 0,
-	paymentAmount: 0,
-	balance: 0,
+	// materialTotal: 0,
+	// orderTotal: 0,
+	// paymentAmount: 0,
+	// balance: 0,
 	notes: null,
 };
 
@@ -120,9 +136,18 @@ const OrderPage = () => {
 
 	const [orderNumber] = createResource(getOrderNumber);
 	const [order] = createResource(params.id, getOrder);
-	// const [orderMaterials] = createResource(params.id, getOrderMaterials);
-	// const [orderProcesses] = createResource(params.id, getOrderProcesses);
-	// const [orderPayments] = createResource(params.id, getOrderPayments);
+	const [orderMaterials] = createResource(
+		{ orderId: params.id || "" },
+		listOrderMaterials,
+	);
+	const [orderProcesses] = createResource(
+		{ orderId: params.id || "" },
+		listOrderProcesses,
+	);
+	const [orderPayments] = createResource(
+		{ orderId: params.id || "" },
+		listOrderPayments,
+	);
 
 	const [materials, setMaterials] = createSignal<MaterialForm[]>([]);
 	const [processes, setProcesses] = createSignal<ProcessForm[]>([]);
@@ -155,13 +180,12 @@ const OrderPage = () => {
 			() => order(),
 			(order) => {
 				if (!order || !isEdit()) return;
-
 				setValues(form, {
 					number: order.number,
-					clientId: order.clientId?.$id || "",
-					startDate: order.startDate,
-					endDate: order.endDate,
-					collectionDate: order.collectionDate,
+					clientId: order.clientId.$id || "",
+					startDate: dayjs(order.startDate).format("YYYY-MM-DD"),
+					endDate: dayjs(order.endDate).format("YYYY-MM-DD"),
+					collectionDate: dayjs(order.collectionDate).format("YYYY-MM-DD"),
 					priority: order.priority,
 					status: order.status,
 					quotedPrice: order.quotedPrice,
@@ -183,22 +207,104 @@ const OrderPage = () => {
 		),
 	);
 
-	const handleSubmit = (formValues: OrderForm) => {
+	createEffect(
+		on(
+			() => orderMaterials(),
+			(orderMaterial) => {
+				if (!orderMaterial || !isEdit()) return;
+				const data = orderMaterial.rows.map((item) => ({
+					materialId: item.materialId || "",
+					quantity: item.quantity,
+					cutHeight: item.cutHeight,
+					cutWidth: item.cutWidth,
+					sizes: item.sizes,
+					supplierId: item.supplierId || "",
+					invoiceNumber: item.invoiceNumber,
+					total: item.total,
+				}));
+				setMaterials(data);
+			},
+		),
+	);
+
+	createEffect(
+		on(
+			() => orderProcesses(),
+			(orderProcesses) => {
+				if (!orderProcesses || !isEdit()) return;
+				const data = orderProcesses.rows.map((item) => ({
+					processId: item.processId || "",
+					frontColors: item.frontColors,
+					backColors: item.backColors,
+					thousands: item.thousands,
+					unitPrice: item.unitPrice,
+					total: item.total,
+					done: item.done,
+				}));
+				setProcesses(data);
+			},
+		),
+	);
+
+	createEffect(
+		on(
+			() => orderPayments(),
+			(orderPayments) => {
+				if (!orderPayments || !isEdit()) return;
+				const data = orderPayments.rows.map((item) => ({
+					date: item.date,
+					method: item.method,
+					amount: item.amount,
+				}));
+				setPayments(data);
+			},
+		),
+	);
+
+	const handleSubmit = async (formValues: OrderForm) => {
 		const loader = addLoader();
 
 		try {
-			// TODO: call backend service to create/update order
-			console.log("Order submit", {
-				formValues,
-				materials: materials(),
-				processes: processes(),
-				payments: payments(),
-			});
-			addAlert({ type: "success", message: "Orden guardada (simulada)" });
-		} catch (e: any) {
+			const tenantId = authStore.tenantId;
+			if (!tenantId) throw new Error("No hay sesión de tenant");
+
+			const userId = authStore.user?.$id;
+			if (!userId) throw new Error("No hay sesión de usuario");
+
+			// Prepare order payload
+			const orderPayload = {
+				...formValues,
+				userId: userId,
+				collectionDate:
+					formValues.status === OrdersStatus.PAID
+						? dayjs().format("YYYY-MM-DD")
+						: undefined,
+				materialTotal: processesTotal(),
+				orderTotal: processesTotal(),
+				paymentAmount: paymentsTotal(),
+				balance: balance(),
+			};
+
+			let orderId = isEdit() ? params.id! : "";
+			if (isEdit() && params.id) {
+				await updateOrder(params.id, orderPayload);
+			} else {
+				const createdOrder = await createOrder(tenantId, orderPayload);
+				orderId = createdOrder.$id;
+			}
+
+			await Promise.all([
+				syncOrderMaterials(orderId, materials()),
+				syncOrderProcesses(orderId, processes()),
+				syncOrderPayments(orderId, payments()),
+			]);
+
+			addAlert({ type: "success", message: "Orden guardada correctamente" });
+			navigate(Routes.orders);
+		} catch (error: any) {
 			addAlert({
 				type: "error",
-				message: e?.message || "Error guardando orden",
+				message: error.message || "Error al guardar la orden",
 			});
 		} finally {
 			removeLoader(loader);
@@ -227,22 +333,26 @@ const OrderPage = () => {
 					]}
 					actions={[
 						{
-							onClick: () => console.log("Imprimir orden"),
+							onClick: () => {
+								// TODO: Implement print functionality
+							},
 							label: "Imprimir",
 							disabled: !isEdit(),
 						},
 						{
-							onClick: () => console.log("Duplicar orden"),
+							onClick: () => {
+								// TODO: Implement duplicate functionality
+							},
 							label: "Duplicar",
-							disabled: !isEdit(),
+							// disabled: !isEdit(),
 						},
 						{
-							form: "order-form",
+							onClick: () => submit(form),
 							label: "Guardar",
 						},
 					]}
 				>
-					<Form id="order-form" onSubmit={handleSubmit}>
+					<Form onSubmit={handleSubmit}>
 						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
 							<div class="md:col-span-3">
 								<Field name="number" type="number">
@@ -320,7 +430,7 @@ const OrderPage = () => {
 											{...props}
 											type="number"
 											label="Cotizado $"
-											step="0.0001"
+											step="0.01"
 											value={field.value}
 											error={field.error}
 										/>

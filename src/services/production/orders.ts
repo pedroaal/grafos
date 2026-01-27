@@ -1,6 +1,6 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
-import { makeId, tables, getPermissions } from "~/lib/appwrite";
+import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Orders } from "~/types/appwrite";
 
 export const listOrders = async (options?: {
@@ -35,6 +35,7 @@ export const getOrder = async (id: string) => {
 		databaseId: DATABASE_ID,
 		tableId: TABLES.ORDERS,
 		rowId: id,
+		queries: [Query.select(["*", "clientId.contactId.phone", "clientId.contactId.mobile"])],
 	});
 	return res;
 };
@@ -46,7 +47,7 @@ export const getOrderNumber = async () => {
 		queries: [Query.orderDesc("number"), Query.limit(1)],
 	});
 	return res.rows[0]?.number || null;
-}
+};
 
 export const createOrder = async (tenantId: string, payload: Orders) => {
 	const res = await tables.createRow<Orders>({

@@ -1,16 +1,17 @@
 import { Query } from "appwrite";
+import type { ProcessForm } from "~/components/production/ProcessesSection";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { OrderProcesses } from "~/types/appwrite";
 
-export const listOrderProcesses = async (options?: {
-	orderId?: string;
+export const listOrderProcesses = async (options: {
+	orderId: string;
 	done?: boolean;
 }) => {
-	const queries = [];
-	if (options?.orderId) queries.push(Query.equal("orderId", options.orderId));
-	if (options?.done !== undefined)
+	const queries = [Query.equal("orderId", options.orderId)];
+	if (options?.done !== undefined) {
 		queries.push(Query.equal("done", options.done));
+	}
 
 	const res = await tables.listRows<OrderProcesses>({
 		databaseId: DATABASE_ID,
@@ -18,6 +19,37 @@ export const listOrderProcesses = async (options?: {
 		queries,
 	});
 	return res;
+};
+
+export const syncOrderProcesses = async (
+	orderId: string,
+	processes: ProcessForm[],
+) => {
+	const existing = await listOrderProcesses({ orderId });
+	await Promise.all(
+		existing.rows.map((item) =>
+			tables.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.ORDER_PROCESSES,
+				rowId: item.$id,
+			}),
+		),
+	);
+
+	// Create new relations
+	const promises = processes.map((process) =>
+		tables.createRow<OrderProcesses>({
+			databaseId: DATABASE_ID,
+			tableId: TABLES.ORDER_PROCESSES,
+			rowId: makeId(),
+			data: {
+				orderId,
+				...process,
+			},
+		}),
+	);
+
+	return await Promise.all(promises);
 };
 
 export const getOrderProcess = async (id: string) => {

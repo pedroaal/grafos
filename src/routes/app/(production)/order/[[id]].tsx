@@ -53,13 +53,7 @@ import {
 } from "~/services/production/orders";
 import { listClients } from "~/services/sales/clients";
 import type { Contacts, Orders } from "~/types/appwrite";
-
-enum OrdersStatus {
-	PENDING = "pending",
-	PAID = "paid",
-	OTHER = "other",
-	CANCELED = "canceled",
-}
+import { OrdersStatus } from "~/config/appwrite";
 
 const OrderSchema = object({
 	number: number(),

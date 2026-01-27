@@ -1,8 +1,8 @@
 import { Query } from "appwrite";
+import { OrdersStatus } from "~/config/appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Orders } from "~/types/appwrite";
-import { OrdersStatus } from "~/types/appwrite";
 import { listOrderInks } from "./orderInks";
 import { listOrderMaterials } from "./orderMaterials";
 import { listOrderProcesses } from "./orderProcesses";
@@ -39,7 +39,13 @@ export const getOrder = async (id: string) => {
 		databaseId: DATABASE_ID,
 		tableId: TABLES.ORDERS,
 		rowId: id,
-		queries: [Query.select(["*", "clientId.contactId.phone", "clientId.contactId.mobile"])],
+		queries: [
+			Query.select([
+				"*",
+				"clientId.contactId.phone",
+				"clientId.contactId.mobile",
+			]),
+		],
 	});
 	return res;
 };
@@ -82,7 +88,10 @@ export const deleteOrder = (id: string) => {
 	});
 };
 
-export const duplicateOrder = async (orderId: string, tenantId: string): Promise<Orders> => {
+export const duplicateOrder = async (
+	orderId: string,
+	tenantId: string,
+): Promise<Orders> => {
 	// Get the original order
 	const originalOrder = await getOrder(orderId);
 
@@ -140,7 +149,7 @@ export const duplicateOrder = async (orderId: string, tenantId: string): Promise
 					...materialData,
 				},
 			});
-		})
+		}),
 	);
 
 	// Duplicate order processes
@@ -169,7 +178,7 @@ export const duplicateOrder = async (orderId: string, tenantId: string): Promise
 					...processData,
 				},
 			});
-		})
+		}),
 	);
 
 	// Duplicate order payments (commented out - typically you don't want to duplicate payments)
@@ -223,7 +232,7 @@ export const duplicateOrder = async (orderId: string, tenantId: string): Promise
 					...inkData,
 				},
 			});
-		})
+		}),
 	);
 
 	return newOrder;

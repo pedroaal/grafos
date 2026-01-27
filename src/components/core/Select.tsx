@@ -1,5 +1,5 @@
 import type { Component } from "solid-js";
-import { For, type JSX, splitProps } from "solid-js";
+import { For, type JSX, Show, splitProps } from "solid-js";
 
 interface IProps {
 	options: Array<{ key: string; label: string }>;
@@ -22,10 +22,14 @@ const Select: Component<IProps> = (props) => {
 
 	return (
 		<fieldset class="fieldset">
-			<legend class="fieldset-legend">
-				{props.label}
-				{props.required && <span class="required">*</span>}
-			</legend>
+			<Show when={props.label}>
+				<legend class="fieldset-legend">
+					{props.label}
+					<Show when={props.required}>
+						<span class="required">*</span>
+					</Show>
+				</legend>
+			</Show>
 			<select
 				{...selectProps}
 				id={props.name}
@@ -43,7 +47,9 @@ const Select: Component<IProps> = (props) => {
 					{(option) => <option value={option.key}>{option.label}</option>}
 				</For>
 			</select>
-			{props.error && <p class="label text-error">{props.error}</p>}
+			<Show when={props.error}>
+				<p class="label text-error">{props.error}</p>
+			</Show>
 		</fieldset>
 	);
 };

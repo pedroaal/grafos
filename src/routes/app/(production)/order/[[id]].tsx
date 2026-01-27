@@ -369,7 +369,7 @@ const OrderPage = () => {
 									)}
 								</Field>
 							</div>
-							<div class="md:col-span-5"></div>
+							<div class="md:col-span-7"></div>
 							<div class="md:col-span-2">
 								<Field name="priority" type="boolean">
 									{(field, props) => (
@@ -377,19 +377,6 @@ const OrderPage = () => {
 											{...props}
 											label="Prioritario"
 											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="status">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={orderStatuses()}
-											label="Estado"
-											value={field.value}
 											error={field.error}
 										/>
 									)}
@@ -424,20 +411,18 @@ const OrderPage = () => {
 							</div>
 							<div class="md:col-span-4"></div>
 							<div class="md:col-span-2">
-								<Field name="quotedPrice" type="number">
+								<Field name="status">
 									{(field, props) => (
-										<Input
+										<Select
 											{...props}
-											type="number"
-											label="Cotizado $"
-											step="0.01"
+											options={orderStatuses()}
+											label="Estado"
 											value={field.value}
 											error={field.error}
 										/>
 									)}
 								</Field>
 							</div>
-
 							<div class="md:col-span-4">
 								<Field name="clientId">
 									{(field, props) => (
@@ -476,7 +461,21 @@ const OrderPage = () => {
 									readOnly
 								/>
 							</div>
-							<div class="md:col-span-4"></div>
+							<div class="md:col-span-2"></div>
+							<div class="md:col-span-2">
+								<Field name="quotedPrice" type="number">
+									{(field, props) => (
+										<Input
+											{...props}
+											type="number"
+											label="Cotizado $"
+											step="0.01"
+											value={field.value}
+											error={field.error}
+										/>
+									)}
+								</Field>
+							</div>
 
 							<div class="md:col-span-6">
 								<Field name="description">

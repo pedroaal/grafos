@@ -1,11 +1,19 @@
 import type { Models } from "appwrite";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
-import { type Accessor, type Component, For, type Setter } from "solid-js";
+import {
+	type Accessor,
+	type Component,
+	createResource,
+	For,
+	type Setter,
+} from "solid-js";
 
 import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
+import { listMaterials } from "~/services/production/materials";
 
 import type { OrderMaterials } from "~/types/appwrite";
+import Select from "../core/Select";
 
 interface IProps {
 	state: Accessor<Array<MaterialForm>>;
@@ -29,19 +37,26 @@ const materialDefault: MaterialForm = {
 };
 
 const MaterialsSection: Component<IProps> = (props) => {
-	const total = () =>
-		props.state().reduce((sum, item) => sum + (Number(item.total) || 0), 0);
+	const [materials] = createResource({}, listMaterials);
+	const options = () =>
+		materials()?.rows.map((material) => ({
+			key: material.$id,
+			label: material.name,
+		})) || [];
 
 	const add = (current?: Partial<MaterialForm>) =>
 		props.setState((prev) => [...prev, { ...materialDefault, ...current }]);
-
-	const remove = (idx: number) =>
-		props.setState((prev) => prev.filter((_, i) => i !== idx));
 
 	const update = (idx: number, patch: Partial<MaterialForm>) =>
 		props.setState((prev) =>
 			prev.map((item, i) => (i === idx ? { ...item, ...patch } : item)),
 		);
+
+	const remove = (idx: number) =>
+		props.setState((prev) => prev.filter((_, i) => i !== idx));
+
+	const total = () =>
+		props.state().reduce((sum, item) => sum + (Number(item.total) || 0), 0);
 
 	return (
 		<div class="mt-6">
@@ -55,6 +70,7 @@ const MaterialsSection: Component<IProps> = (props) => {
 				</button>
 			</div>
 			<Table
+				size="xs"
 				headers={[
 					{ label: "" },
 					{ label: "Material" },
@@ -78,7 +94,7 @@ const MaterialsSection: Component<IProps> = (props) => {
 				<For each={props.state()}>
 					{(item, idx) => (
 						<tr>
-							<td>
+							<td class="w-4">
 								<button
 									type="button"
 									class="btn btn-ghost btn-sm"
@@ -87,12 +103,12 @@ const MaterialsSection: Component<IProps> = (props) => {
 									<FaSolidXmark size={16} />
 								</button>
 							</td>
-							<td>
-								<Input
+							<td class="w-1/4">
+								<Select
 									name="materialId"
-									type="text"
+									options={options()}
 									value={item.materialId || ""}
-									onInput={(e) =>
+									onChange={(e) =>
 										update(idx(), {
 											materialId: (e.target as HTMLInputElement).value,
 										})
@@ -179,7 +195,7 @@ const MaterialsSection: Component<IProps> = (props) => {
 								<Input
 									name="total"
 									type="number"
-									step="0.0001"
+									step="0.01"
 									value={item.total || 0}
 									onInput={(e) => {
 										update(idx(), {

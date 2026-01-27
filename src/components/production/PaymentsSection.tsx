@@ -1,11 +1,11 @@
 import type { Models } from "appwrite";
+import dayjs from "dayjs";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
 import { type Accessor, type Component, For, type Setter } from "solid-js";
-
 import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
-
 import type { OrderPayments } from "~/types/appwrite";
+import Select from "../core/Select";
 
 interface IProps {
 	state: Accessor<Array<PaymentForm>>;
@@ -19,15 +19,12 @@ export type PaymentForm = Omit<
 >;
 
 const paymentDefault: PaymentForm = {
-	date: "",
+	date: dayjs().format("YYYY-MM-DD"),
 	method: "",
 	amount: 0,
 };
 
 const PaymentsSection: Component<IProps> = (props) => {
-	const total = () =>
-		props.state().reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-
 	const add = (current?: Partial<PaymentForm>) =>
 		props.setState((prev) => [
 			...prev,
@@ -37,13 +34,16 @@ const PaymentsSection: Component<IProps> = (props) => {
 			},
 		]);
 
-	const remove = (idx: number) =>
-		props.setState((prev) => prev.filter((_, i) => i !== idx));
-
 	const update = (idx: number, patch: Partial<PaymentForm>) =>
 		props.setState((prev) =>
 			prev.map((item, i) => (i === idx ? { ...item, ...patch } : item)),
 		);
+
+	const remove = (idx: number) =>
+		props.setState((prev) => prev.filter((_, i) => i !== idx));
+
+	const total = () =>
+		props.state().reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
 
 	return (
 		<div class="mt-6">
@@ -61,6 +61,7 @@ const PaymentsSection: Component<IProps> = (props) => {
 				</button>
 			</div>
 			<Table
+				size="xs"
 				headers={[
 					{ label: "" },
 					{ label: "Fecha" },
@@ -87,7 +88,7 @@ const PaymentsSection: Component<IProps> = (props) => {
 				<For each={props.state()}>
 					{(item, idx) => (
 						<tr>
-							<td>
+							<td class="w-4">
 								<button
 									type="button"
 									class="btn btn-ghost btn-sm"
@@ -109,11 +110,20 @@ const PaymentsSection: Component<IProps> = (props) => {
 								/>
 							</td>
 							<td>
-								<Input
+								<Select
+									options={[
+										{
+											label: "Efectivo",
+											key: "cash",
+										},
+										{
+											label: "Transferencia bancaria",
+											key: "bank_transfer",
+										},
+									]}
 									name="method"
-									type="text"
 									value={item.method || ""}
-									onInput={(e) =>
+									onChange={(e) =>
 										update(idx(), {
 											method: (e.target as HTMLInputElement).value,
 										})
@@ -124,7 +134,7 @@ const PaymentsSection: Component<IProps> = (props) => {
 								<Input
 									name="amount"
 									type="number"
-									step="0.0001"
+									step="0.01"
 									value={item.amount || 0}
 									onInput={(e) =>
 										update(idx(), {

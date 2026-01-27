@@ -347,8 +347,8 @@ const OrderPage = () => {
 							// disabled: !isEdit(),
 						},
 						{
-							onClick: () => submit(form),
 							label: "Guardar",
+							onClick: () => submit(form),
 						},
 					]}
 				>

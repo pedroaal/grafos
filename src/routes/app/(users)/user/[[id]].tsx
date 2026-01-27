@@ -1,4 +1,4 @@
-import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createForm, setValues, valiForm, submit } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
@@ -146,11 +146,11 @@ const UserPage = () => {
 					actions={[
 						{
 							label: "Guardar",
-							form: "userForm",
+							onClick: () => submit(form),
 						},
 					]}
 				>
-					<Form id="userForm" onSubmit={handleSubmit}>
+					<Form onSubmit={handleSubmit}>
 						<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 							<div class="md:col-span-2">
 								<Field name="idNumber">

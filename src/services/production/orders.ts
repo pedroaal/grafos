@@ -2,6 +2,10 @@ import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Orders } from "~/types/appwrite";
+import { OrdersStatus } from "~/types/appwrite";
+import { listOrderInks } from "./orderInks";
+import { listOrderMaterials } from "./orderMaterials";
+import { listOrderProcesses } from "./orderProcesses";
 
 export const listOrders = async (options?: {
 	userId?: string;
@@ -76,4 +80,151 @@ export const deleteOrder = (id: string) => {
 		tableId: TABLES.ORDERS,
 		rowId: id,
 	});
+};
+
+export const duplicateOrder = async (orderId: string, tenantId: string): Promise<Orders> => {
+	// Get the original order
+	const originalOrder = await getOrder(orderId);
+
+	// Get the next order number
+	const lastOrderNumber = await getOrderNumber();
+	const newOrderNumber = lastOrderNumber ? lastOrderNumber + 1 : 1;
+
+	// Prepare new order data (excluding Appwrite metadata and processes array)
+	const {
+		$id: _id,
+		$createdAt: _createdAt,
+		$updatedAt: _updatedAt,
+		$permissions: _permissions,
+		$databaseId: _databaseId,
+		$sequence: _sequence,
+		$tableId: _tableId,
+		processes: _processes,
+		number: _number,
+		status: _status,
+		paymentAmount: _paymentAmount,
+		balance: _balance,
+		...orderData
+	} = originalOrder;
+
+	// Create new order with reset values
+	const newOrder = await createOrder(tenantId, {
+		...orderData,
+		number: newOrderNumber,
+		status: OrdersStatus.PENDING,
+		paymentAmount: 0,
+		balance: orderData.orderTotal,
+	} as Orders);
+
+	// Duplicate order materials
+	const materials = await listOrderMaterials({ orderId });
+	await Promise.all(
+		materials.rows.map((material) => {
+			const {
+				$id: _id,
+				$createdAt: _createdAt,
+				$updatedAt: _updatedAt,
+				$permissions: _permissions,
+				$databaseId: _databaseId,
+				$sequence: _sequence,
+				$tableId: _tableId,
+				orderId: _orderId,
+				...materialData
+			} = material;
+			return tables.createRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.ORDER_MATERIALS,
+				rowId: makeId(),
+				data: {
+					orderId: newOrder.$id,
+					...materialData,
+				},
+			});
+		})
+	);
+
+	// Duplicate order processes
+	const orderProcesses = await listOrderProcesses({ orderId });
+	await Promise.all(
+		orderProcesses.rows.map((process) => {
+			const {
+				$id: _id,
+				$createdAt: _createdAt,
+				$updatedAt: _updatedAt,
+				$permissions: _permissions,
+				$databaseId: _databaseId,
+				$sequence: _sequence,
+				$tableId: _tableId,
+				orderId: _orderId,
+				done: _done,
+				...processData
+			} = process;
+			return tables.createRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.ORDER_PROCESSES,
+				rowId: makeId(),
+				data: {
+					orderId: newOrder.$id,
+					done: false,
+					...processData,
+				},
+			});
+		})
+	);
+
+	// Duplicate order payments (commented out - typically you don't want to duplicate payments)
+	// const payments = await listOrderPayments({ orderId });
+	// await Promise.all(
+	// 	payments.rows.map((payment) => {
+	// 		const {
+	// 			$id: _id,
+	// 			$createdAt: _createdAt,
+	// 			$updatedAt: _updatedAt,
+	// 			$permissions: _permissions,
+	// 			$databaseId: _databaseId,
+	// 			$sequence: _sequence,
+	// 			$tableId: _tableId,
+	// 			orderId: _orderId,
+	// 			...paymentData
+	// 		} = payment;
+	// 		return tables.createRow({
+	// 			databaseId: DATABASE_ID,
+	// 			tableId: TABLES.ORDER_PAYMENTS,
+	// 			rowId: makeId(),
+	// 			data: {
+	// 				orderId: newOrder.$id,
+	// 				...paymentData,
+	// 			},
+	// 		});
+	// 	})
+	// );
+
+	// Duplicate order inks
+	const inks = await listOrderInks({ orderId });
+	await Promise.all(
+		inks.rows.map((ink) => {
+			const {
+				$id: _id,
+				$createdAt: _createdAt,
+				$updatedAt: _updatedAt,
+				$permissions: _permissions,
+				$databaseId: _databaseId,
+				$sequence: _sequence,
+				$tableId: _tableId,
+				orderId: _orderId,
+				...inkData
+			} = ink;
+			return tables.createRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.ORDER_INKS,
+				rowId: makeId(),
+				data: {
+					orderId: newOrder.$id,
+					...inkData,
+				},
+			});
+		})
+	);
+
+	return newOrder;
 };

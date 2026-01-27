@@ -46,6 +46,7 @@ import {
 } from "~/services/production/orderProcesses";
 import {
 	createOrder,
+	duplicateOrder,
 	getOrder,
 	getOrderNumber,
 	updateOrder,
@@ -340,11 +341,10 @@ const OrderPage = () => {
 							disabled: !isEdit(),
 						},
 						{
-							onClick: () => {
-								// TODO: Implement duplicate functionality
-							},
+							onClick: () =>
+								duplicateOrder(params.id || "", authStore.tenantId!),
 							label: "Duplicar",
-							// disabled: !isEdit(),
+							disabled: !isEdit(),
 						},
 						{
 							label: "Guardar",

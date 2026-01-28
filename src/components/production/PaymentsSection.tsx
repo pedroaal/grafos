@@ -2,6 +2,7 @@ import type { Models } from "appwrite";
 import dayjs from "dayjs";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
 import { type Accessor, type Component, For, type Setter } from "solid-js";
+import { produce } from "solid-js/store";
 import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
 import type { OrderPayments } from "~/types/appwrite";
@@ -35,8 +36,10 @@ const PaymentsSection: Component<IProps> = (props) => {
 		]);
 
 	const update = (idx: number, patch: Partial<PaymentForm>) =>
-		props.setState((prev) =>
-			prev.map((item, i) => (i === idx ? { ...item, ...patch } : item)),
+		props.setState(
+			produce((prev) => {
+				Object.assign(prev[idx], patch);
+			}),
 		);
 
 	const remove = (idx: number) =>

@@ -7,6 +7,7 @@ import {
 	For,
 	type Setter,
 } from "solid-js";
+import { produce } from "solid-js/store";
 
 import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
@@ -48,8 +49,10 @@ const MaterialsSection: Component<IProps> = (props) => {
 		props.setState((prev) => [...prev, { ...materialDefault, ...current }]);
 
 	const update = (idx: number, patch: Partial<MaterialForm>) =>
-		props.setState((prev) =>
-			prev.map((item, i) => (i === idx ? { ...item, ...patch } : item)),
+		props.setState(
+			produce((prev) => {
+				Object.assign(prev[idx], patch);
+			}),
 		);
 
 	const remove = (idx: number) =>

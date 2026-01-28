@@ -7,6 +7,7 @@ import {
 	For,
 	type Setter,
 } from "solid-js";
+import { produce } from "solid-js/store";
 
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
@@ -56,17 +57,12 @@ const PrecessesSection: Component<IProps> = (props) => {
 		]);
 
 	const update = (idx: number, patch: Partial<ProcessForm>) =>
-		props.setState((prev) =>
-			prev.map((item, i) => {
-				if (i !== idx) return item;
-				const updated = { ...item, ...patch };
-				updated.total =
-					+(
-						(updated.frontColors + updated.backColors) *
-						updated.thousands *
-						updated.unitPrice
-					).toFixed(4) || 0;
-				return updated;
+		props.setState(
+			produce((prev) => {
+				const {frontColors, backColors, thousands, unitPrice} = {...prev[idx], ...patch}
+				const total =
+					+((frontColors + backColors) * thousands * unitPrice).toFixed(2) || 0;
+				Object.assign(prev[idx], patch, { total });
 			}),
 		);
 

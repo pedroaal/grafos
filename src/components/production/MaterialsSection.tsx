@@ -1,32 +1,29 @@
 import type { Models } from "appwrite";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
-import {
-	type Accessor,
-	type Component,
-	createResource,
-	For,
-	type Setter,
-} from "solid-js";
-import { produce } from "solid-js/store";
-
+import { type Component, createResource, For } from "solid-js";
+import type { Part, SetStoreFunction } from "solid-js/store";
 import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
+import { makeId } from "~/lib/appwrite";
 import { listMaterials } from "~/services/production/materials";
-
 import type { OrderMaterials } from "~/types/appwrite";
+import type { Totals } from "~/types/orders";
 import Select from "../core/Select";
 
 interface IProps {
-	state: Accessor<Array<MaterialForm>>;
-	setState: Setter<Array<MaterialForm>>;
+	state: MaterialForm[];
+	setState: SetStoreFunction<MaterialForm[]>;
+	totals: Totals;
+	setTotals: SetStoreFunction<Totals>;
 }
 
 export type MaterialForm = Omit<
 	OrderMaterials,
 	keyof Models.Row | "orderId" | "materialId" | "supplierId"
-> & { materialId: string; supplierId: string };
+> & { $id: string; materialId: string; supplierId: string };
 
 const materialDefault: MaterialForm = {
+	$id: "",
 	materialId: "",
 	quantity: 0,
 	cutHeight: 0,
@@ -45,21 +42,31 @@ const MaterialsSection: Component<IProps> = (props) => {
 			label: material.name,
 		})) || [];
 
-	const add = (current?: Partial<MaterialForm>) =>
-		props.setState((prev) => [...prev, { ...materialDefault, ...current }]);
+	const add = () =>
+		props.setState(props.state.length, { ...materialDefault, $id: makeId() });
 
-	const update = (idx: number, patch: Partial<MaterialForm>) =>
+	const update = (
+		id: string,
+		col: Part<MaterialForm>,
+		value: string | number | null,
+	) => {
 		props.setState(
-			produce((prev) => {
-				Object.assign(prev[idx], patch);
-			}),
+			(item) => item.$id === id,
+			col,
+			() => value,
 		);
+
+		props.setTotals((prev) => ({
+			...prev,
+			materials: props.state.reduce(
+				(sum, item) => sum + (Number(item.total) || 0),
+				0,
+			),
+		}));
+	};
 
 	const remove = (idx: number) =>
 		props.setState((prev) => prev.filter((_, i) => i !== idx));
-
-	const total = () =>
-		props.state().reduce((sum, item) => sum + (Number(item.total) || 0), 0);
 
 	return (
 		<div class="mt-6">
@@ -68,7 +75,7 @@ const MaterialsSection: Component<IProps> = (props) => {
 				<button type="button" class="btn btn-sm" onClick={[props.setState, []]}>
 					<FaSolidTrashCan size={16} />
 				</button>
-				<button type="button" class="btn btn-sm btn-ghost" onClick={[add, {}]}>
+				<button type="button" class="btn btn-sm btn-ghost" onClick={add}>
 					<FaSolidPlus size={16} />
 				</button>
 			</div>
@@ -90,11 +97,13 @@ const MaterialsSection: Component<IProps> = (props) => {
 						<td colspan={8} class="text-right font-bold">
 							Total material $
 						</td>
-						<td class="text-center font-bold">{total().toFixed(4)}</td>
+						<td class="text-center font-bold">
+							{props.totals.materials.toFixed(2)}
+						</td>
 					</tr>
 				}
 			>
-				<For each={props.state()}>
+				<For each={props.state}>
 					{(item, idx) => (
 						<tr>
 							<td class="w-4">
@@ -112,9 +121,11 @@ const MaterialsSection: Component<IProps> = (props) => {
 									options={options()}
 									value={item.materialId || ""}
 									onChange={(e) =>
-										update(idx(), {
-											materialId: (e.target as HTMLInputElement).value,
-										})
+										update(
+											item.$id,
+											"materialId",
+											(e.target as HTMLInputElement).value,
+										)
 									}
 								/>
 							</td>
@@ -124,9 +135,11 @@ const MaterialsSection: Component<IProps> = (props) => {
 									type="number"
 									value={item.quantity || 0}
 									onInput={(e) =>
-										update(idx(), {
-											quantity: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"quantity",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -134,12 +147,14 @@ const MaterialsSection: Component<IProps> = (props) => {
 								<Input
 									name="cutHeight"
 									type="number"
-									step="0.01"
+									step="0.1"
 									value={item.cutHeight || 0}
 									onInput={(e) =>
-										update(idx(), {
-											cutHeight: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"cutHeight",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -147,12 +162,14 @@ const MaterialsSection: Component<IProps> = (props) => {
 								<Input
 									name="cutWidth"
 									type="number"
-									step="0.01"
+									step="0.1"
 									value={item.cutWidth || 0}
 									onInput={(e) =>
-										update(idx(), {
-											cutWidth: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"cutWidth",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -162,9 +179,11 @@ const MaterialsSection: Component<IProps> = (props) => {
 									type="number"
 									value={item.sizes || 0}
 									onInput={(e) =>
-										update(idx(), {
-											sizes: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"sizes",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -174,9 +193,11 @@ const MaterialsSection: Component<IProps> = (props) => {
 									type="text"
 									value={item.supplierId || ""}
 									onInput={(e) =>
-										update(idx(), {
-											supplierId: (e.target as HTMLInputElement).value,
-										})
+										update(
+											item.$id,
+											"supplierId",
+											(e.target as HTMLInputElement).value,
+										)
 									}
 								/>
 							</td>
@@ -186,11 +207,11 @@ const MaterialsSection: Component<IProps> = (props) => {
 									type="number"
 									value={item.invoiceNumber || 0}
 									onInput={(e) =>
-										update(idx(), {
-											invoiceNumber: Number(
-												(e.target as HTMLInputElement).value,
-											),
-										})
+										update(
+											item.$id,
+											"invoiceNumber",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -201,9 +222,11 @@ const MaterialsSection: Component<IProps> = (props) => {
 									step="0.01"
 									value={item.total || 0}
 									onInput={(e) => {
-										update(idx(), {
-											total: Number((e.target as HTMLInputElement).value),
-										});
+										update(
+											item.$id,
+											"total",
+											Number((e.target as HTMLInputElement).value),
+										);
 									}}
 								/>
 							</td>

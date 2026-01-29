@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import dayjs from "dayjs";
 import { createEffect, createResource, createSignal, on } from "solid-js";
+import { createStore } from "solid-js/store";
 import {
 	boolean,
 	nullable,
@@ -28,7 +29,7 @@ import PaymentsSection, {
 import ProcessesSection, {
 	type ProcessForm,
 } from "~/components/production/ProcessesSection";
-
+import { OrdersStatus } from "~/config/appwrite";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
@@ -53,7 +54,7 @@ import {
 } from "~/services/production/orders";
 import { listClients } from "~/services/sales/clients";
 import type { Contacts, Orders } from "~/types/appwrite";
-import { OrdersStatus } from "~/config/appwrite";
+import type { Totals } from "~/types/orders";
 
 const OrderSchema = object({
 	number: number(),
@@ -144,15 +145,15 @@ const OrderPage = () => {
 		listOrderPayments,
 	);
 
-	const [materials, setMaterials] = createSignal<MaterialForm[]>([]);
-	const [processes, setProcesses] = createSignal<ProcessForm[]>([]);
-	const [payments, setPayments] = createSignal<PaymentForm[]>([]);
-
-	const processesTotal = () =>
-		processes().reduce((sum, item) => sum + (Number(item.total) || 0), 0);
-	const paymentsTotal = () =>
-		payments().reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-	const balance = () => processesTotal() - paymentsTotal();
+	const [materials, setMaterials] = createStore<MaterialForm[]>([]);
+	const [processes, setProcesses] = createStore<ProcessForm[]>([]);
+	const [payments, setPayments] = createStore<PaymentForm[]>([]);
+	const [totals, setTotals] = createStore<Totals>({
+		materials: 0,
+		processes: 0,
+		payments: 0,
+		balance: 0,
+	});
 
 	const formatClientPhone = (contact: Partial<Contacts>) =>
 		[contact?.phone, contact?.mobile].filter(Boolean).join(" / ");
@@ -198,6 +199,12 @@ const OrderPage = () => {
 					notes: order.notes,
 				});
 				setPhone(formatClientPhone(order.clientId?.contactId));
+				setTotals({
+					materials: order.materialTotal,
+					processes: order.orderTotal,
+					payments: order.paymentAmount,
+					balance: order.balance,
+				});
 			},
 		),
 	);
@@ -207,7 +214,8 @@ const OrderPage = () => {
 			() => orderMaterials(),
 			(orderMaterial) => {
 				if (!orderMaterial || !isEdit()) return;
-				const data = orderMaterial.rows.map((item) => ({
+				const data: MaterialForm[] = orderMaterial.rows.map((item) => ({
+					$id: item.$id,
 					materialId: item.materialId || "",
 					quantity: item.quantity,
 					cutHeight: item.cutHeight,
@@ -227,7 +235,8 @@ const OrderPage = () => {
 			() => orderProcesses(),
 			(orderProcesses) => {
 				if (!orderProcesses || !isEdit()) return;
-				const data = orderProcesses.rows.map((item) => ({
+				const data: ProcessForm[] = orderProcesses.rows.map((item) => ({
+					$id: item.$id,
 					processId: item.processId || "",
 					frontColors: item.frontColors,
 					backColors: item.backColors,
@@ -246,7 +255,8 @@ const OrderPage = () => {
 			() => orderPayments(),
 			(orderPayments) => {
 				if (!orderPayments || !isEdit()) return;
-				const data = orderPayments.rows.map((item) => ({
+				const data: PaymentForm[] = orderPayments.rows.map((item) => ({
+					$id: item.$id,
 					date: item.date,
 					method: item.method,
 					amount: item.amount,
@@ -274,13 +284,13 @@ const OrderPage = () => {
 					formValues.status === OrdersStatus.PAID
 						? dayjs().format("YYYY-MM-DD")
 						: undefined,
-				materialTotal: processesTotal(),
-				orderTotal: processesTotal(),
-				paymentAmount: paymentsTotal(),
-				balance: balance(),
+				materialTotal: totals.materials,
+				orderTotal: totals.processes,
+				paymentAmount: totals.payments,
+				balance: totals.balance,
 			};
 
-			let orderId = isEdit() ? params.id! : "";
+			let orderId = params.id || "";
 			if (isEdit() && params.id) {
 				await updateOrder(params.id, orderPayload);
 			} else {
@@ -289,9 +299,9 @@ const OrderPage = () => {
 			}
 
 			await Promise.all([
-				syncOrderMaterials(orderId, materials()),
-				syncOrderProcesses(orderId, processes()),
-				syncOrderPayments(orderId, payments()),
+				syncOrderMaterials(orderId, materials),
+				syncOrderProcesses(orderId, processes),
+				syncOrderPayments(orderId, payments),
 			]);
 
 			addAlert({ type: "success", message: "Orden guardada correctamente" });
@@ -518,6 +528,7 @@ const OrderPage = () => {
 											{...props}
 											type="number"
 											label="Corte A"
+											step="0.1"
 											value={field.value}
 											error={field.error}
 										/>
@@ -531,6 +542,7 @@ const OrderPage = () => {
 											{...props}
 											type="number"
 											label="Corte An"
+											step="0.1"
 											value={field.value}
 											error={field.error}
 										/>
@@ -565,14 +577,25 @@ const OrderPage = () => {
 							</div>
 						</div>
 
-						<MaterialsSection state={materials} setState={setMaterials} />
+						<MaterialsSection
+							state={materials}
+							setState={setMaterials}
+							totals={totals}
+							setTotals={setTotals}
+						/>
 
-						<ProcessesSection state={processes} setState={setProcesses} />
+						<ProcessesSection
+							state={processes}
+							setState={setProcesses}
+							totals={totals}
+							setTotals={setTotals}
+						/>
 
 						<PaymentsSection
 							state={payments}
 							setState={setPayments}
-							balance={balance}
+							totals={totals}
+							setTotals={setTotals}
 						/>
 
 						<Field name="notes">

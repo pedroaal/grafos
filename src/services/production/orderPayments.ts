@@ -39,7 +39,7 @@ export const syncOrderPayments = async (
 		existing.rows.map((item) =>
 			tables.deleteRow({
 				databaseId: DATABASE_ID,
-				tableId: TABLES.ORDER_MATERIALS,
+				tableId: TABLES.ORDER_PAYMENTS,
 				rowId: item.$id,
 			}),
 		),

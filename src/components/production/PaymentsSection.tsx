@@ -1,52 +1,64 @@
 import type { Models } from "appwrite";
 import dayjs from "dayjs";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
-import { type Accessor, type Component, For, type Setter } from "solid-js";
-import { produce } from "solid-js/store";
+import { type Component, For } from "solid-js";
+import type { Part, SetStoreFunction } from "solid-js/store";
 import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
+import { makeId } from "~/lib/appwrite";
 import type { OrderPayments } from "~/types/appwrite";
+import type { Totals } from "~/types/orders";
 import Select from "../core/Select";
 
 interface IProps {
-	state: Accessor<Array<PaymentForm>>;
-	setState: Setter<Array<PaymentForm>>;
-	balance: Accessor<number>;
+	state: PaymentForm[];
+	setState: SetStoreFunction<PaymentForm[]>;
+	totals: Totals;
+	setTotals: SetStoreFunction<Totals>;
 }
 
 export type PaymentForm = Omit<
 	OrderPayments,
 	keyof Models.Row | "orderId" | "userId"
->;
+> & { $id: string };
 
 const paymentDefault: PaymentForm = {
+	$id: "",
 	date: dayjs().format("YYYY-MM-DD"),
 	method: "",
 	amount: 0,
 };
 
 const PaymentsSection: Component<IProps> = (props) => {
-	const add = (current?: Partial<PaymentForm>) =>
-		props.setState((prev) => [
-			...prev,
-			{
-				...paymentDefault,
-				...current,
-			},
-		]);
+	const add = () =>
+		props.setState(props.state.length, { ...paymentDefault, $id: makeId() });
 
-	const update = (idx: number, patch: Partial<PaymentForm>) =>
+	const update = (
+		id: string,
+		col: Part<PaymentForm>,
+		value: string | number,
+	) => {
 		props.setState(
-			produce((prev) => {
-				Object.assign(prev[idx], patch);
-			}),
+			(item) => item.$id === id,
+			col,
+			() => value,
 		);
+
+		props.setTotals((prev) => {
+			const total = props.state.reduce(
+				(sum, item) => sum + (Number(item.amount) || 0),
+				0,
+			);
+			return {
+				...prev,
+				payments: total,
+				balance: prev.processes - total,
+			};
+		});
+	};
 
 	const remove = (idx: number) =>
 		props.setState((prev) => prev.filter((_, i) => i !== idx));
-
-	const total = () =>
-		props.state().reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
 
 	return (
 		<div class="mt-6">
@@ -77,18 +89,22 @@ const PaymentsSection: Component<IProps> = (props) => {
 							<td colspan={3} class="text-right font-bold">
 								Abonos $
 							</td>
-							<td class="text-right font-bold">{total().toFixed(4)}</td>
+							<td class="text-right font-bold">
+								{props.totals.payments.toFixed(2)}
+							</td>
 						</tr>
 						<tr>
 							<td colspan={3} class="text-right font-bold">
 								Saldo $
 							</td>
-							<td class="text-right font-bold">{props.balance().toFixed(4)}</td>
+							<td class="text-right font-bold">
+								{props.totals.balance.toFixed(2)}
+							</td>
 						</tr>
 					</>
 				}
 			>
-				<For each={props.state()}>
+				<For each={props.state}>
 					{(item, idx) => (
 						<tr>
 							<td class="w-4">
@@ -106,9 +122,11 @@ const PaymentsSection: Component<IProps> = (props) => {
 									type="date"
 									value={item.date || ""}
 									onInput={(e) =>
-										update(idx(), {
-											date: (e.target as HTMLInputElement).value,
-										})
+										update(
+											item.$id,
+											"date",
+											(e.target as HTMLInputElement).value,
+										)
 									}
 								/>
 							</td>
@@ -127,9 +145,11 @@ const PaymentsSection: Component<IProps> = (props) => {
 									name="method"
 									value={item.method || ""}
 									onChange={(e) =>
-										update(idx(), {
-											method: (e.target as HTMLInputElement).value,
-										})
+										update(
+											item.$id,
+											"method",
+											(e.target as HTMLInputElement).value,
+										)
 									}
 								/>
 							</td>
@@ -140,9 +160,11 @@ const PaymentsSection: Component<IProps> = (props) => {
 									step="0.01"
 									value={item.amount || 0}
 									onInput={(e) =>
-										update(idx(), {
-											amount: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"amount",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>

@@ -1,35 +1,33 @@
 import type { Models } from "appwrite";
 import { FaSolidPlus, FaSolidTrashCan, FaSolidXmark } from "solid-icons/fa";
-import {
-	type Accessor,
-	type Component,
-	createResource,
-	For,
-	type Setter,
-} from "solid-js";
-import { produce } from "solid-js/store";
-
+import { type Component, createResource, createSignal, For } from "solid-js";
+import type { Part, SetStoreFunction } from "solid-js/store";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
+import { makeId } from "~/lib/appwrite";
 import { listProcesses } from "~/services/production/processes";
-
 import type { OrderProcesses } from "~/types/appwrite";
+import type { Totals } from "~/types/orders";
 import Select from "../core/Select";
 
 interface IProps {
-	state: Accessor<Array<ProcessForm>>;
-	setState: Setter<Array<ProcessForm>>;
+	state: ProcessForm[];
+	setState: SetStoreFunction<ProcessForm[]>;
+	totals: Totals;
+	setTotals: SetStoreFunction<Totals>;
 }
 
 export type ProcessForm = Omit<
 	OrderProcesses,
 	keyof Models.Row | "orderId" | "processId"
 > & {
+	$id: string;
 	processId: string;
 };
 
 const processDefault: ProcessForm = {
+	$id: "",
 	processId: "",
 	frontColors: 0,
 	backColors: 0,
@@ -47,30 +45,47 @@ const PrecessesSection: Component<IProps> = (props) => {
 			label: process.name,
 		})) || [];
 
-	const add = (current?: Partial<ProcessForm>) =>
-		props.setState((prev) => [
-			...prev,
-			{
-				...processDefault,
-				...current,
-			},
-		]);
+	const add = () =>
+		props.setState(props.state.length, { ...processDefault, $id: makeId() });
 
-	const update = (idx: number, patch: Partial<ProcessForm>) =>
+	const update = (
+		id: string,
+		col: Part<ProcessForm>,
+		value: string | number | boolean,
+	) => {
 		props.setState(
-			produce((prev) => {
-				const {frontColors, backColors, thousands, unitPrice} = {...prev[idx], ...patch}
-				const total =
-					+((frontColors + backColors) * thousands * unitPrice).toFixed(2) || 0;
-				Object.assign(prev[idx], patch, { total });
-			}),
+			(item) => item.$id === id,
+			col,
+			() => value,
 		);
+
+		const current = props.state.find((item) => item.$id === id);
+		props.setState(
+			(item) => item.$id === id,
+			"total",
+			() =>
+				+(
+					((current?.frontColors || 0) + (current?.backColors || 0)) *
+					(current?.thousands || 0) *
+					(current?.unitPrice || 0)
+				).toFixed(2) || 0,
+		);
+
+		props.setTotals((prev) => {
+			const total = props.state.reduce(
+				(sum, item) => sum + (Number(item.total) || 0),
+				0,
+			);
+			return {
+				...prev,
+				processes: total,
+				balance: total - prev.payments,
+			};
+		});
+	};
 
 	const remove = (idx: number) =>
 		props.setState((prev) => prev.filter((_, i) => i !== idx));
-
-	const total = () =>
-		props.state().reduce((sum, item) => sum + (Number(item.total) || 0), 0);
 
 	return (
 		<div class="mt-6">
@@ -83,7 +98,7 @@ const PrecessesSection: Component<IProps> = (props) => {
 				>
 					<FaSolidTrashCan size={16} />
 				</button>
-				<button type="button" class="btn btn-sm" onClick={[add, {}]}>
+				<button type="button" class="btn btn-sm" onClick={add}>
 					<FaSolidPlus size={16} />
 				</button>
 			</div>
@@ -104,12 +119,14 @@ const PrecessesSection: Component<IProps> = (props) => {
 						<td colspan={6} class="text-right font-bold">
 							Total Pedido $
 						</td>
-						<td class="text-center font-bold">{total().toFixed(4)}</td>
+						<td class="text-center font-bold">
+							{props.totals.processes.toFixed(2)}
+						</td>
 						<td></td>
 					</tr>
 				}
 			>
-				<For each={props.state()}>
+				<For each={props.state}>
 					{(item, idx) => (
 						<tr>
 							<td class="w-4">
@@ -127,9 +144,11 @@ const PrecessesSection: Component<IProps> = (props) => {
 									name="processId"
 									value={item.processId || ""}
 									onChange={(e) =>
-										update(idx(), {
-											processId: (e.target as HTMLInputElement).value,
-										})
+										update(
+											item.$id,
+											"processId",
+											(e.target as HTMLInputElement).value,
+										)
 									}
 								/>
 							</td>
@@ -139,9 +158,11 @@ const PrecessesSection: Component<IProps> = (props) => {
 									type="number"
 									value={item.frontColors || 0}
 									onInput={(e) =>
-										update(idx(), {
-											frontColors: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"frontColors",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -151,9 +172,11 @@ const PrecessesSection: Component<IProps> = (props) => {
 									type="number"
 									value={item.backColors || 0}
 									onInput={(e) =>
-										update(idx(), {
-											backColors: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"backColors",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -163,9 +186,11 @@ const PrecessesSection: Component<IProps> = (props) => {
 									type="number"
 									value={item.thousands || 0}
 									onInput={(e) =>
-										update(idx(), {
-											thousands: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"thousands",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
@@ -176,21 +201,25 @@ const PrecessesSection: Component<IProps> = (props) => {
 									step="0.01"
 									value={item.unitPrice || 0}
 									onInput={(e) =>
-										update(idx(), {
-											unitPrice: Number((e.target as HTMLInputElement).value),
-										})
+										update(
+											item.$id,
+											"unitPrice",
+											Number((e.target as HTMLInputElement).value),
+										)
 									}
 								/>
 							</td>
-							<td class="text-center">{(item.total || 0).toFixed(4)}</td>
+							<td class="text-center">{(item.total || 0).toFixed(2)}</td>
 							<td class="text-center">
 								<Checkbox
 									name="done"
 									checked={item.done || false}
 									onChange={(e) =>
-										update(idx(), {
-											done: (e.target as HTMLInputElement).checked,
-										})
+										update(
+											item.$id,
+											"done",
+											(e.target as HTMLInputElement).checked,
+										)
 									}
 								/>
 							</td>

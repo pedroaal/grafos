@@ -18,6 +18,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
+import MultiSelect from "~/components/core/Multiselect";
 import Select from "~/components/core/Select";
 import DashboardLayout from "~/components/layouts/Dashboard";
 import MaterialsSection, {
@@ -33,6 +34,8 @@ import { OrdersStatus } from "~/config/appwrite";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
+import { listInks } from "~/services/production/inks";
+import { listOrderInks, syncOrderInks } from "~/services/production/orderInks";
 import {
 	listOrderMaterials,
 	syncOrderMaterials,
@@ -54,7 +57,7 @@ import {
 } from "~/services/production/orders";
 import { listClients } from "~/services/sales/clients";
 import type { Contacts, Orders } from "~/types/appwrite";
-import type { Totals } from "~/types/orders";
+import type { IInks, ITotals } from "~/types/orders";
 
 const OrderSchema = object({
 	number: number(),
@@ -129,9 +132,20 @@ const OrderPage = () => {
 
 	const [clients] = createResource({}, listClients);
 	const [phone, setPhone] = createSignal<string>("");
+	const [inksData] = createResource({}, listInks);
+
+	const inkOptions = () =>
+		inksData()?.rows.map((ink) => ({
+			key: ink.$id,
+			label: ink.color,
+		})) || [];
 
 	const [orderNumber] = createResource(getOrderNumber);
 	const [order] = createResource(params.id, getOrder);
+	const [orderInks] = createResource(
+		{ orderId: params.id || "" },
+		listOrderInks,
+	);
 	const [orderMaterials] = createResource(
 		{ orderId: params.id || "" },
 		listOrderMaterials,
@@ -145,10 +159,14 @@ const OrderPage = () => {
 		listOrderPayments,
 	);
 
+	const [inks, setInks] = createStore<IInks>({
+		front: [],
+		back: [],
+	});
 	const [materials, setMaterials] = createStore<MaterialForm[]>([]);
 	const [processes, setProcesses] = createStore<ProcessForm[]>([]);
 	const [payments, setPayments] = createStore<PaymentForm[]>([]);
-	const [totals, setTotals] = createStore<Totals>({
+	const [totals, setTotals] = createStore<ITotals>({
 		materials: 0,
 		processes: 0,
 		payments: 0,
@@ -205,6 +223,25 @@ const OrderPage = () => {
 					payments: order.paymentAmount,
 					balance: order.balance,
 				});
+			},
+		),
+	);
+
+	createEffect(
+		on(
+			() => orderInks(),
+			(orderInk) => {
+				if (!orderInk || !isEdit()) return;
+				const front: string[] = [];
+				const back: string[] = [];
+				for (const item of orderInk.rows) {
+					if (item.side === "front") {
+						front.push(item.inkId || "");
+					} else if (item.side === "back") {
+						back.push(item.inkId || "");
+					}
+				}
+				setInks({ front, back });
 			},
 		),
 	);
@@ -298,7 +335,14 @@ const OrderPage = () => {
 				orderId = createdOrder.$id;
 			}
 
+			const frontInks = inks.front.map((ink) => ({
+				inkId: ink,
+				side: "front",
+			}));
+			const backInks = inks.back.map((ink) => ({ inkId: ink, side: "back" }));
+
 			await Promise.all([
+				syncOrderInks(orderId, [...frontInks, ...backInks]),
 				syncOrderMaterials(orderId, materials),
 				syncOrderProcesses(orderId, processes),
 				syncOrderPayments(orderId, payments),
@@ -375,17 +419,20 @@ const OrderPage = () => {
 							</div>
 							<div class="md:col-span-7"></div>
 							<div class="md:col-span-2">
-								<Field name="priority" type="boolean">
+								<Field name="quotedPrice" type="number">
 									{(field, props) => (
-										<Checkbox
+										<Input
 											{...props}
-											label="Prioritario"
-											checked={field.value}
+											type="number"
+											label="Cotizado $"
+											step="0.01"
+											value={field.value}
 											error={field.error}
 										/>
 									)}
 								</Field>
 							</div>
+
 							<div class="md:col-span-3">
 								<Field name="startDate">
 									{(field, props) => (
@@ -413,7 +460,19 @@ const OrderPage = () => {
 									)}
 								</Field>
 							</div>
-							<div class="md:col-span-4"></div>
+							<div class="md:col-span-2"></div>
+							<div class="md:col-span-2 flex items-end pb-2">
+								<Field name="priority" type="boolean">
+									{(field, props) => (
+										<Checkbox
+											{...props}
+											label="Prioritario"
+											checked={field.value}
+											error={field.error}
+										/>
+									)}
+								</Field>
+							</div>
 							<div class="md:col-span-2">
 								<Field name="status">
 									{(field, props) => (
@@ -427,6 +486,7 @@ const OrderPage = () => {
 									)}
 								</Field>
 							</div>
+
 							<div class="md:col-span-4">
 								<Field name="clientId">
 									{(field, props) => (
@@ -466,22 +526,8 @@ const OrderPage = () => {
 								/>
 							</div>
 							<div class="md:col-span-2"></div>
-							<div class="md:col-span-2">
-								<Field name="quotedPrice" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Cotizado $"
-											step="0.01"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
 
-							<div class="md:col-span-6">
+							<div class="md:col-span-10">
 								<Field name="description">
 									{(field, props) => (
 										<Input
@@ -489,20 +535,6 @@ const OrderPage = () => {
 											type="text"
 											label="Descripción"
 											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="paperType">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Material (papel)"
-											value={field.value || ""}
 											error={field.error}
 										/>
 									)}
@@ -516,6 +548,20 @@ const OrderPage = () => {
 											type="number"
 											label="Cantidad"
 											value={field.value}
+											error={field.error}
+										/>
+									)}
+								</Field>
+							</div>
+
+							<div class="md:col-span-4">
+								<Field name="paperType">
+									{(field, props) => (
+										<Input
+											{...props}
+											type="text"
+											label="Material (papel)"
+											value={field.value || ""}
 											error={field.error}
 										/>
 									)}
@@ -574,6 +620,25 @@ const OrderPage = () => {
 										/>
 									)}
 								</Field>
+							</div>
+
+							<div class="md:col-span-6">
+								<MultiSelect
+									name="frontInks"
+									options={inkOptions()}
+									label="Tintas tiro"
+									value={inks.front}
+									onChange={(values) => setInks("front", values)}
+								/>
+							</div>
+							<div class="md:col-span-6">
+								<MultiSelect
+									name="backInks"
+									options={inkOptions()}
+									label="Tintas retiro"
+									value={inks.back}
+									onChange={(values) => setInks("back", values)}
+								/>
 							</div>
 						</div>
 

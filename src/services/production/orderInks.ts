@@ -3,13 +3,12 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { OrderInks } from "~/types/appwrite";
 
-export const listOrderInks = async (options?: {
-	orderId?: string;
+export const listOrderInks = async (options: {
+	orderId: string;
 	inkId?: string;
 	side?: boolean;
 }) => {
-	const queries = [];
-	if (options?.orderId) queries.push(Query.equal("orderId", options.orderId));
+	const queries = [Query.equal("orderId", options.orderId)];
 	if (options?.inkId) queries.push(Query.equal("inkId", options.inkId));
 	if (options?.side !== undefined)
 		queries.push(Query.equal("side", options.side));
@@ -20,6 +19,37 @@ export const listOrderInks = async (options?: {
 		queries,
 	});
 	return res;
+};
+
+export const syncOrderInks = async (
+	orderId: string,
+	inks: Partial<OrderInks>[],
+) => {
+	const existing = await listOrderInks({ orderId });
+	await Promise.all(
+		existing.rows.map((item) =>
+			tables.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.ORDER_INKS,
+				rowId: item.$id,
+			}),
+		),
+	);
+
+	// Create new relations
+	const promises = inks.map((ink) =>
+		tables.createRow<OrderInks>({
+			databaseId: DATABASE_ID,
+			tableId: TABLES.ORDER_INKS,
+			rowId: makeId(),
+			data: {
+				orderId,
+				...ink
+			},
+		}),
+	);
+
+	return await Promise.all(promises);
 };
 
 export const getOrderInk = async (id: string) => {

@@ -79,6 +79,12 @@ export enum InvoicesPaymentType {
     CARD = "card"
 }
 
+export enum InkSide {
+    FRONT = "front",
+    BACK = "back",
+}
+
+
 export type Schedules = Models.Row & {
     name: string;
     morningArrival: string;
@@ -334,7 +340,7 @@ export type Orders = Models.Row & {
 export type OrderInks = Models.Row & {
     orderId: Orders;
     inkId: Inks;
-    side: boolean;
+    side: InkSide;
 }
 
 export type OrderMaterials = Models.Row & {
@@ -381,7 +387,6 @@ export type Processes = Models.Row & {
     operatorTime: string | null;
     internal: boolean;
     followUp: boolean;
-    parentId: string | null;
 }
 
 export type Suppliers = Models.Row & {

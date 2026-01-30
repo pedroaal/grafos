@@ -1,18 +1,5 @@
-import type { FieldValues, FormStore } from "@modular-forms/solid";
-import {
-	FaSolidCheck,
-	FaSolidCheckDouble,
-	FaSolidChevronDown,
-	FaSolidXmark,
-} from "solid-icons/fa";
-import {
-	type Component,
-	createEffect,
-	createSignal,
-	For,
-	type JSX,
-	Show,
-} from "solid-js";
+import { FaSolidCheck, FaSolidChevronDown, FaSolidXmark } from "solid-icons/fa";
+import { type Component, createSignal, For, type JSX, Show } from "solid-js";
 import type { IOption } from "~/types/core";
 
 interface IProps {
@@ -40,12 +27,6 @@ const MultiSelect: Component<IProps> = (props) => {
 			? current.filter((v) => v !== key)
 			: [...current, key];
 
-		setSelectedValues(newValues);
-		props.onChange?.(newValues);
-	};
-
-	const removeValue = (key: string) => {
-		const newValues = selectedValues().filter((v) => v !== key);
 		setSelectedValues(newValues);
 		props.onChange?.(newValues);
 	};

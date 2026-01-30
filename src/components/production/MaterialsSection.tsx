@@ -7,14 +7,14 @@ import Table from "~/components/core/Table";
 import { makeId } from "~/lib/appwrite";
 import { listMaterials } from "~/services/production/materials";
 import type { OrderMaterials } from "~/types/appwrite";
-import type { Totals } from "~/types/orders";
+import type { ITotals } from "~/types/orders";
 import Select from "../core/Select";
 
 interface IProps {
 	state: MaterialForm[];
 	setState: SetStoreFunction<MaterialForm[]>;
-	totals: Totals;
-	setTotals: SetStoreFunction<Totals>;
+	totals: ITotals;
+	setTotals: SetStoreFunction<ITotals>;
 }
 
 export type MaterialForm = Omit<

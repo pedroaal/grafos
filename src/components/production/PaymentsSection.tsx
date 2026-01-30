@@ -7,14 +7,14 @@ import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
 import { makeId } from "~/lib/appwrite";
 import type { OrderPayments } from "~/types/appwrite";
-import type { Totals } from "~/types/orders";
+import type { ITotals } from "~/types/orders";
 import Select from "../core/Select";
 
 interface IProps {
 	state: PaymentForm[];
 	setState: SetStoreFunction<PaymentForm[]>;
-	totals: Totals;
-	setTotals: SetStoreFunction<Totals>;
+	totals: ITotals;
+	setTotals: SetStoreFunction<ITotals>;
 }
 
 export type PaymentForm = Omit<

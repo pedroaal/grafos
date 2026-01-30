@@ -8,14 +8,14 @@ import Table from "~/components/core/Table";
 import { makeId } from "~/lib/appwrite";
 import { listProcesses } from "~/services/production/processes";
 import type { OrderProcesses } from "~/types/appwrite";
-import type { Totals } from "~/types/orders";
+import type { ITotals } from "~/types/orders";
 import Select from "../core/Select";
 
 interface IProps {
 	state: ProcessForm[];
 	setState: SetStoreFunction<ProcessForm[]>;
-	totals: Totals;
-	setTotals: SetStoreFunction<Totals>;
+	totals: ITotals;
+	setTotals: SetStoreFunction<ITotals>;
 }
 
 export type ProcessForm = Omit<

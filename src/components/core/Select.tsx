@@ -1,8 +1,9 @@
 import type { Component } from "solid-js";
 import { For, type JSX, Show, splitProps } from "solid-js";
+import type { IOption } from "~/types/core";
 
 interface IProps {
-	options: Array<{ key: string; label: string }>;
+	options: IOption[];
 	label?: string;
 	placeholder?: string;
 	required?: boolean;

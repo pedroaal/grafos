@@ -4,13 +4,10 @@ import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Processes } from "~/types/appwrite";
 
 export const listProcesses = async (options?: {
-	parentId?: string;
 	type?: boolean;
 	followUp?: boolean;
 }) => {
 	const queries = [Query.select(["*", "areaId.name"])];
-	if (options?.parentId)
-		queries.push(Query.equal("parentId", options.parentId));
 	if (options?.type !== undefined)
 		queries.push(Query.equal("type", options.type));
 	if (options?.followUp !== undefined)

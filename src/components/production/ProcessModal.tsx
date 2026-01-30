@@ -31,12 +31,10 @@ const ProcessSchema = object({
 	operatorTime: nullable(string()),
 	internal: boolean(),
 	followUp: boolean(),
-	parentId: nullable(string()),
 });
 
-type ProcessForm = Omit<Processes, keyof Models.Row | "areaId" | "parentId"> & {
+type ProcessForm = Omit<Processes, keyof Models.Row | "areaId"> & {
 	areaId: string;
-	parentId?: string | null;
 };
 
 const processDefaults: ProcessForm = {
@@ -47,7 +45,6 @@ const processDefaults: ProcessForm = {
 	operatorTime: null,
 	internal: false,
 	followUp: false,
-	parentId: null,
 };
 
 const ProcessModal = (props: IProps) => {
@@ -82,7 +79,6 @@ const ProcessModal = (props: IProps) => {
 			operatorTime: p.operatorTime ?? null,
 			internal: p.internal ?? false,
 			followUp: p.followUp ?? false,
-			parentId: p.parentId ?? null,
 		});
 	});
 
@@ -97,7 +93,6 @@ const ProcessModal = (props: IProps) => {
 				operatorTime: values.operatorTime ?? null,
 				internal: !!values.internal,
 				followUp: !!values.followUp,
-				parentId: values.parentId || null,
 			};
 
 			if (isEdit()) {
@@ -221,22 +216,6 @@ const ProcessModal = (props: IProps) => {
 									{...props}
 									label="Seguimiento"
 									checked={field.value}
-									error={field.error}
-								/>
-							)}
-						</Field>
-					</div>
-
-					<div class="md:col-span-6">
-						<Field name="parentId">
-							{(field, props) => (
-								<Select
-									{...props}
-									label="Padre (opcional)"
-									options={(processes()?.rows || [])
-										.filter((pr) => pr.$id !== appStore.modalProps?.id)
-										.map((pr) => ({ key: pr.$id, label: pr.name }))}
-									value={field.value || ""}
 									error={field.error}
 								/>
 							)}

@@ -1,6 +1,6 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
 import type { Models } from "appwrite";
-import { createEffect, createResource } from "solid-js";
+import { createEffect, createResource, on } from "solid-js";
 import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
@@ -43,14 +43,18 @@ const CategoryModal = (props: IProps) => {
 		initialValues: { name: "" },
 	});
 
-	createEffect(() => {
-		const c = category();
-		if (!c || !isEdit()) return;
+	createEffect(
+		on(
+			() => category(),
+			(category) => {
+				if (!category || !isEdit()) return;
 
-		setValues(form, {
-			name: c.name || "",
-		});
-	});
+				setValues(form, {
+					name: category.name || "",
+				});
+			},
+		),
+	);
 
 	const handleSubmit = async (values: CategoryForm) => {
 		const loaderId = addLoader();
@@ -62,7 +66,7 @@ const CategoryModal = (props: IProps) => {
 					message: "Categoría actualizada con éxito",
 				});
 			} else {
-				await createCategory(authStore.tenantId, values as Categories);
+				await createCategory(authStore.tenantId!, values as Categories);
 				addAlert({ type: "success", message: "Categoría creada con éxito" });
 			}
 

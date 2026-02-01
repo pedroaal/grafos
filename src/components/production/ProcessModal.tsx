@@ -1,6 +1,6 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
 import type { Models } from "appwrite";
-import { createEffect, createResource } from "solid-js";
+import { createEffect, createResource, on } from "solid-js";
 import { boolean, nullable, number, object, string } from "valibot";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
@@ -67,20 +67,24 @@ const ProcessModal = (props: IProps) => {
 		initialValues: processDefaults,
 	});
 
-	createEffect(() => {
-		const p = process();
-		if (!p || !isEdit()) return;
+	createEffect(
+		on(
+			() => process(),
+			(process) => {
+				if (!process || !isEdit()) return;
 
-		setValues(form, {
-			areaId: (p.areaId as any)?.$id || (p.areaId as any) || "",
-			name: p.name || "",
-			goal: p.goal ?? 0,
-			machineTime: p.machineTime ?? null,
-			operatorTime: p.operatorTime ?? null,
-			internal: p.internal ?? false,
-			followUp: p.followUp ?? false,
-		});
-	});
+				setValues(form, {
+					areaId: process.areaId,
+					name: process.name || "",
+					goal: process.goal ?? 0,
+					machineTime: process.machineTime ?? null,
+					operatorTime: process.operatorTime ?? null,
+					internal: process.internal ?? false,
+					followUp: process.followUp ?? false,
+				});
+			},
+		),
+	);
 
 	const handleSubmit = async (values: ProcessForm) => {
 		const loaderId = addLoader();
@@ -99,7 +103,7 @@ const ProcessModal = (props: IProps) => {
 				await updateProcess(appStore.modalProps!.id, payload);
 				addAlert({ type: "success", message: "Proceso actualizado con éxito" });
 			} else {
-				await createProcess(authStore.tenantId, payload as Processes);
+				await createProcess(authStore.tenantId!, payload as Processes);
 				addAlert({ type: "success", message: "Proceso creado con éxito" });
 			}
 

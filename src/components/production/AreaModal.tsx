@@ -1,6 +1,6 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
 import type { Models } from "appwrite";
-import { createEffect, createResource } from "solid-js";
+import { createEffect, createResource, on } from "solid-js";
 import { number, object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
@@ -43,15 +43,19 @@ const AreaModal = (props: IProps) => {
 		},
 	});
 
-	createEffect(() => {
-		const a = area();
-		if (!a || !isEdit()) return;
+	createEffect(
+		on(
+			() => area(),
+			(area) => {
+				if (!area || !isEdit()) return;
 
-		setValues(form, {
-			name: a.name || "",
-			sortOrder: a.sortOrder ?? 0,
-		});
-	});
+				setValues(form, {
+					name: area.name || "",
+					sortOrder: area.sortOrder ?? 0,
+				});
+			},
+		),
+	);
 
 	const handleSubmit = async (values: AreaForm) => {
 		const loaderId = addLoader();
@@ -60,7 +64,7 @@ const AreaModal = (props: IProps) => {
 				await updateArea(appStore.modalProps!.id, values);
 				addAlert({ type: "success", message: "Área actualizada con éxito" });
 			} else {
-				await createArea(authStore.tenantId, values as Areas);
+				await createArea(authStore.tenantId!, values as Areas);
 				addAlert({ type: "success", message: "Área creada con éxito" });
 			}
 

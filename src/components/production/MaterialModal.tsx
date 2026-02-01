@@ -1,6 +1,6 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
 import type { Models } from "appwrite";
-import { createEffect, createResource } from "solid-js";
+import { createEffect, createResource, on } from "solid-js";
 import { boolean, nullable, number, object, string } from "valibot";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
@@ -67,36 +67,37 @@ const MaterialModal = (props: IProps) => {
 		initialValues: materialDefaults,
 	});
 
-	createEffect(() => {
-		const m = material();
-		if (!m || !isEdit()) return;
+	createEffect(
+		on(
+			() => material(),
+			(material) => {
+				if (!material || !isEdit()) return;
 
-		setValues(form, {
-			categoryId: (m.categoryId as any)?.$id || (m.categoryId as any) || "",
-			name: m.name || "",
-			hasColor: m.hasColor ?? false,
-			height: m.height ?? null,
-			width: m.width ?? null,
-			price: m.price ?? null,
-			hasUv: m.hasUv ?? false,
-			hasLaminated: m.hasLaminated ?? false,
-		});
-	});
+				setValues(form, {
+					categoryId: material.categoryId,
+					name: material.name || "",
+					hasColor: material.hasColor ?? false,
+					height: material.height ?? null,
+					width: material.width ?? null,
+					price: material.price ?? null,
+					hasUv: material.hasUv ?? false,
+					hasLaminated: material.hasLaminated ?? false,
+				});
+			},
+		),
+	);
 
 	const handleSubmit = async (values: MaterialForm) => {
 		const loaderId = addLoader();
 		try {
 			if (isEdit()) {
-				await updateMaterial(
-					appStore.modalProps!.id,
-					values as Partial<Materials>,
-				);
+				await updateMaterial(appStore.modalProps!.id, values);
 				addAlert({
 					type: "success",
 					message: "Material actualizado con éxito",
 				});
 			} else {
-				await createMaterial(authStore.tenantId, values as Materials);
+				await createMaterial(authStore.tenantId!, values as Materials);
 				addAlert({ type: "success", message: "Material creado con éxito" });
 			}
 

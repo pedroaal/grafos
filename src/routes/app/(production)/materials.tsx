@@ -9,6 +9,7 @@ import TrueFalse from "~/components/core/TrueFalse";
 import DashboardLayout from "~/components/layouts/Dashboard";
 import CategoryModal from "~/components/production/CategoryModal";
 import MaterialModal from "~/components/production/MaterialModal";
+import SupplierModal from "~/components/production/SupplierModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
@@ -17,6 +18,7 @@ import {
 	listCategories,
 } from "~/services/production/categories";
 import { deleteMaterial, listMaterials } from "~/services/production/materials";
+import { deleteSupplier, listSuppliers } from "~/services/production/suppliers";
 
 const MaterialsPage = () => {
 	const { addAlert, openModal } = useApp();
@@ -28,6 +30,10 @@ const MaterialsPage = () => {
 	const [materials, { refetch: refetchMaterials }] = createResource(
 		{},
 		listMaterials,
+	);
+	const [suppliers, { refetch: refetchSuppliers }] = createResource(
+		{},
+		listSuppliers,
 	);
 
 	const editRow = (modalId: string, id: string) => {
@@ -66,6 +72,24 @@ const MaterialsPage = () => {
 			addAlert({
 				type: "error",
 				message: error.message || "Error al eliminar material",
+			});
+		}
+	};
+
+	const handleSupplierDelete = async (supplierId: string, name: string) => {
+		const confirm = window.confirm(
+			`¿Está seguro de eliminar el proveedor "${name}"? `,
+		);
+		if (!confirm) return;
+
+		try {
+			await deleteSupplier(supplierId);
+			addAlert({ type: "success", message: "Proveedor eliminado con éxito" });
+			refetchSuppliers();
+		} catch (error: any) {
+			addAlert({
+				type: "error",
+				message: error.message || "Error al eliminar proveedor",
 			});
 		}
 	};
@@ -154,8 +178,43 @@ const MaterialsPage = () => {
 						</For>
 					</Table>
 				</BlueBoard>
+				<BlueBoard
+					title="Proveedores"
+					modals={[
+						{
+							key: Modals.Supplier,
+							label: "Nuevo Proveedor",
+						},
+					]}
+				>
+					<Table
+						headers={[
+							{ label: "Nombre" },
+							{ label: "Telefono" },
+							{ label: "Direccion" },
+							{ label: "", class: "w-1/12" },
+						]}
+					>
+						<For each={suppliers()?.rows || []}>
+							{(item) => (
+								<tr>
+									<td>{item.name}</td>
+									<td>{item.phone}</td>
+									<td>{item.address}</td>
+									<td>
+										<RowActions
+											onEdit={() => editRow(Modals.Supplier, item.$id)}
+											onDelete={() => handleSupplierDelete(item.$id, item.name)}
+										/>
+									</td>
+								</tr>
+							)}
+						</For>
+					</Table>
+				</BlueBoard>
 				<CategoryModal onSuccess={() => refetchCategories()} />
 				<MaterialModal onSuccess={() => refetchMaterials()} />
+				<SupplierModal onSuccess={() => refetchSuppliers()} />
 			</DashboardLayout>
 		</>
 	);

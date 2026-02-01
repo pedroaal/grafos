@@ -6,6 +6,7 @@ import Input from "~/components/core/Input";
 import Table from "~/components/core/Table";
 import { makeId } from "~/lib/appwrite";
 import { listMaterials } from "~/services/production/materials";
+import { listSuppliers } from "~/services/production/suppliers";
 import type { OrderMaterials } from "~/types/appwrite";
 import type { ITotals } from "~/types/orders";
 import Select from "../core/Select";
@@ -36,10 +37,16 @@ const materialDefault: MaterialForm = {
 
 const MaterialsSection: Component<IProps> = (props) => {
 	const [materials] = createResource({}, listMaterials);
+	const [suppliers] = createResource({}, listSuppliers);
 	const options = () =>
 		materials()?.rows.map((material) => ({
 			key: material.$id,
 			label: material.name,
+		})) || [];
+	const supplierOptions = () =>
+		suppliers()?.rows.map((supplier) => ({
+			key: supplier.$id,
+			label: supplier.name,
 		})) || [];
 
 	const add = () =>
@@ -188,11 +195,11 @@ const MaterialsSection: Component<IProps> = (props) => {
 								/>
 							</td>
 							<td>
-								<Input
+								<Select
 									name="supplierId"
-									type="text"
+									options={supplierOptions()}
 									value={item.supplierId || ""}
-									onInput={(e) =>
+									onChange={(e) =>
 										update(
 											item.$id,
 											"supplierId",

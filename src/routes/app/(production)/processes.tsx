@@ -8,11 +8,13 @@ import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
 import DashboardLayout from "~/components/layouts/Dashboard";
 import AreaModal from "~/components/production/AreaModal";
+import InkModal from "~/components/production/InkModal";
 import ProcessModal from "~/components/production/ProcessModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
 import { deleteArea, listAreas } from "~/services/production/areas";
+import { deleteInk, listInks } from "~/services/production/inks";
 import { deleteProcess, listProcesses } from "~/services/production/processes";
 
 const ProcessesPage = () => {
@@ -23,6 +25,7 @@ const ProcessesPage = () => {
 		{},
 		listProcesses,
 	);
+	const [inks, { refetch: refetchInks }] = createResource({}, listInks);
 
 	const editRow = (modalId: string, id: string) => {
 		openModal(modalId, { id });
@@ -60,6 +63,24 @@ const ProcessesPage = () => {
 			addAlert({
 				type: "error",
 				message: error.message || "Error al eliminar proceso",
+			});
+		}
+	};
+
+	const handleInkDelete = async (inkId: string, name: string) => {
+		const confirm = window.confirm(
+			`¿Está seguro de eliminar la tinta "${name}"? `,
+		);
+		if (!confirm) return;
+
+		try {
+			await deleteInk(inkId);
+			addAlert({ type: "success", message: "Tinta eliminada con éxito" });
+			refetchInks();
+		} catch (error: any) {
+			addAlert({
+				type: "error",
+				message: error.message || "Error al eliminar tinta",
 			});
 		}
 	};
@@ -143,8 +164,34 @@ const ProcessesPage = () => {
 						</For>
 					</Table>
 				</BlueBoard>
+				<BlueBoard
+					title="Tintas"
+					modals={[
+						{
+							key: Modals.Ink,
+							label: "Nueva Tinta",
+						},
+					]}
+				>
+					<Table headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}>
+						<For each={inks()?.rows || []}>
+							{(item) => (
+								<tr>
+									<td>{item.color}</td>
+									<td>
+										<RowActions
+											onEdit={() => editRow(Modals.Ink, item.$id)}
+											onDelete={() => handleInkDelete(item.$id, item.color)}
+										/>
+									</td>
+								</tr>
+							)}
+						</For>
+					</Table>
+				</BlueBoard>
 				<AreaModal onSuccess={() => refetchAreas()} />
 				<ProcessModal onSuccess={() => refetchProcesses()} />
+				<InkModal onSuccess={() => refetchInks()} />
 			</DashboardLayout>
 		</>
 	);

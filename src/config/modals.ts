@@ -7,4 +7,6 @@ export enum Modals {
 	Process = "process-modal",
 	Category = "category-modal",
 	Material = "material-modal",
+	Ink = "ink-modal",
+	Supplier = "supplier-modal",
 }

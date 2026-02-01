@@ -29,6 +29,5 @@ export const makeId = () => ID.unique();
 export const getPermissions = (tenantId: string) => [
 	Permission.read(Role.team(tenantId)),
 	Permission.update(Role.team(tenantId, "user")),
-	Permission.update(Role.team(tenantId, "admin")),
-	Permission.delete(Role.team(tenantId, "admin")),
+	Permission.write(Role.team(tenantId, "admin")),
 ];

@@ -4,7 +4,7 @@ import { makeId, tables } from "~/lib/appwrite";
 import type { ProfileFeatures } from "~/types/appwrite";
 
 export const listProfileFeatures = async (profileId?: string) => {
-	const queries = [];
+	const queries = [Query.limit(100)];
 	if (profileId) queries.push(Query.equal("profileId", profileId));
 
 	const res = await tables.listRows<ProfileFeatures>({

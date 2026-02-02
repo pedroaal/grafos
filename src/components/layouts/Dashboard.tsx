@@ -30,7 +30,7 @@ const Notifications = [
 const DashboardLayout: ParentComponent = (props) => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { authStore, logout } = useAuth();
+	const { authStore, logout, checkFeature } = useAuth();
 	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
@@ -78,7 +78,12 @@ const DashboardLayout: ParentComponent = (props) => {
 						<For each={SidebarLinks}>
 							{(item) => (
 								<Switch>
-									<Match when={!item.children || item.children.length === 0}>
+									<Match
+										when={
+											checkFeature(item.feature) &&
+											(!item.children || item.children.length === 0)
+										}
+									>
 										<li>
 											<A href={item.href}>
 												<Dynamic
@@ -89,7 +94,13 @@ const DashboardLayout: ParentComponent = (props) => {
 											</A>
 										</li>
 									</Match>
-									<Match when={item.children && item.children.length > 0}>
+									<Match
+										when={
+											checkFeature(item.feature) &&
+											item.children &&
+											item.children.length > 0
+										}
+									>
 										<div class="dropdown dropdown-right is-drawer-open:hidden">
 											<li>
 												<button tabindex={0} type="button">

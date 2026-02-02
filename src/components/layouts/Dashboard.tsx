@@ -69,10 +69,10 @@ const DashboardLayout: ParentComponent = (props) => {
 					<ul class="menu w-full gap-2">
 						<Switch>
 							<Match when={sidebarOpen()}>
-								<img src="/logo" alt="logo" class="mb-4" />
+								<img src="/logo_blue.svg" alt="logo" class="h-10 mb-4" />
 							</Match>
 							<Match when={!sidebarOpen()}>
-								<img src="/logo-min" alt="logo min" class="mb-4" />
+								<img src="/iso_blue.svg" alt="logo min" class="h-10 mb-4" />
 							</Match>
 						</Switch>
 						<For each={SidebarLinks}>

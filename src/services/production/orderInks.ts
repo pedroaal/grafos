@@ -9,7 +9,6 @@ export const listOrderInks = async (options: {
 	side?: boolean;
 }) => {
 	const queries = [
-		Query.limit(50),
 		Query.equal("orderId", options.orderId),
 	];
 	if (options?.inkId) queries.push(Query.equal("inkId", options.inkId));

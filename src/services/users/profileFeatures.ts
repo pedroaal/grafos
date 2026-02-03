@@ -5,14 +5,8 @@ import type { ProfileFeatures } from "~/types/appwrite";
 
 export const listProfileFeatures = async (options: {
 	profileId?: string;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(50)];
 	if (options?.profileId) queries.push(Query.equal("profileId", options.profileId));
 
 	const res = await tables.listRows<ProfileFeatures>({

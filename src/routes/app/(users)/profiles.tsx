@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
-import { createResource, For } from "solid-js";
+import { createResource, For, createEffect } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
@@ -12,13 +12,27 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
+import { usePagination } from "~/hooks/usePagination";
 import { deleteProfile, listProfiles } from "~/services/users/profiles";
 
 const ProfilesPage = () => {
 	const navigate = useNavigate();
 	const { addAlert } = useApp();
 
-	const [profiles, { refetch }] = createResource(listProfiles);
+	const pagination = usePagination();
+
+	const [profiles, { refetch }] = createResource(
+		() => ({ page: pagination.page(), perPage: pagination.perPage() }),
+		listProfiles,
+	);
+
+	// Update total items when profiles data changes
+	createEffect(() => {
+		const data = profiles();
+		if (data) {
+			pagination.setTotalItems(data.total);
+		}
+	});
 
 	const goTo = (profileId: string) => {
 		navigate(`${Routes.profile}/${profileId}`);
@@ -63,6 +77,14 @@ const ProfilesPage = () => {
 							{ label: "Descripción" },
 							{ label: "", class: "w-1/12" },
 						]}
+						pagination={{
+							page: pagination.page(),
+							totalPages: pagination.totalPages(),
+							totalItems: pagination.totalItems(),
+							perPage: pagination.perPage(),
+							onPageChange: pagination.setPage,
+							onPerPageChange: pagination.setPerPage,
+						}}
 					>
 						<For each={profiles()?.rows} fallback={<EmptyTable colspan={4} />}>
 							{(item) => (

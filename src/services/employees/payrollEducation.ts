@@ -5,13 +5,10 @@ import type { PayrollEducation } from "~/types/appwrite";
 
 export const listPayrollEducation = async (options: {
 	payrollId?: string;
-	page?: number;
-	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
 	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
+		Query.limit(50),
 	];
 	if (options?.payrollId) queries.push(Query.equal("payrollId", options.payrollId));
 

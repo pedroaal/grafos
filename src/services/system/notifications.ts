@@ -3,21 +3,13 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Notifications } from "~/types/appwrite";
 
-/**
- * List notifications with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.userId - Filter by user ID
- * @param options.unreadOnly - Filter only unread notifications
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listNotifications = async (options?: {
+export const listNotifications = async (options: {
 	userId?: string;
 	unreadOnly?: boolean;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

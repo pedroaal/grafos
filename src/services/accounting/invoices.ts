@@ -3,17 +3,7 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Invoices } from "~/types/appwrite";
 
-/**
- * List invoices with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.clientId - Filter by client ID
- * @param options.status - Filter by status
- * @param options.dateFrom - Filter by creation date from
- * @param options.dateTo - Filter by creation date to
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listInvoices = async (options?: {
+export const listInvoices = async (options: {
 	clientId?: string;
 	status?: "pending" | "paid";
 	dateFrom?: string;
@@ -21,7 +11,7 @@ export const listInvoices = async (options?: {
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

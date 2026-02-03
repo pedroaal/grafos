@@ -3,21 +3,13 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Contacts } from "~/types/appwrite";
 
-/**
- * List contacts with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.clientCompanyId - Filter by client company ID
- * @param options.searchName - Filter by name
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listContacts = async (options?: {
+export const listContacts = async (options: {
 	clientCompanyId?: string;
 	searchName?: string;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

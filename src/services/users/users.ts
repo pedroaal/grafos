@@ -3,19 +3,12 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Users } from "~/types/appwrite";
 
-/**
- * List users with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.authId - Filter by auth ID
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listUsers = async (options?: {
+export const listUsers = async (options: {
 	authId?: string;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

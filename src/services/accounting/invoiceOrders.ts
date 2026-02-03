@@ -3,21 +3,13 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { InvoiceWorkOrders } from "~/types/appwrite";
 
-/**
- * List invoice orders with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.invoiceId - Filter by invoice ID
- * @param options.orderId - Filter by order ID
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listInvoiceOrders = async (options?: {
+export const listInvoiceOrders = async (options: {
 	invoiceId?: string;
 	orderId?: string;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

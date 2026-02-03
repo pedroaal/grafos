@@ -3,15 +3,6 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { OrderInks } from "~/types/appwrite";
 
-/**
- * List order inks with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.orderId - Filter by order ID (required)
- * @param options.inkId - Filter by ink ID
- * @param options.side - Filter by side
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
 export const listOrderInks = async (options: {
 	orderId: string;
 	inkId?: string;

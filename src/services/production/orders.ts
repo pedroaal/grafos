@@ -7,18 +7,7 @@ import { listOrderInks } from "./orderInks";
 import { listOrderMaterials } from "./orderMaterials";
 import { listOrderProcesses } from "./orderProcesses";
 
-/**
- * List orders with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.userId - Filter by user ID
- * @param options.clientId - Filter by client ID
- * @param options.status - Filter by status
- * @param options.dateFrom - Filter by start date from
- * @param options.dateTo - Filter by end date to
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listOrders = async (options?: {
+export const listOrders = async (options: {
 	userId?: string;
 	clientId?: string;
 	status?: string;
@@ -27,7 +16,7 @@ export const listOrders = async (options?: {
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

@@ -4,14 +4,6 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { OrderProcesses } from "~/types/appwrite";
 
-/**
- * List order processes with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.orderId - Filter by order ID (required)
- * @param options.done - Filter by done status
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
 export const listOrderProcesses = async (options: {
 	orderId: string;
 	done?: boolean;

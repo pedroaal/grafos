@@ -3,21 +3,13 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { PayrollReferences } from "~/types/appwrite";
 
-/**
- * List payroll references with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.payrollId - Filter by payroll ID
- * @param options.referenceType - Filter by reference type
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listPayrollReferences = async (options?: {
+export const listPayrollReferences = async (options: {
 	payrollId?: string;
 	referenceType?: boolean;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

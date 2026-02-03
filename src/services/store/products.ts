@@ -3,21 +3,13 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Products } from "~/types/appwrite";
 
-/**
- * List products with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.categoryId - Filter by category ID
- * @param options.search - Filter by name
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listProducts = async (options?: {
+export const listProducts = async (options: {
 	categoryId?: string;
 	search?: string;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

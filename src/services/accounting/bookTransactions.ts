@@ -3,23 +3,14 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { BookTransactions } from "~/types/appwrite";
 
-/**
- * List book transactions with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.dateFrom - Filter by date from
- * @param options.dateTo - Filter by date to
- * @param options.transactionType - Filter by transaction type
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listBookTransactions = async (options?: {
+export const listBookTransactions = async (options: {
 	dateFrom?: string;
 	dateTo?: string;
 	transactionType?: boolean;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

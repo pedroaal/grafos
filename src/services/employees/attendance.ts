@@ -3,21 +3,13 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Attendance } from "~/types/appwrite";
 
-/**
- * List attendance with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.userId - Filter by user ID
- * @param options.date - Filter by date
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listAttendance = async (options?: {
+export const listAttendance = async (options: {
 	userId?: string;
 	date?: string;
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

@@ -3,18 +3,7 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Crm } from "~/types/appwrite";
 
-/**
- * List CRM entries with optional filters and pagination
- * @param options - Filter and pagination options
- * @param options.assignedId - Filter by assigned ID
- * @param options.contactId - Filter by contact ID
- * @param options.status - Filter by status
- * @param options.dateFrom - Filter by scheduled date from
- * @param options.dateTo - Filter by scheduled date to
- * @param options.page - Page number (1-indexed). Default: 1
- * @param options.perPage - Items per page. Default: 10
- */
-export const listCrm = async (options?: {
+export const listCrm = async (options: {
 	assignedId?: string;
 	contactId?: string;
 	status?: boolean;
@@ -23,7 +12,7 @@ export const listCrm = async (options?: {
 	page?: number;
 	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options || {};
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),

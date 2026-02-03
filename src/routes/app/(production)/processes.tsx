@@ -1,5 +1,5 @@
 import { Title } from "@solidjs/meta";
-import { createResource, For } from "solid-js";
+import { createEffect, createResource, For } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
@@ -13,6 +13,7 @@ import ProcessModal from "~/components/production/ProcessModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { usePagination } from "~/hooks/usePagination";
 import { deleteArea, listAreas } from "~/services/production/areas";
 import { deleteInk, listInks } from "~/services/production/inks";
 import { deleteProcess, listProcesses } from "~/services/production/processes";
@@ -20,12 +21,54 @@ import { deleteProcess, listProcesses } from "~/services/production/processes";
 const ProcessesPage = () => {
 	const { addAlert, openModal } = useApp();
 
-	const [areas, { refetch: refetchAreas }] = createResource({}, listAreas);
+	// Create separate pagination for each table
+	const areasPagination = usePagination();
+	const processesPagination = usePagination();
+	const inksPagination = usePagination();
+
+	const [areas, { refetch: refetchAreas }] = createResource(
+		() => ({
+			page: areasPagination.page(),
+			perPage: areasPagination.perPage(),
+		}),
+		listAreas,
+	);
 	const [processes, { refetch: refetchProcesses }] = createResource(
-		{},
+		() => ({
+			page: processesPagination.page(),
+			perPage: processesPagination.perPage(),
+		}),
 		listProcesses,
 	);
-	const [inks, { refetch: refetchInks }] = createResource({}, listInks);
+	const [inks, { refetch: refetchInks }] = createResource(
+		() => ({
+			page: inksPagination.page(),
+			perPage: inksPagination.perPage(),
+		}),
+		listInks,
+	);
+
+	// Update total items when data changes
+	createEffect(() => {
+		const data = areas();
+		if (data?.total !== undefined) {
+			areasPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = processes();
+		if (data?.total !== undefined) {
+			processesPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = inks();
+		if (data?.total !== undefined) {
+			inksPagination.setTotalItems(data.total);
+		}
+	});
 
 	const editRow = (modalId: string, id: string) => {
 		openModal(modalId, { id });
@@ -105,6 +148,14 @@ const ProcessesPage = () => {
 							{ label: "Orden" },
 							{ label: "", class: "w-1/12" },
 						]}
+						pagination={{
+							page: areasPagination.page(),
+							totalPages: areasPagination.totalPages(),
+							totalItems: areasPagination.totalItems(),
+							perPage: areasPagination.perPage(),
+							onPageChange: areasPagination.setPage,
+							onPerPageChange: areasPagination.setPerPage,
+						}}
 					>
 						<For each={areas()?.rows || []}>
 							{(item) => (
@@ -140,6 +191,14 @@ const ProcessesPage = () => {
 							{ label: "Seguimiento" },
 							{ label: "", class: "w-1/12" },
 						]}
+						pagination={{
+							page: processesPagination.page(),
+							totalPages: processesPagination.totalPages(),
+							totalItems: processesPagination.totalItems(),
+							perPage: processesPagination.perPage(),
+							onPageChange: processesPagination.setPage,
+							onPerPageChange: processesPagination.setPerPage,
+						}}
 					>
 						<For each={processes()?.rows || []}>
 							{(item) => (
@@ -173,7 +232,17 @@ const ProcessesPage = () => {
 						},
 					]}
 				>
-					<Table headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}>
+					<Table
+						headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}
+						pagination={{
+							page: inksPagination.page(),
+							totalPages: inksPagination.totalPages(),
+							totalItems: inksPagination.totalItems(),
+							perPage: inksPagination.perPage(),
+							onPageChange: inksPagination.setPage,
+							onPerPageChange: inksPagination.setPerPage,
+						}}
+					>
 						<For each={inks()?.rows || []}>
 							{(item) => (
 								<tr>

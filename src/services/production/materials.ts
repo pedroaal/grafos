@@ -6,11 +6,20 @@ import type { Materials } from "~/types/appwrite";
 export const listMaterials = async (options?: {
 	categoryId?: string;
 	search?: string;
+	page?: number;
+	perPage?: number;
 }) => {
 	const queries = [Query.select(["*", "categoryId.name"])];
 	if (options?.categoryId)
 		queries.push(Query.equal("categoryId", options.categoryId));
 	if (options?.search) queries.push(Query.equal("description", options.search));
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
 
 	const res = await tables.listRows<Materials>({
 		databaseId: DATABASE_ID,

@@ -13,6 +13,8 @@ export const listOrders = async (options?: {
 	status?: string;
 	dateFrom?: string;
 	dateTo?: string;
+	page?: number;
+	perPage?: number;
 }) => {
 	const queries = [
 		Query.select(["*", "clientId.companyId.name", "processes.$id"]),
@@ -24,6 +26,13 @@ export const listOrders = async (options?: {
 	if (options?.dateFrom)
 		queries.push(Query.greaterThan("startDate", options.dateFrom));
 	if (options?.dateTo) queries.push(Query.lessThan("endDate", options.dateTo));
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
 
 	const res = await tables.listRows<Orders>({
 		databaseId: DATABASE_ID,

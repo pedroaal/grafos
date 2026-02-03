@@ -2,10 +2,23 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Profiles } from "~/types/appwrite";
 
-export const listProfiles = async () => {
+export const listProfiles = async (options?: {
+	page?: number;
+	perPage?: number;
+}) => {
+	const queries = [];
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
+
 	const res = await tables.listRows<Profiles>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.PROFILES,
+		queries,
 	});
 	return res;
 };

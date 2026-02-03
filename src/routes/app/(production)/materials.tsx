@@ -1,5 +1,5 @@
 import { Title } from "@solidjs/meta";
-import { createResource, For } from "solid-js";
+import { createEffect, createResource, For } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
@@ -13,6 +13,7 @@ import SupplierModal from "~/components/production/SupplierModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { usePagination } from "~/hooks/usePagination";
 import {
 	deleteCategory,
 	listCategories,
@@ -23,18 +24,54 @@ import { deleteSupplier, listSuppliers } from "~/services/production/suppliers";
 const MaterialsPage = () => {
 	const { addAlert, openModal } = useApp();
 
+	// Create separate pagination for each table
+	const categoriesPagination = usePagination();
+	const materialsPagination = usePagination();
+	const suppliersPagination = usePagination();
+
 	const [categories, { refetch: refetchCategories }] = createResource(
-		{},
+		() => ({
+			page: categoriesPagination.page(),
+			perPage: categoriesPagination.perPage(),
+		}),
 		listCategories,
 	);
 	const [materials, { refetch: refetchMaterials }] = createResource(
-		{},
+		() => ({
+			page: materialsPagination.page(),
+			perPage: materialsPagination.perPage(),
+		}),
 		listMaterials,
 	);
 	const [suppliers, { refetch: refetchSuppliers }] = createResource(
-		{},
+		() => ({
+			page: suppliersPagination.page(),
+			perPage: suppliersPagination.perPage(),
+		}),
 		listSuppliers,
 	);
+
+	// Update total items when data changes
+	createEffect(() => {
+		const data = categories();
+		if (data?.total !== undefined) {
+			categoriesPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = materials();
+		if (data?.total !== undefined) {
+			materialsPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = suppliers();
+		if (data?.total !== undefined) {
+			suppliersPagination.setTotalItems(data.total);
+		}
+	});
 
 	const editRow = (modalId: string, id: string) => {
 		openModal(modalId, { id });
@@ -112,6 +149,14 @@ const MaterialsPage = () => {
 				>
 					<Table
 						headers={[{ label: "Nombre" }, { label: "", class: "w-1/12" }]}
+						pagination={{
+							page: categoriesPagination.page(),
+							totalPages: categoriesPagination.totalPages(),
+							totalItems: categoriesPagination.totalItems(),
+							perPage: categoriesPagination.perPage(),
+							onPageChange: categoriesPagination.setPage,
+							onPerPageChange: categoriesPagination.setPerPage,
+						}}
 					>
 						<For each={categories()?.rows || []}>
 							{(item) => (
@@ -149,6 +194,14 @@ const MaterialsPage = () => {
 							{ label: "Laminado" },
 							{ label: "", class: "w-1/12" },
 						]}
+						pagination={{
+							page: materialsPagination.page(),
+							totalPages: materialsPagination.totalPages(),
+							totalItems: materialsPagination.totalItems(),
+							perPage: materialsPagination.perPage(),
+							onPageChange: materialsPagination.setPage,
+							onPerPageChange: materialsPagination.setPerPage,
+						}}
 					>
 						<For each={materials()?.rows || []}>
 							{(item) => (
@@ -194,6 +247,14 @@ const MaterialsPage = () => {
 							{ label: "Direccion" },
 							{ label: "", class: "w-1/12" },
 						]}
+						pagination={{
+							page: suppliersPagination.page(),
+							totalPages: suppliersPagination.totalPages(),
+							totalItems: suppliersPagination.totalItems(),
+							perPage: suppliersPagination.perPage(),
+							onPageChange: suppliersPagination.setPage,
+							onPerPageChange: suppliersPagination.setPerPage,
+						}}
 					>
 						<For each={suppliers()?.rows || []}>
 							{(item) => (

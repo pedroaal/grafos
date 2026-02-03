@@ -3,11 +3,23 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Users } from "~/types/appwrite";
 
-export const listUsers = async (options?: { authId?: string }) => {
+export const listUsers = async (options?: {
+	authId?: string;
+	page?: number;
+	perPage?: number;
+}) => {
 	const queries = [Query.select(["*", "profileId.name"])];
 	if (options?.authId) {
 		queries.push(Query.equal("authId", options.authId));
 	}
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
+
 	const res = await tables.listRows<Users>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.USERS,

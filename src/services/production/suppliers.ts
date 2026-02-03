@@ -3,9 +3,20 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Suppliers } from "~/types/appwrite";
 
-export const listSuppliers = async (options?: { search?: string }) => {
+export const listSuppliers = async (options?: {
+	search?: string;
+	page?: number;
+	perPage?: number;
+}) => {
 	const queries = [];
 	if (options?.search) queries.push(Query.contains("name", options.search));
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
 
 	const res = await tables.listRows<Suppliers>({
 		databaseId: DATABASE_ID,

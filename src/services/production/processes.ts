@@ -6,12 +6,21 @@ import type { Processes } from "~/types/appwrite";
 export const listProcesses = async (options?: {
 	type?: boolean;
 	followUp?: boolean;
+	page?: number;
+	perPage?: number;
 }) => {
 	const queries = [Query.select(["*", "areaId.name"])];
 	if (options?.type !== undefined)
 		queries.push(Query.equal("type", options.type));
 	if (options?.followUp !== undefined)
 		queries.push(Query.equal("followUp", options.followUp));
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
 
 	const res = await tables.listRows<Processes>({
 		databaseId: DATABASE_ID,

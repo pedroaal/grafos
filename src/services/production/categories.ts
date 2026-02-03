@@ -3,10 +3,21 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Categories } from "~/types/appwrite";
 
-export const listCategories = async (options?: { search?: string }) => {
+export const listCategories = async (options?: {
+	search?: string;
+	page?: number;
+	perPage?: number;
+}) => {
 	const queries = [];
 
 	if (options?.search) queries.push(Query.equal("name", options.search));
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
 
 	const res = await tables.listRows<Categories>({
 		databaseId: DATABASE_ID,

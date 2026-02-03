@@ -3,9 +3,20 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Areas } from "~/types/appwrite";
 
-export const listAreas = async (options?: { sort?: "asc" | "desc" }) => {
+export const listAreas = async (options?: {
+	sort?: "asc" | "desc";
+	page?: number;
+	perPage?: number;
+}) => {
 	const queries = [];
 	if (options?.sort) queries.push(Query.orderAsc("sortOrder"));
+
+	// Add pagination
+	if (options?.page && options?.perPage) {
+		const offset = (options.page - 1) * options.perPage;
+		queries.push(Query.limit(options.perPage));
+		queries.push(Query.offset(offset));
+	}
 
 	const res = await tables.listRows<Areas>({
 		databaseId: DATABASE_ID,

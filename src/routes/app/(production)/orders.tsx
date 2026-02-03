@@ -6,11 +6,12 @@ import {
 	FaSolidListCheck,
 	FaSolidXmark,
 } from "solid-icons/fa";
-import { createResource, For, Match, Switch } from "solid-js";
+import { createResource, For, Match, Switch, createEffect } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import { ConfirmModal } from "~/components/core/Modal";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import DashboardLayout from "~/components/layouts/Dashboard";
@@ -18,13 +19,26 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { Modals } from "~/config/modals";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
+import { usePagination } from "~/hooks/usePagination";
 import { deleteOrder, listOrders } from "~/services/production/orders";
 
 const OrdersPage = () => {
 	const navigate = useNavigate();
 	const { addAlert, closeModal } = useApp();
 
-	const [orders, { refetch }] = createResource({}, listOrders);
+	const pagination = usePagination();
+
+	const [orders, { refetch }] = createResource(
+		() => ({ page: pagination.page(), perPage: pagination.perPage() }),
+		listOrders,
+	);
+
+	createEffect(() => {
+		const data = orders();
+		if (data) {
+			pagination.setTotalItems(data.total);
+		}
+	});
 
 	const goTo = (orderId: string) => {
 		navigate(`${Routes.order}/${orderId}`);
@@ -116,6 +130,14 @@ const OrdersPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={pagination.page()}
+						totalPages={pagination.totalPages()}
+						totalItems={pagination.totalItems()}
+						perPage={pagination.perPage()}
+						onPageChange={pagination.setPage}
+						onPerPageChange={pagination.setPerPage}
+					/>
 				</BlueBoard>
 				<ConfirmModal
 					id={Modals.SearchOrder}

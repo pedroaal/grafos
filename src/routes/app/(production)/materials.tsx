@@ -1,8 +1,9 @@
 import { Title } from "@solidjs/meta";
-import { createResource, For } from "solid-js";
+import { createResource, For, createEffect } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
@@ -13,6 +14,7 @@ import SupplierModal from "~/components/production/SupplierModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { usePagination } from "~/hooks/usePagination";
 import {
 	deleteCategory,
 	listCategories,
@@ -23,18 +25,52 @@ import { deleteSupplier, listSuppliers } from "~/services/production/suppliers";
 const MaterialsPage = () => {
 	const { addAlert, openModal } = useApp();
 
+	const categoriesPagination = usePagination();
+	const materialsPagination = usePagination();
+	const suppliersPagination = usePagination();
+
 	const [categories, { refetch: refetchCategories }] = createResource(
-		{},
+		() => ({
+			page: categoriesPagination.page(),
+			perPage: categoriesPagination.perPage(),
+		}),
 		listCategories,
 	);
 	const [materials, { refetch: refetchMaterials }] = createResource(
-		{},
+		() => ({
+			page: materialsPagination.page(),
+			perPage: materialsPagination.perPage(),
+		}),
 		listMaterials,
 	);
 	const [suppliers, { refetch: refetchSuppliers }] = createResource(
-		{},
+		() => ({
+			page: suppliersPagination.page(),
+			perPage: suppliersPagination.perPage(),
+		}),
 		listSuppliers,
 	);
+
+	createEffect(() => {
+		const data = categories();
+		if (data) {
+			categoriesPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = materials();
+		if (data) {
+			materialsPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = suppliers();
+		if (data) {
+			suppliersPagination.setTotalItems(data.total);
+		}
+	});
 
 	const editRow = (modalId: string, id: string) => {
 		openModal(modalId, { id });
@@ -127,6 +163,14 @@ const MaterialsPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={categoriesPagination.page()}
+						totalPages={categoriesPagination.totalPages()}
+						totalItems={categoriesPagination.totalItems()}
+						perPage={categoriesPagination.perPage()}
+						onPageChange={categoriesPagination.setPage}
+						onPerPageChange={categoriesPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Materiales"
@@ -177,6 +221,14 @@ const MaterialsPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={materialsPagination.page()}
+						totalPages={materialsPagination.totalPages()}
+						totalItems={materialsPagination.totalItems()}
+						perPage={materialsPagination.perPage()}
+						onPageChange={materialsPagination.setPage}
+						onPerPageChange={materialsPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Proveedores"
@@ -211,6 +263,14 @@ const MaterialsPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={suppliersPagination.page()}
+						totalPages={suppliersPagination.totalPages()}
+						totalItems={suppliersPagination.totalItems()}
+						perPage={suppliersPagination.perPage()}
+						onPageChange={suppliersPagination.setPage}
+						onPerPageChange={suppliersPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<CategoryModal onSuccess={() => refetchCategories()} />
 				<MaterialModal onSuccess={() => refetchMaterials()} />

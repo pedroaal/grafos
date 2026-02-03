@@ -1,8 +1,9 @@
 import { Title } from "@solidjs/meta";
-import { createResource, For } from "solid-js";
+import { createResource, For, createEffect } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
@@ -13,6 +14,7 @@ import ProcessModal from "~/components/production/ProcessModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { usePagination } from "~/hooks/usePagination";
 import { deleteArea, listAreas } from "~/services/production/areas";
 import { deleteInk, listInks } from "~/services/production/inks";
 import { deleteProcess, listProcesses } from "~/services/production/processes";
@@ -20,12 +22,52 @@ import { deleteProcess, listProcesses } from "~/services/production/processes";
 const ProcessesPage = () => {
 	const { addAlert, openModal } = useApp();
 
-	const [areas, { refetch: refetchAreas }] = createResource({}, listAreas);
+	const areasPagination = usePagination();
+	const processesPagination = usePagination();
+	const inksPagination = usePagination();
+
+	const [areas, { refetch: refetchAreas }] = createResource(
+		() => ({
+			page: areasPagination.page(),
+			perPage: areasPagination.perPage(),
+		}),
+		listAreas,
+	);
 	const [processes, { refetch: refetchProcesses }] = createResource(
-		{},
+		() => ({
+			page: processesPagination.page(),
+			perPage: processesPagination.perPage(),
+		}),
 		listProcesses,
 	);
-	const [inks, { refetch: refetchInks }] = createResource({}, listInks);
+	const [inks, { refetch: refetchInks }] = createResource(
+		() => ({
+			page: inksPagination.page(),
+			perPage: inksPagination.perPage(),
+		}),
+		listInks,
+	);
+
+	createEffect(() => {
+		const data = areas();
+		if (data) {
+			areasPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = processes();
+		if (data) {
+			processesPagination.setTotalItems(data.total);
+		}
+	});
+
+	createEffect(() => {
+		const data = inks();
+		if (data) {
+			inksPagination.setTotalItems(data.total);
+		}
+	});
 
 	const editRow = (modalId: string, id: string) => {
 		openModal(modalId, { id });
@@ -121,6 +163,14 @@ const ProcessesPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={areasPagination.page()}
+						totalPages={areasPagination.totalPages()}
+						totalItems={areasPagination.totalItems()}
+						perPage={areasPagination.perPage()}
+						onPageChange={areasPagination.setPage}
+						onPerPageChange={areasPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Procesos"
@@ -163,6 +213,14 @@ const ProcessesPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={processesPagination.page()}
+						totalPages={processesPagination.totalPages()}
+						totalItems={processesPagination.totalItems()}
+						perPage={processesPagination.perPage()}
+						onPageChange={processesPagination.setPage}
+						onPerPageChange={processesPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Tintas"
@@ -173,7 +231,9 @@ const ProcessesPage = () => {
 						},
 					]}
 				>
-					<Table headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}>
+					<Table
+						headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}
+					>
 						<For each={inks()?.rows || []}>
 							{(item) => (
 								<tr>
@@ -188,6 +248,14 @@ const ProcessesPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={inksPagination.page()}
+						totalPages={inksPagination.totalPages()}
+						totalItems={inksPagination.totalItems()}
+						perPage={inksPagination.perPage()}
+						onPageChange={inksPagination.setPage}
+						onPerPageChange={inksPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<AreaModal onSuccess={() => refetchAreas()} />
 				<ProcessModal onSuccess={() => refetchProcesses()} />

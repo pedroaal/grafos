@@ -6,14 +6,8 @@ import type { UserProcesses } from "~/types/appwrite";
 export const listUserProcesses = async (options: {
 	userId?: string;
 	processId?: string;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.processId)
 		queries.push(Query.equal("processId", options.processId));

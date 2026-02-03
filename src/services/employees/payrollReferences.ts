@@ -6,14 +6,8 @@ import type { PayrollReferences } from "~/types/appwrite";
 export const listPayrollReferences = async (options: {
 	payrollId?: string;
 	referenceType?: boolean;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [];
 	if (options?.payrollId)
 		queries.push(Query.equal("payrollId", options.payrollId));
 	if (options?.referenceType !== undefined)

@@ -7,13 +7,8 @@ import type { OrderMaterials } from "~/types/appwrite";
 export const listOrderMaterials = async (options: {
 	orderId: string;
 	supplierId?: string;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
 	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
 		Query.equal("orderId", options.orderId),
 	];
 	if (options?.supplierId) {

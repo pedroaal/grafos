@@ -7,13 +7,8 @@ import type { OrderProcesses } from "~/types/appwrite";
 export const listOrderProcesses = async (options: {
 	orderId: string;
 	done?: boolean;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
 	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
 		Query.equal("orderId", options.orderId),
 	];
 	if (options?.done !== undefined) {

@@ -5,14 +5,8 @@ import type { PayrollEquipment } from "~/types/appwrite";
 
 export const listPayrollEquipment = async (options: {
 	payrollId?: string;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [];
 	if (options?.payrollId)
 		queries.push(Query.equal("payrollId", options.payrollId));
 

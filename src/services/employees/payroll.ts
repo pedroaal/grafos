@@ -8,10 +8,7 @@ export const listPayrolls = async (options: {
 	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 
 	const res = await tables.listRows<Payroll>({
 		databaseId: DATABASE_ID,

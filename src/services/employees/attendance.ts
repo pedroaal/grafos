@@ -10,10 +10,7 @@ export const listAttendance = async (options: {
 	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.date) queries.push(Query.equal("date", options.date));
 

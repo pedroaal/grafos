@@ -3,13 +3,10 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { InvoiceProducts } from "~/types/appwrite";
 
-export const listInvoiceProducts = async (options: {
-	invoiceId?: string;
-}) => {
-	const queries = [
-		Query.limit(50),
-	];
-	if (options?.invoiceId) queries.push(Query.equal("invoiceId", options.invoiceId));
+export const listInvoiceProducts = async (options: { invoiceId?: string }) => {
+	const queries = [Query.limit(50)];
+	if (options?.invoiceId)
+		queries.push(Query.equal("invoiceId", options.invoiceId));
 
 	const res = await tables.listRows<InvoiceProducts>({
 		databaseId: DATABASE_ID,

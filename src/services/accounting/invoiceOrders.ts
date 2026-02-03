@@ -7,9 +7,7 @@ export const listInvoiceOrders = async (options: {
 	invoiceId?: string;
 	orderId?: string;
 }) => {
-	const queries = [
-		Query.limit(50),
-	];
+	const queries = [Query.limit(50)];
 	if (options?.invoiceId)
 		queries.push(Query.equal("invoiceId", options.invoiceId));
 	if (options?.orderId) queries.push(Query.equal("orderId", options.orderId));

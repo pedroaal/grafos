@@ -3,9 +3,7 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { UserBook } from "~/types/appwrite";
 
-export const listUserBooks = async (options: {
-	userId?: string;
-}) => {
+export const listUserBooks = async (options: { userId?: string }) => {
 	const queries = [];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 

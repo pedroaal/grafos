@@ -12,10 +12,7 @@ export const listInvoices = async (options: {
 	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 	if (options?.clientId)
 		queries.push(Query.equal("clientId", options.clientId));
 	if (options?.status) queries.push(Query.equal("status", options.status));

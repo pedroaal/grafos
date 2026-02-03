@@ -8,9 +8,7 @@ export const listOrderProcesses = async (options: {
 	orderId: string;
 	done?: boolean;
 }) => {
-	const queries = [
-		Query.equal("orderId", options.orderId),
-	];
+	const queries = [Query.equal("orderId", options.orderId)];
 	if (options?.done !== undefined) {
 		queries.push(Query.equal("done", options.done));
 	}

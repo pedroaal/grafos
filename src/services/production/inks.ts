@@ -9,10 +9,7 @@ export const listInks = async (options: {
 	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 
 	if (options?.search) queries.push(Query.equal("color", options.search));
 

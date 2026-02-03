@@ -8,9 +8,7 @@ export const listOrderInks = async (options: {
 	inkId?: string;
 	side?: boolean;
 }) => {
-	const queries = [
-		Query.equal("orderId", options.orderId),
-	];
+	const queries = [Query.equal("orderId", options.orderId)];
 	if (options?.inkId) queries.push(Query.equal("inkId", options.inkId));
 	if (options?.side !== undefined)
 		queries.push(Query.equal("side", options.side));
@@ -46,7 +44,7 @@ export const syncOrderInks = async (
 			rowId: makeId(),
 			data: {
 				orderId,
-				...ink
+				...ink,
 			},
 		}),
 	);

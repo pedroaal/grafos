@@ -3,11 +3,10 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { PayrollDocuments } from "~/types/appwrite";
 
-export const listPayrollDocuments = async (options: {
-	payrollId?: string;
-}) => {
+export const listPayrollDocuments = async (options: { payrollId?: string }) => {
 	const queries = [];
-	if (options?.payrollId) queries.push(Query.equal("payrollId", options.payrollId));
+	if (options?.payrollId)
+		queries.push(Query.equal("payrollId", options.payrollId));
 
 	const res = await tables.listRows<PayrollDocuments>({
 		databaseId: DATABASE_ID,

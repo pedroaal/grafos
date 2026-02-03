@@ -3,9 +3,7 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { PayrollEquipment } from "~/types/appwrite";
 
-export const listPayrollEquipment = async (options: {
-	payrollId?: string;
-}) => {
+export const listPayrollEquipment = async (options: { payrollId?: string }) => {
 	const queries = [];
 	if (options?.payrollId)
 		queries.push(Query.equal("payrollId", options.payrollId));

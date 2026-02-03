@@ -231,9 +231,7 @@ const ProcessesPage = () => {
 						},
 					]}
 				>
-					<Table
-						headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}
-					>
+					<Table headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}>
 						<For each={inks()?.rows || []}>
 							{(item) => (
 								<tr>

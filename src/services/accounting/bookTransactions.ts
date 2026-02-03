@@ -11,10 +11,7 @@ export const listBookTransactions = async (options: {
 	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 	if (options?.dateFrom)
 		queries.push(Query.equal("dateFrom", options.dateFrom));
 	if (options?.dateTo) queries.push(Query.equal("dateTo", options.dateTo));

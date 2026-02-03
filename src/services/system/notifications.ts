@@ -10,10 +10,7 @@ export const listNotifications = async (options: {
 	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.unreadOnly) queries.push(Query.isNull("readAt"));
 

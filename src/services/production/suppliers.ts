@@ -9,10 +9,7 @@ export const listSuppliers = async (options: {
 	perPage?: number;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 	if (options?.search) queries.push(Query.contains("name", options.search));
 
 	const res = await tables.listRows<Suppliers>({

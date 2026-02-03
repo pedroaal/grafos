@@ -7,13 +7,9 @@ export const listOrderInks = async (options: {
 	orderId: string;
 	inkId?: string;
 	side?: boolean;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
 	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
+		Query.limit(50),
 		Query.equal("orderId", options.orderId),
 	];
 	if (options?.inkId) queries.push(Query.equal("inkId", options.inkId));

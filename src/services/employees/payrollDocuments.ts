@@ -6,9 +6,7 @@ import type { PayrollDocuments } from "~/types/appwrite";
 export const listPayrollDocuments = async (options: {
 	payrollId?: string;
 }) => {
-	const queries = [
-		Query.limit(50),
-	];
+	const queries = [];
 	if (options?.payrollId) queries.push(Query.equal("payrollId", options.payrollId));
 
 	const res = await tables.listRows<PayrollDocuments>({

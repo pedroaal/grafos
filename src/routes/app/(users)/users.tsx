@@ -19,7 +19,7 @@ const UsersPage = () => {
 
 	const pagination = usePagination();
 
-	const [users, { refetch }] = createResource(
+	const [users] = createResource(
 		() => ({ page: pagination.page(), perPage: pagination.perPage() }),
 		listUsers,
 	);

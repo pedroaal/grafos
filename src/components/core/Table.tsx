@@ -106,109 +106,101 @@ const Table: ParentComponent<IProps> = (props) => {
 
 			{/* Pagination Section */}
 			<Show when={props.pagination && props.pagination.totalPages > 1}>
-				<div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
-					{/* Page info */}
-					<div class="text-sm">
-						Página {props.pagination?.page} de {props.pagination?.totalPages}
-						<span class="text-base-content/60 ml-2">
-							({props.pagination?.totalItems} total)
-						</span>
-					</div>
+				{(p) => (
+					<div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
+						{/* Page info */}
+						<div class="text-sm">
+							Página {p().page} de {p().totalPages}
+							<span class="text-base-content/60 ml-2">
+								({p().totalItems} total)
+							</span>
+						</div>
 
-					{/* Pagination controls */}
-					<div class="join">
-						{/* First button */}
-						<button
-							type="button"
-							class="join-item btn btn-sm"
-							classList={{
-								"btn-disabled": props.pagination?.page === 1,
-							}}
-							disabled={props.pagination?.page === 1}
-							onClick={() => props.pagination?.onPageChange(1)}
-						>
-							Primera
-						</button>
+						{/* Pagination controls */}
+						<div class="join">
+							{/* First button */}
+							<button
+								type="button"
+								class="join-item btn btn-sm"
+								classList={{
+									"btn-disabled": p().page === 1,
+								}}
+								disabled={p().page === 1}
+								onClick={() => p().onPageChange(1)}
+							>
+								Primera
+							</button>
 
-						{/* Previous button */}
-						<button
-							type="button"
-							class="join-item btn btn-sm"
-							classList={{
-								"btn-disabled": props.pagination?.page === 1,
-							}}
-							disabled={props.pagination?.page === 1}
-							onClick={() =>
-								props.pagination?.onPageChange(props.pagination.page - 1)
-							}
-						>
-							Anterior
-						</button>
+							{/* Previous button */}
+							<button
+								type="button"
+								class="join-item btn btn-sm"
+								classList={{
+									"btn-disabled": p().page === 1,
+								}}
+								disabled={p().page === 1}
+								onClick={() => p().onPageChange(p().page - 1)}
+							>
+								Anterior
+							</button>
 
-						{/* Page numbers */}
-						<For each={pageNumbers()}>
-							{(pageNum) => (
-								<Show
-									when={pageNum !== "ellipsis"}
-									fallback={
-										<button
-											type="button"
-											class="join-item btn btn-sm btn-disabled"
-											disabled
-										>
-											...
-										</button>
-									}
-								>
-									<button
-										type="button"
-										class="join-item btn btn-sm"
-										classList={{
-											"btn-active": props.pagination?.page === pageNum,
-										}}
-										onClick={() =>
-											props.pagination?.onPageChange(pageNum as number)
+							{/* Page numbers */}
+							<For each={pageNumbers()}>
+								{(pageNum) => (
+									<Show
+										when={pageNum !== "ellipsis"}
+										fallback={
+											<button
+												type="button"
+												class="join-item btn btn-sm btn-disabled"
+												disabled
+											>
+												...
+											</button>
 										}
 									>
-										{pageNum}
-									</button>
-								</Show>
-							)}
-						</For>
+										<button
+											type="button"
+											class="join-item btn btn-sm"
+											classList={{
+												"btn-active": p().page === pageNum,
+											}}
+											onClick={() => p().onPageChange(pageNum as number)}
+										>
+											{pageNum}
+										</button>
+									</Show>
+								)}
+							</For>
 
-						{/* Next button */}
-						<button
-							type="button"
-							class="join-item btn btn-sm"
-							classList={{
-								"btn-disabled":
-									props.pagination?.page === props.pagination?.totalPages,
-							}}
-							disabled={props.pagination?.page === props.pagination?.totalPages}
-							onClick={() =>
-								props.pagination?.onPageChange(props.pagination.page + 1)
-							}
-						>
-							Siguiente
-						</button>
+							{/* Next button */}
+							<button
+								type="button"
+								class="join-item btn btn-sm"
+								classList={{
+									"btn-disabled": p().page === p().totalPages,
+								}}
+								disabled={p().page === p().totalPages}
+								onClick={() => p().onPageChange(p().page + 1)}
+							>
+								Siguiente
+							</button>
 
-						{/* Last button */}
-						<button
-							type="button"
-							class="join-item btn btn-sm"
-							classList={{
-								"btn-disabled":
-									props.pagination?.page === props.pagination?.totalPages,
-							}}
-							disabled={props.pagination?.page === props.pagination?.totalPages}
-							onClick={() =>
-								props.pagination?.onPageChange(props.pagination.totalPages)
-							}
-						>
-							Última
-						</button>
+							{/* Last button */}
+							<button
+								type="button"
+								class="join-item btn btn-sm"
+								classList={{
+									"btn-disabled": p().page === p().totalPages,
+								}}
+								disabled={p().page === p().totalPages}
+								onClick={() => p().onPageChange(p().totalPages)}
+							>
+								Última
+							</button>
+						</div>
 					</div>
-				</div>
+				)}
 			</Show>
 		</>
 	);

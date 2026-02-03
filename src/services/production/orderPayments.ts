@@ -9,13 +9,8 @@ export const listOrderPayments = async (options: {
 	userId?: string;
 	dateFrom?: string;
 	dateTo?: string;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
 	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
 		Query.equal("orderId", options.orderId),
 	];
 	if (options?.userId) {

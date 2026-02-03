@@ -6,14 +6,8 @@ import type { UserClients } from "~/types/appwrite";
 export const listUserClients = async (options: {
 	userId?: string;
 	clientId?: string;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
-	];
+	const queries = [];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.clientId)
 		queries.push(Query.equal("clientId", options.clientId));

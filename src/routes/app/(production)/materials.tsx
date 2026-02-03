@@ -3,6 +3,7 @@ import { createResource, For, createEffect } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
@@ -147,14 +148,6 @@ const MaterialsPage = () => {
 				>
 					<Table
 						headers={[{ label: "Nombre" }, { label: "", class: "w-1/12" }]}
-						pagination={{
-							page: categoriesPagination.page(),
-							totalPages: categoriesPagination.totalPages(),
-							totalItems: categoriesPagination.totalItems(),
-							perPage: categoriesPagination.perPage(),
-							onPageChange: categoriesPagination.setPage,
-							onPerPageChange: categoriesPagination.setPerPage,
-						}}
 					>
 						<For each={categories()?.rows || []}>
 							{(item) => (
@@ -170,6 +163,14 @@ const MaterialsPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={categoriesPagination.page()}
+						totalPages={categoriesPagination.totalPages()}
+						totalItems={categoriesPagination.totalItems()}
+						perPage={categoriesPagination.perPage()}
+						onPageChange={categoriesPagination.setPage}
+						onPerPageChange={categoriesPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Materiales"
@@ -192,14 +193,6 @@ const MaterialsPage = () => {
 							{ label: "Laminado" },
 							{ label: "", class: "w-1/12" },
 						]}
-						pagination={{
-							page: materialsPagination.page(),
-							totalPages: materialsPagination.totalPages(),
-							totalItems: materialsPagination.totalItems(),
-							perPage: materialsPagination.perPage(),
-							onPageChange: materialsPagination.setPage,
-							onPerPageChange: materialsPagination.setPerPage,
-						}}
 					>
 						<For each={materials()?.rows || []}>
 							{(item) => (
@@ -228,6 +221,14 @@ const MaterialsPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={materialsPagination.page()}
+						totalPages={materialsPagination.totalPages()}
+						totalItems={materialsPagination.totalItems()}
+						perPage={materialsPagination.perPage()}
+						onPageChange={materialsPagination.setPage}
+						onPerPageChange={materialsPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Proveedores"
@@ -245,14 +246,6 @@ const MaterialsPage = () => {
 							{ label: "Direccion" },
 							{ label: "", class: "w-1/12" },
 						]}
-						pagination={{
-							page: suppliersPagination.page(),
-							totalPages: suppliersPagination.totalPages(),
-							totalItems: suppliersPagination.totalItems(),
-							perPage: suppliersPagination.perPage(),
-							onPageChange: suppliersPagination.setPage,
-							onPerPageChange: suppliersPagination.setPerPage,
-						}}
 					>
 						<For each={suppliers()?.rows || []}>
 							{(item) => (
@@ -270,6 +263,14 @@ const MaterialsPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={suppliersPagination.page()}
+						totalPages={suppliersPagination.totalPages()}
+						totalItems={suppliersPagination.totalItems()}
+						perPage={suppliersPagination.perPage()}
+						onPageChange={suppliersPagination.setPage}
+						onPerPageChange={suppliersPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<CategoryModal onSuccess={() => refetchCategories()} />
 				<MaterialModal onSuccess={() => refetchMaterials()} />

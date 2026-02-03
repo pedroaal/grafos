@@ -3,6 +3,7 @@ import { createResource, For, createEffect } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
@@ -146,14 +147,6 @@ const ProcessesPage = () => {
 							{ label: "Orden" },
 							{ label: "", class: "w-1/12" },
 						]}
-						pagination={{
-							page: areasPagination.page(),
-							totalPages: areasPagination.totalPages(),
-							totalItems: areasPagination.totalItems(),
-							perPage: areasPagination.perPage(),
-							onPageChange: areasPagination.setPage,
-							onPerPageChange: areasPagination.setPerPage,
-						}}
 					>
 						<For each={areas()?.rows || []}>
 							{(item) => (
@@ -170,6 +163,14 @@ const ProcessesPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={areasPagination.page()}
+						totalPages={areasPagination.totalPages()}
+						totalItems={areasPagination.totalItems()}
+						perPage={areasPagination.perPage()}
+						onPageChange={areasPagination.setPage}
+						onPerPageChange={areasPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Procesos"
@@ -189,14 +190,6 @@ const ProcessesPage = () => {
 							{ label: "Seguimiento" },
 							{ label: "", class: "w-1/12" },
 						]}
-						pagination={{
-							page: processesPagination.page(),
-							totalPages: processesPagination.totalPages(),
-							totalItems: processesPagination.totalItems(),
-							perPage: processesPagination.perPage(),
-							onPageChange: processesPagination.setPage,
-							onPerPageChange: processesPagination.setPerPage,
-						}}
 					>
 						<For each={processes()?.rows || []}>
 							{(item) => (
@@ -220,6 +213,14 @@ const ProcessesPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={processesPagination.page()}
+						totalPages={processesPagination.totalPages()}
+						totalItems={processesPagination.totalItems()}
+						perPage={processesPagination.perPage()}
+						onPageChange={processesPagination.setPage}
+						onPerPageChange={processesPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<BlueBoard
 					title="Tintas"
@@ -232,14 +233,6 @@ const ProcessesPage = () => {
 				>
 					<Table
 						headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}
-						pagination={{
-							page: inksPagination.page(),
-							totalPages: inksPagination.totalPages(),
-							totalItems: inksPagination.totalItems(),
-							perPage: inksPagination.perPage(),
-							onPageChange: inksPagination.setPage,
-							onPerPageChange: inksPagination.setPerPage,
-						}}
 					>
 						<For each={inks()?.rows || []}>
 							{(item) => (
@@ -255,6 +248,14 @@ const ProcessesPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={inksPagination.page()}
+						totalPages={inksPagination.totalPages()}
+						totalItems={inksPagination.totalItems()}
+						perPage={inksPagination.perPage()}
+						onPageChange={inksPagination.setPage}
+						onPerPageChange={inksPagination.setPerPage}
+					/>
 				</BlueBoard>
 				<AreaModal onSuccess={() => refetchAreas()} />
 				<ProcessModal onSuccess={() => refetchProcesses()} />

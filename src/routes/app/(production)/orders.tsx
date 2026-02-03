@@ -11,6 +11,7 @@ import { createResource, For, Match, Switch, createEffect } from "solid-js";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import { ConfirmModal } from "~/components/core/Modal";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import DashboardLayout from "~/components/layouts/Dashboard";
@@ -91,14 +92,6 @@ const OrdersPage = () => {
 							{ label: "Procesos", class: "w-1/12" },
 							{ label: "", class: "w-1/12" },
 						]}
-						pagination={{
-							page: pagination.page(),
-							totalPages: pagination.totalPages(),
-							totalItems: pagination.totalItems(),
-							perPage: pagination.perPage(),
-							onPageChange: pagination.setPage,
-							onPerPageChange: pagination.setPerPage,
-						}}
 					>
 						<For each={orders()?.rows || []}>
 							{(item) => (
@@ -137,6 +130,14 @@ const OrdersPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={pagination.page()}
+						totalPages={pagination.totalPages()}
+						totalItems={pagination.totalItems()}
+						perPage={pagination.perPage()}
+						onPageChange={pagination.setPage}
+						onPerPageChange={pagination.setPerPage}
+					/>
 				</BlueBoard>
 				<ConfirmModal
 					id={Modals.SearchOrder}

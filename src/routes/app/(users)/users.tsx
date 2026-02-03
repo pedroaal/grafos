@@ -5,6 +5,7 @@ import { createResource, For, createEffect } from "solid-js";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import EmptyTable from "~/components/core/EmptyTable";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
@@ -59,14 +60,6 @@ const UsersPage = () => {
 							{ label: "Perfil" },
 							{ label: "", class: "w-1/12" },
 						]}
-						pagination={{
-							page: pagination.page(),
-							totalPages: pagination.totalPages(),
-							totalItems: pagination.totalItems(),
-							perPage: pagination.perPage(),
-							onPageChange: pagination.setPage,
-							onPerPageChange: pagination.setPerPage,
-						}}
 					>
 						<For each={users()?.rows} fallback={<EmptyTable colspan={5} />}>
 							{(item) => (
@@ -87,6 +80,14 @@ const UsersPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={pagination.page()}
+						totalPages={pagination.totalPages()}
+						totalItems={pagination.totalItems()}
+						perPage={pagination.perPage()}
+						onPageChange={pagination.setPage}
+						onPerPageChange={pagination.setPerPage}
+					/>
 				</BlueBoard>
 			</DashboardLayout>
 		</>

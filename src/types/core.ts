@@ -1,1 +1,4 @@
-export interface IOption { key: string; label: string }
+export interface IOption {
+	key: string;
+	label: string;
+}

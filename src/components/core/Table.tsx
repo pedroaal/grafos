@@ -146,7 +146,9 @@ const Table: ParentComponent<IProps> = (props) => {
 							}}
 							disabled={props.pagination?.page === 1}
 							onClick={() =>
-								props.pagination?.onPageChange((props.pagination?.page || 1) - 1)
+								props.pagination?.onPageChange(
+									(props.pagination?.page || 1) - 1,
+								)
 							}
 						>
 							Anterior
@@ -188,7 +190,9 @@ const Table: ParentComponent<IProps> = (props) => {
 							}}
 							disabled={props.pagination?.page === props.pagination?.totalPages}
 							onClick={() =>
-								props.pagination?.onPageChange((props.pagination?.page || 1) + 1)
+								props.pagination?.onPageChange(
+									(props.pagination?.page || 1) + 1,
+								)
 							}
 						>
 							Siguiente
@@ -204,7 +208,9 @@ const Table: ParentComponent<IProps> = (props) => {
 							}}
 							disabled={props.pagination?.page === props.pagination?.totalPages}
 							onClick={() =>
-								props.pagination?.onPageChange(props.pagination?.totalPages || 1)
+								props.pagination?.onPageChange(
+									props.pagination?.totalPages || 1,
+								)
 							}
 						>
 							Última

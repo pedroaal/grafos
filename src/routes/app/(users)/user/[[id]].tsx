@@ -1,4 +1,4 @@
-import { createForm, setValues, valiForm, submit } from "@modular-forms/solid";
+import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";

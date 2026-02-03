@@ -8,7 +8,15 @@ export const listClients = async (options: {
 	followUp?: boolean;
 }) => {
 	const queries = [
-		Query.select(["*", "companyId.name", "contactId.firstName", "contactId.lastName", "contactId.phone", "contactId.mobile", "contactId.email"]),
+		Query.select([
+			"*",
+			"companyId.name",
+			"contactId.firstName",
+			"contactId.lastName",
+			"contactId.phone",
+			"contactId.mobile",
+			"contactId.email",
+		]),
 	];
 	if (options?.companyId)
 		queries.push(Query.equal("companyId", options.companyId));

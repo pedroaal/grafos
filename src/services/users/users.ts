@@ -1,4 +1,4 @@
-import { Permission, Query, Role } from "appwrite";
+import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Users } from "~/types/appwrite";

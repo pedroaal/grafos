@@ -1,12 +1,12 @@
 import { createSignal, createMemo, type Accessor } from "solid-js";
 
-export interface UsePaginationOptions {
+export interface IPaginationOptions {
 	initialPage?: number;
 	initialPerPage?: number;
 	initialTotalItems?: number;
 }
 
-export interface UsePaginationReturn {
+export interface IPagination {
 	page: Accessor<number>;
 	perPage: Accessor<number>;
 	totalItems: Accessor<number>;
@@ -25,8 +25,8 @@ export interface UsePaginationReturn {
 }
 
 export const usePagination = (
-	options: UsePaginationOptions = {},
-): UsePaginationReturn => {
+	options: IPaginationOptions = {},
+): IPagination => {
 	const {
 		initialPage = 1,
 		initialPerPage = 10,

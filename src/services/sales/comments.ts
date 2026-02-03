@@ -3,11 +3,17 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Comments } from "~/types/appwrite";
 
-export const listComments = async (options?: {
+export const listComments = async (options: {
 	contactId?: string;
 	parentId?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.contactId)
 		queries.push(Query.equal("contactId", options.contactId));
 	if (options?.parentId !== undefined)

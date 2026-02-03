@@ -8,7 +8,9 @@ export const listOrderMaterials = async (options: {
 	orderId: string;
 	supplierId?: string;
 }) => {
-	const queries = [Query.equal("orderId", options.orderId)];
+	const queries = [
+		Query.equal("orderId", options.orderId),
+	];
 	if (options?.supplierId) {
 		queries.push(Query.equal("supplierId", options.supplierId));
 	}

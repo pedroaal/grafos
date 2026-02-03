@@ -1,11 +1,22 @@
+import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Credentials } from "~/types/appwrite";
 
-export const listCredentials = async () => {
+export const listCredentials = async (options: {
+	page?: number;
+	perPage?: number;
+}) => {
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
+
 	const res = await tables.listRows<Credentials>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.CREDENTIALS,
+		queries,
 	});
 	return res;
 };

@@ -3,11 +3,17 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Contacts } from "~/types/appwrite";
 
-export const listContacts = async (options?: {
+export const listContacts = async (options: {
 	clientCompanyId?: string;
 	searchName?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.clientCompanyId)
 		queries.push(Query.equal("clientCompanyId", options.clientCompanyId));
 	if (options?.searchName)

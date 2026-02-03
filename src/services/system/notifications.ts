@@ -3,11 +3,17 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Notifications } from "~/types/appwrite";
 
-export const listNotifications = async (options?: {
+export const listNotifications = async (options: {
 	userId?: string;
 	unreadOnly?: boolean;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.unreadOnly) queries.push(Query.isNull("readAt"));
 

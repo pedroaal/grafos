@@ -3,8 +3,17 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Users } from "~/types/appwrite";
 
-export const listUsers = async (options?: { authId?: string }) => {
-	const queries = [Query.select(["*", "profileId.name"])];
+export const listUsers = async (options: {
+	authId?: string;
+	page?: number;
+	perPage?: number;
+}) => {
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+		Query.select(["*", "profileId.name"]),
+	];
 	if (options?.authId) {
 		queries.push(Query.equal("authId", options.authId));
 	}

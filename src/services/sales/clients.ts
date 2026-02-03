@@ -6,8 +6,13 @@ import type { Clients } from "~/types/appwrite";
 export const listClients = async (options: {
 	companyId?: string;
 	followUp?: boolean;
+	page?: number;
+	perPage?: number;
 }) => {
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
 		Query.select(["*", "companyId.name", "contactId.firstName", "contactId.lastName", "contactId.phone", "contactId.mobile", "contactId.email"]),
 	];
 	if (options?.companyId)

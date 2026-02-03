@@ -3,10 +3,16 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { ProductCategories } from "~/types/appwrite";
 
-export const listProductCategories = async (options?: {
+export const listProductCategories = async (options: {
 	parentId?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.parentId)
 		queries.push(Query.equal("parentId", options.parentId));
 

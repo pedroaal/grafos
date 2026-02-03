@@ -3,7 +3,7 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { UserProcesses } from "~/types/appwrite";
 
-export const listUserProcesses = async (options?: {
+export const listUserProcesses = async (options: {
 	userId?: string;
 	processId?: string;
 }) => {

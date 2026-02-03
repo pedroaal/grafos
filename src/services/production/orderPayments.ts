@@ -10,7 +10,9 @@ export const listOrderPayments = async (options: {
 	dateFrom?: string;
 	dateTo?: string;
 }) => {
-	const queries = [Query.equal("orderId", options.orderId)];
+	const queries = [
+		Query.equal("orderId", options.orderId),
+	];
 	if (options?.userId) {
 		queries.push(Query.equal("userId", options.userId));
 	}

@@ -3,8 +3,16 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Suppliers } from "~/types/appwrite";
 
-export const listSuppliers = async (options?: { search?: string }) => {
-	const queries = [];
+export const listSuppliers = async (options: {
+	search?: string;
+	page?: number;
+	perPage?: number;
+}) => {
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.search) queries.push(Query.contains("name", options.search));
 
 	const res = await tables.listRows<Suppliers>({

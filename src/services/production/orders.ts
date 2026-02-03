@@ -7,14 +7,19 @@ import { listOrderInks } from "./orderInks";
 import { listOrderMaterials } from "./orderMaterials";
 import { listOrderProcesses } from "./orderProcesses";
 
-export const listOrders = async (options?: {
+export const listOrders = async (options: {
 	userId?: string;
 	clientId?: string;
 	status?: string;
 	dateFrom?: string;
 	dateTo?: string;
+	page?: number;
+	perPage?: number;
 }) => {
+	const { page = 1, perPage = 10 } = options;
 	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
 		Query.select(["*", "clientId.companyId.name", "processes.$id"]),
 	];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));

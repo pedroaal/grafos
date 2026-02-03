@@ -3,11 +3,18 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { getPermissions, makeId, tables } from "~/lib/appwrite";
 import type { Processes } from "~/types/appwrite";
 
-export const listProcesses = async (options?: {
+export const listProcesses = async (options: {
 	type?: boolean;
 	followUp?: boolean;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [Query.select(["*", "areaId.name"])];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+		Query.select(["*", "areaId.name"]),
+	];
 	if (options?.type !== undefined)
 		queries.push(Query.equal("type", options.type));
 	if (options?.followUp !== undefined)

@@ -7,9 +7,7 @@ export const listPayrollEducation = async (options: {
 	payrollId?: string;
 }) => {
 	const { page = 1, perPage = 10 } = options;
-	const queries = [
-		Query.limit(50),
-	];
+	const queries = [];
 	if (options?.payrollId) queries.push(Query.equal("payrollId", options.payrollId));
 
 	const res = await tables.listRows<PayrollEducation>({

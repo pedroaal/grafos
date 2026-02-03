@@ -24,7 +24,6 @@ import { deleteSupplier, listSuppliers } from "~/services/production/suppliers";
 const MaterialsPage = () => {
 	const { addAlert, openModal } = useApp();
 
-	// Separate pagination for each table
 	const categoriesPagination = usePagination();
 	const materialsPagination = usePagination();
 	const suppliersPagination = usePagination();
@@ -51,7 +50,6 @@ const MaterialsPage = () => {
 		listSuppliers,
 	);
 
-	// Update total items for each table
 	createEffect(() => {
 		const data = categories();
 		if (data) {

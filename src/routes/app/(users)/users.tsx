@@ -24,7 +24,6 @@ const UsersPage = () => {
 		listUsers,
 	);
 
-	// Update total items when users data changes
 	createEffect(() => {
 		const data = users();
 		if (data) {

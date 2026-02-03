@@ -26,7 +26,6 @@ const ProfilesPage = () => {
 		listProfiles,
 	);
 
-	// Update total items when profiles data changes
 	createEffect(() => {
 		const data = profiles();
 		if (data) {

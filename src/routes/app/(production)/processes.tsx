@@ -21,7 +21,6 @@ import { deleteProcess, listProcesses } from "~/services/production/processes";
 const ProcessesPage = () => {
 	const { addAlert, openModal } = useApp();
 
-	// Separate pagination for each table
 	const areasPagination = usePagination();
 	const processesPagination = usePagination();
 	const inksPagination = usePagination();
@@ -48,7 +47,6 @@ const ProcessesPage = () => {
 		listInks,
 	);
 
-	// Update total items for each table
 	createEffect(() => {
 		const data = areas();
 		if (data) {

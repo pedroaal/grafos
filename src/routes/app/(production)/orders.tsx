@@ -32,7 +32,6 @@ const OrdersPage = () => {
 		listOrders,
 	);
 
-	// Update total items when orders data changes
 	createEffect(() => {
 		const data = orders();
 		if (data) {

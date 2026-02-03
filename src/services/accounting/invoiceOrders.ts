@@ -6,13 +6,9 @@ import type { InvoiceWorkOrders } from "~/types/appwrite";
 export const listInvoiceOrders = async (options: {
 	invoiceId?: string;
 	orderId?: string;
-	page?: number;
-	perPage?: number;
 }) => {
-	const { page = 1, perPage = 10 } = options;
 	const queries = [
-		Query.limit(perPage),
-		Query.offset((page - 1) * perPage),
+		Query.limit(50),
 	];
 	if (options?.invoiceId)
 		queries.push(Query.equal("invoiceId", options.invoiceId));

@@ -4,11 +4,26 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { OrderMaterials } from "~/types/appwrite";
 
+/**
+ * List order materials with optional filters and pagination
+ * @param options - Filter and pagination options
+ * @param options.orderId - Filter by order ID (required)
+ * @param options.supplierId - Filter by supplier ID
+ * @param options.page - Page number (1-indexed). Default: 1
+ * @param options.perPage - Items per page. Default: 10
+ */
 export const listOrderMaterials = async (options: {
 	orderId: string;
 	supplierId?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [Query.equal("orderId", options.orderId)];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+		Query.equal("orderId", options.orderId),
+	];
 	if (options?.supplierId) {
 		queries.push(Query.equal("supplierId", options.supplierId));
 	}

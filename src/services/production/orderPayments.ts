@@ -4,13 +4,30 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { OrderPayments } from "~/types/appwrite";
 
+/**
+ * List order payments with optional filters and pagination
+ * @param options - Filter and pagination options
+ * @param options.orderId - Filter by order ID (required)
+ * @param options.userId - Filter by user ID
+ * @param options.dateFrom - Filter by date from
+ * @param options.dateTo - Filter by date to
+ * @param options.page - Page number (1-indexed). Default: 1
+ * @param options.perPage - Items per page. Default: 10
+ */
 export const listOrderPayments = async (options: {
 	orderId: string;
 	userId?: string;
 	dateFrom?: string;
 	dateTo?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [Query.equal("orderId", options.orderId)];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+		Query.equal("orderId", options.orderId),
+	];
 	if (options?.userId) {
 		queries.push(Query.equal("userId", options.userId));
 	}

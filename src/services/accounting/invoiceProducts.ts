@@ -3,9 +3,24 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { InvoiceProducts } from "~/types/appwrite";
 
-export const listInvoiceProducts = async (invoiceId?: string) => {
-	const queries = [];
-	if (invoiceId) queries.push(Query.equal("invoiceId", invoiceId));
+/**
+ * List invoice products with optional filters and pagination
+ * @param options - Filter and pagination options
+ * @param options.invoiceId - Filter by invoice ID
+ * @param options.page - Page number (1-indexed). Default: 1
+ * @param options.perPage - Items per page. Default: 10
+ */
+export const listInvoiceProducts = async (options?: {
+	invoiceId?: string;
+	page?: number;
+	perPage?: number;
+}) => {
+	const { page = 1, perPage = 10 } = options || {};
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
+	if (options?.invoiceId) queries.push(Query.equal("invoiceId", options.invoiceId));
 
 	const res = await tables.listRows<InvoiceProducts>({
 		databaseId: DATABASE_ID,

@@ -3,11 +3,25 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { UserClients } from "~/types/appwrite";
 
+/**
+ * List user clients with optional filters and pagination
+ * @param options - Filter and pagination options
+ * @param options.userId - Filter by user ID
+ * @param options.clientId - Filter by client ID
+ * @param options.page - Page number (1-indexed). Default: 1
+ * @param options.perPage - Items per page. Default: 10
+ */
 export const listUserClients = async (options?: {
 	userId?: string;
 	clientId?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options || {};
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.clientId)
 		queries.push(Query.equal("clientId", options.clientId));

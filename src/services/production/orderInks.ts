@@ -3,12 +3,28 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { OrderInks } from "~/types/appwrite";
 
+/**
+ * List order inks with optional filters and pagination
+ * @param options - Filter and pagination options
+ * @param options.orderId - Filter by order ID (required)
+ * @param options.inkId - Filter by ink ID
+ * @param options.side - Filter by side
+ * @param options.page - Page number (1-indexed). Default: 1
+ * @param options.perPage - Items per page. Default: 10
+ */
 export const listOrderInks = async (options: {
 	orderId: string;
 	inkId?: string;
 	side?: boolean;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [Query.equal("orderId", options.orderId)];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+		Query.equal("orderId", options.orderId),
+	];
 	if (options?.inkId) queries.push(Query.equal("inkId", options.inkId));
 	if (options?.side !== undefined)
 		queries.push(Query.equal("side", options.side));

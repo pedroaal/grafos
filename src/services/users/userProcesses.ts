@@ -3,11 +3,25 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { UserProcesses } from "~/types/appwrite";
 
+/**
+ * List user processes with optional filters and pagination
+ * @param options - Filter and pagination options
+ * @param options.userId - Filter by user ID
+ * @param options.processId - Filter by process ID
+ * @param options.page - Page number (1-indexed). Default: 1
+ * @param options.perPage - Items per page. Default: 10
+ */
 export const listUserProcesses = async (options?: {
 	userId?: string;
 	processId?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options || {};
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.processId)
 		queries.push(Query.equal("processId", options.processId));

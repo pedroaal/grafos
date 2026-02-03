@@ -3,11 +3,25 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Activities } from "~/types/appwrite";
 
+/**
+ * List activities with optional filters and pagination
+ * @param options - Filter and pagination options
+ * @param options.canEvaluate - Filter by can evaluate
+ * @param options.followUp - Filter by follow-up status
+ * @param options.page - Page number (1-indexed). Default: 1
+ * @param options.perPage - Items per page. Default: 10
+ */
 export const listActivities = async (options?: {
 	canEvaluate?: boolean;
 	followUp?: boolean;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options || {};
+	const queries = [
+		Query.limit(perPage),
+		Query.offset((page - 1) * perPage),
+	];
 	if (options?.canEvaluate)
 		queries.push(Query.equal("canEvaluate", options.canEvaluate));
 	if (options?.followUp)

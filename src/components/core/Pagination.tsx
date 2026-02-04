@@ -1,5 +1,10 @@
-import { For, Show, createMemo, type Component } from "solid-js";
-
+import {
+	FaSolidAngleLeft,
+	FaSolidAngleRight,
+	FaSolidAnglesLeft,
+	FaSolidAnglesRight,
+} from "solid-icons/fa";
+import { type Component, createMemo, For, Show } from "solid-js";
 export interface IPaginationProps {
 	page: number;
 	totalPages: number;
@@ -12,124 +17,112 @@ export interface IPaginationProps {
 const Pagination: Component<IPaginationProps> = (props) => {
 	const pageNumbers = createMemo(() => {
 		const { page, totalPages } = props;
-		const pages: Array<number | "ellipsis"> = [];
+		const pages: Array<number> = [];
+		const windowSize = 5;
 
-		if (totalPages <= 7) {
+		if (totalPages <= windowSize) {
 			for (let i = 1; i <= totalPages; i++) {
 				pages.push(i);
 			}
-		} else {
-			pages.push(1);
+			return pages;
+		}
 
-			if (page > 3) {
-				pages.push("ellipsis");
-			}
+		let start = page - Math.floor(windowSize / 2);
+		let end = page + Math.floor(windowSize / 2);
 
-			const start = Math.max(2, page - 1);
-			const end = Math.min(totalPages - 1, page + 1);
-			for (let i = start; i <= end; i++) {
-				pages.push(i);
-			}
+		if (start < 1) {
+			start = 1;
+			end = windowSize;
+		}
 
-			if (page < totalPages - 2) {
-				pages.push("ellipsis");
-			}
+		if (end > totalPages) {
+			end = totalPages;
+			start = totalPages - windowSize + 1;
+		}
 
-			pages.push(totalPages);
+		for (let i = start; i <= end; i++) {
+			pages.push(i);
 		}
 
 		return pages;
 	});
 
 	return (
-		<Show when={props.totalPages > 1}>
-			<div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
-				<div class="text-sm">
-					Página {props.page} de {props.totalPages}
-					<span class="text-base-content/60 ml-2">
-						({props.totalItems} total)
-					</span>
-				</div>
+		<div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
+			<div class="text-sm">
+				Página {props.page} de {props.totalPages}
+				<span class="text-base-content/60 ml-2">
+					({props.totalItems} total)
+				</span>
+			</div>
 
+			<Show when={props.totalPages > 1}>
 				<div class="join">
 					<button
 						type="button"
-						class="join-item btn btn-sm"
+						class="join-item btn btn-square btn-sm"
 						classList={{
 							"btn-disabled": props.page === 1,
 						}}
 						disabled={props.page === 1}
 						onClick={() => props.onPageChange(1)}
 					>
-						Primera
+						<FaSolidAnglesLeft size={16} />
 					</button>
 
 					<button
 						type="button"
-						class="join-item btn btn-sm"
+						class="join-item btn btn-square btn-sm"
 						classList={{
 							"btn-disabled": props.page === 1,
 						}}
 						disabled={props.page === 1}
 						onClick={() => props.onPageChange(props.page - 1)}
 					>
-						Anterior
+						<FaSolidAngleLeft size={16} />
 					</button>
 
 					<For each={pageNumbers()}>
 						{(pageNum) => (
-							<Show
-								when={pageNum !== "ellipsis"}
-								fallback={
-									<button
-										type="button"
-										class="join-item btn btn-sm btn-disabled"
-										disabled
-									>
-										...
-									</button>
-								}
+							<button
+								type="button"
+								class="join-item btn btn-sm"
+								classList={{
+									"btn-active": props.page === pageNum,
+								}}
+								onClick={() => props.onPageChange(pageNum)}
 							>
-								<button
-									type="button"
-									class="join-item btn btn-sm"
-									classList={{
-										"btn-active": props.page === pageNum,
-									}}
-									onClick={() => props.onPageChange(pageNum as number)}
-								>
-									{pageNum}
-								</button>
-							</Show>
+								{pageNum}
+							</button>
 						)}
 					</For>
 
 					<button
 						type="button"
-						class="join-item btn btn-sm"
+						class="join-item btn btn-square btn-sm"
 						classList={{
 							"btn-disabled": props.page === props.totalPages,
 						}}
 						disabled={props.page === props.totalPages}
 						onClick={() => props.onPageChange(props.page + 1)}
 					>
-						Siguiente
+						<FaSolidAngleRight size={16} />
 					</button>
 
 					<button
 						type="button"
-						class="join-item btn btn-sm"
+						class="join-item btn btn-square btn-sm"
 						classList={{
 							"btn-disabled": props.page === props.totalPages,
 						}}
 						disabled={props.page === props.totalPages}
 						onClick={() => props.onPageChange(props.totalPages)}
 					>
-						Última
+						<FaSolidAnglesRight size={16} />
 					</button>
 				</div>
-			</div>
-		</Show>
+			</Show>
+		</div>
 	);
 };
 

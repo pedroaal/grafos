@@ -3,13 +3,16 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Invoices } from "~/types/appwrite";
 
-export const listInvoices = async (options?: {
+export const listInvoices = async (options: {
 	clientId?: string;
 	status?: "pending" | "paid";
 	dateFrom?: string;
 	dateTo?: string;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 	if (options?.clientId)
 		queries.push(Query.equal("clientId", options.clientId));
 	if (options?.status) queries.push(Query.equal("status", options.status));

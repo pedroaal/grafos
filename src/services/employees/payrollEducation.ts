@@ -3,9 +3,10 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { PayrollEducation } from "~/types/appwrite";
 
-export const listPayrollEducation = async (payrollId?: string) => {
+export const listPayrollEducation = async (options: { payrollId?: string }) => {
 	const queries = [];
-	if (payrollId) queries.push(Query.equal("payrollId", payrollId));
+	if (options?.payrollId)
+		queries.push(Query.equal("payrollId", options.payrollId));
 
 	const res = await tables.listRows<PayrollEducation>({
 		databaseId: DATABASE_ID,

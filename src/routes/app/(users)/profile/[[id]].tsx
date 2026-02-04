@@ -155,7 +155,7 @@ const ProfilePage = () => {
 					actions={[
 						{
 							label: "Guardar",
-							onClick: () => submit(form)
+							onClick: () => submit(form),
 						},
 					]}
 				>

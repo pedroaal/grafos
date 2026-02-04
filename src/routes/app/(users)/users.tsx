@@ -1,22 +1,36 @@
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
-import { createResource, For } from "solid-js";
+import { createResource, For, createEffect } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import EmptyTable from "~/components/core/EmptyTable";
+import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
 import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
+import { usePagination } from "~/hooks/usePagination";
 import { listUsers } from "~/services/users/users";
 
 const UsersPage = () => {
 	const navigate = useNavigate();
 
-	const [users] = createResource({}, listUsers);
+	const pagination = usePagination();
+
+	const [users] = createResource(
+		() => ({ page: pagination.page(), perPage: pagination.perPage() }),
+		listUsers,
+	);
+
+	createEffect(() => {
+		const data = users();
+		if (data) {
+			pagination.setTotalItems(data.total);
+		}
+	});
 
 	const goTo = (userId: string) => {
 		navigate(`${Routes.user}/${userId}`);
@@ -66,6 +80,14 @@ const UsersPage = () => {
 							)}
 						</For>
 					</Table>
+					<Pagination
+						page={pagination.page()}
+						totalPages={pagination.totalPages()}
+						totalItems={pagination.totalItems()}
+						perPage={pagination.perPage()}
+						onPageChange={pagination.setPage}
+						onPerPageChange={pagination.setPerPage}
+					/>
 				</BlueBoard>
 			</DashboardLayout>
 		</>

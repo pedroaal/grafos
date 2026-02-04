@@ -3,7 +3,7 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { PayrollReferences } from "~/types/appwrite";
 
-export const listPayrollReferences = async (options?: {
+export const listPayrollReferences = async (options: {
 	payrollId?: string;
 	referenceType?: boolean;
 }) => {

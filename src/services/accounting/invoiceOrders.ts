@@ -3,11 +3,11 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { InvoiceWorkOrders } from "~/types/appwrite";
 
-export const listInvoiceOrders = async (options?: {
+export const listInvoiceOrders = async (options: {
 	invoiceId?: string;
 	orderId?: string;
 }) => {
-	const queries = [];
+	const queries = [Query.limit(50)];
 	if (options?.invoiceId)
 		queries.push(Query.equal("invoiceId", options.invoiceId));
 	if (options?.orderId) queries.push(Query.equal("orderId", options.orderId));

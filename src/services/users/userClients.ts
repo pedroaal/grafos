@@ -3,7 +3,7 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { UserClients } from "~/types/appwrite";
 
-export const listUserClients = async (options?: {
+export const listUserClients = async (options: {
 	userId?: string;
 	clientId?: string;
 }) => {

@@ -3,11 +3,14 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { Activities } from "~/types/appwrite";
 
-export const listActivities = async (options?: {
+export const listActivities = async (options: {
 	canEvaluate?: boolean;
 	followUp?: boolean;
+	page?: number;
+	perPage?: number;
 }) => {
-	const queries = [];
+	const { page = 1, perPage = 10 } = options;
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
 	if (options?.canEvaluate)
 		queries.push(Query.equal("canEvaluate", options.canEvaluate));
 	if (options?.followUp)

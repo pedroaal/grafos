@@ -3,9 +3,9 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { UserBook } from "~/types/appwrite";
 
-export const listUserBooks = async (userId?: string) => {
+export const listUserBooks = async (options: { userId?: string }) => {
 	const queries = [];
-	if (userId) queries.push(Query.equal("userId", userId));
+	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 
 	const res = await tables.listRows<UserBook>({
 		databaseId: DATABASE_ID,

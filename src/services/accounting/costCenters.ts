@@ -3,10 +3,17 @@ import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
 import type { CostCenters } from "~/types/appwrite";
 
-export const listCostCenters = async () => {
+export const listCostCenters = async (options: {
+	page?: number;
+	perPage?: number;
+}) => {
+	const { page = 1, perPage = 10 } = options;
+	const queries = [Query.limit(perPage), Query.offset((page - 1) * perPage)];
+
 	const res = await tables.listRows<CostCenters>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.COST_CENTERS,
+		queries,
 	});
 	return res;
 };

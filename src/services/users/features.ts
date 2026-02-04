@@ -4,10 +4,12 @@ import { tables } from "~/lib/appwrite";
 import type { Features } from "~/types/appwrite";
 
 export const listFeatures = async () => {
+	const queries = [Query.limit(50)];
+
 	const res = await tables.listRows<Features>({
 		databaseId: DATABASE_ID,
 		tableId: TABLES.FEATURES,
-		queries: [Query.limit(100)],
+		queries,
 	});
 	return res;
 };

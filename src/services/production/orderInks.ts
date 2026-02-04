@@ -44,7 +44,7 @@ export const syncOrderInks = async (
 			rowId: makeId(),
 			data: {
 				orderId,
-				...ink
+				...ink,
 			},
 		}),
 	);

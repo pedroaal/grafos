@@ -6,10 +6,18 @@ import {
 	FaSolidListCheck,
 	FaSolidXmark,
 } from "solid-icons/fa";
-import { createResource, For, Match, Switch, createEffect } from "solid-js";
+import {
+	createEffect,
+	createResource,
+	createSignal,
+	For,
+	Match,
+	Switch,
+} from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
+import Input from "~/components/core/Input";
 import { ConfirmModal } from "~/components/core/Modal";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
@@ -27,9 +35,13 @@ const OrdersPage = () => {
 	const { addAlert, closeModal } = useApp();
 
 	const pagination = usePagination();
+	const [orderNumber, setOrderNumber] = createSignal<number | undefined>();
 
 	const [orders, { refetch }] = createResource(
-		() => ({ page: pagination.page(), perPage: pagination.perPage() }),
+		() => ({
+			page: pagination.page(),
+			perPage: pagination.perPage(),
+		}),
 		listOrders,
 	);
 
@@ -143,11 +155,29 @@ const OrdersPage = () => {
 					id={Modals.SearchOrder}
 					title="Buscar Orden"
 					message="Buscar orden de trabajo por numero"
-					onConfirm={() => goTo("input-value")}
+					onConfirm={async () => {
+						closeModal();
+						const order = await listOrders({
+							perPage: 1,
+							orderNumber: orderNumber(),
+						});
+						if (order.total === 0) {
+							addAlert({
+								type: "error",
+								message: `No se encontró la orden con numero ${orderNumber()}`,
+							});
+							return;
+						}
+						goTo(order.rows[0].$id);
+					}}
 					onCancel={() => closeModal()}
 					confirmText="Buscar"
 				>
-					<input class="input input-bordered input-sm w-full max-w-xs" />
+					<Input
+						name="orderNumber"
+						type="number"
+						onChange={(ev) => setOrderNumber(ev.currentTarget.valueAsNumber)}
+					/>
 				</ConfirmModal>
 				<ConfirmModal
 					title="Eliminar Orden"

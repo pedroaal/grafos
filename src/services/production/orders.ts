@@ -8,6 +8,7 @@ import { listOrderMaterials } from "./orderMaterials";
 import { listOrderProcesses } from "./orderProcesses";
 
 export const listOrders = async (options: {
+	orderNumber?: number;
 	userId?: string;
 	clientId?: string;
 	status?: string;
@@ -22,6 +23,7 @@ export const listOrders = async (options: {
 		Query.offset((page - 1) * perPage),
 		Query.select(["*", "clientId.companyId.name", "processes.$id"]),
 	];
+	if (options?.orderNumber) queries.push(Query.equal("number", options.orderNumber));
 	if (options?.userId) queries.push(Query.equal("userId", options.userId));
 	if (options?.clientId)
 		queries.push(Query.equal("clientId", options.clientId));

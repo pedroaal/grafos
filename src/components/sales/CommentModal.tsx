@@ -19,6 +19,7 @@ updateComment,
 import { listContacts } from "~/services/sales/contacts";
 import { listUsers } from "~/services/users/users";
 import type { IOption } from "~/types/core";
+import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 
 interface CommentModalProps {
 onSuccess?: () => void;
@@ -61,8 +62,8 @@ listContacts,
 const [commentForm, { Form, Field }] = createForm<CommentFormFields>({
 validate: valiForm(CommentValidationSchema),
 initialValues: {
-userId: authStore.user?.$id as any || "" as any,
-contactId: appStore.modalProps?.contactId as any || "" as any,
+		userId: (authStore.user?.$id || "") as any,
+		contactId: (appStore.modalProps?.contactId || "") as any,
 comment: "",
 parentId: null,
 },

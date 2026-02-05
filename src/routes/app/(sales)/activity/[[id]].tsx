@@ -22,6 +22,7 @@ import {
 } from "~/services/sales/activities";
 import { listTemplates } from "~/services/sales/templates";
 import type { IOption } from "~/types/core";
+import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 
 const ActivityValidationRules = object({
 	name: string(),
@@ -57,7 +58,7 @@ const ActivityFormPage = () => {
 	);
 
 	const [templatesList] = createResource(
-		() => ({ page: 1, perPage: 100 }),
+		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listTemplates,
 	);
 

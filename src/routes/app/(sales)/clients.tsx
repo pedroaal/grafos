@@ -14,6 +14,7 @@ import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteClient, listClients } from "~/services/sales/clients";
 import type { Clients } from "~/types/appwrite";
+import { TAXPAYER_TYPE_LABELS } from "~/lib/constants";
 
 const ClientsListPage = () => {
 	const nav = useNavigate();
@@ -63,13 +64,7 @@ const ClientsListPage = () => {
 	};
 
 	const getTaxpayerLabel = (type: string): string => {
-		const labels: Record<string, string> = {
-			"person-non-obligated": "Persona No Obligada",
-			"person-obligated": "Persona Obligada",
-			"public-society": "Sociedad Pública",
-			"private-society": "Sociedad Privada",
-		};
-		return labels[type] || type;
+		return TAXPAYER_TYPE_LABELS[type] || type;
 	};
 
 	return (

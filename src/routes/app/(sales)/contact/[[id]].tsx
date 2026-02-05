@@ -20,6 +20,7 @@ import {
 	updateContact,
 } from "~/services/sales/contacts";
 import type { Companies, Contacts } from "~/types/appwrite";
+import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 
 const ContactSchema = object({
 	title: nullable(string()),
@@ -67,7 +68,7 @@ const ContactPage = () => {
 
 	const [contact] = createResource(() => params.id ?? "", getContact);
 	const [companies] = createResource(
-		() => ({ perPage: 100 }),
+		() => ({ perPage: MAX_DROPDOWN_ITEMS }),
 		listCompanies,
 	);
 

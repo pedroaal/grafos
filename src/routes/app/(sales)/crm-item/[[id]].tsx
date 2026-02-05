@@ -21,6 +21,7 @@ import { listActivities } from "~/services/sales/activities";
 import { listUsers } from "~/services/users/users";
 import { listContacts } from "~/services/sales/contacts";
 import type { IOption } from "~/types/core";
+import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 
 const CrmEntryValidation = object({
 	scheduled: string(),
@@ -58,15 +59,15 @@ const CrmItemFormPage = () => {
 
 	const [existingEntry] = createResource(() => urlParams.id ?? "", getCrm);
 	const [activitiesSource] = createResource(
-		() => ({ page: 1, perPage: 100 }),
+		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listActivities,
 	);
 	const [usersSource] = createResource(
-		() => ({ page: 1, perPage: 100 }),
+		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listUsers,
 	);
 	const [contactsSource] = createResource(
-		() => ({ page: 1, perPage: 100 }),
+		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listContacts,
 	);
 

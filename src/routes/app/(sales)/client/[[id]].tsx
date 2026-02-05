@@ -22,6 +22,7 @@ import {
 import { listCompanies } from "~/services/sales/companies";
 import { listContacts } from "~/services/sales/contacts";
 import type { IOption } from "~/types/core";
+import { MAX_DROPDOWN_ITEMS, TAXPAYER_TYPE_LABELS } from "~/lib/constants";
 
 const ClientFormSchema = object({
 	contactId: string(),
@@ -55,12 +56,12 @@ const ClientFormPage = () => {
 	);
 
 	const [contactsList] = createResource(
-		() => ({ page: 1, perPage: 100 }),
+		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listContacts,
 	);
 
 	const [companiesList] = createResource(
-		() => ({ page: 1, perPage: 100 }),
+		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listCompanies,
 	);
 
@@ -119,10 +120,10 @@ const ClientFormPage = () => {
 	};
 
 	const taxpayerOptions: IOption[] = [
-		{ key: ClientsTaxpayerType.PERSON_NON_OBLIGATED, label: "Persona No Obligada" },
-		{ key: ClientsTaxpayerType.PERSON_OBLIGATED, label: "Persona Obligada" },
-		{ key: ClientsTaxpayerType.PUBLIC_SOCIETY, label: "Sociedad Pública" },
-		{ key: ClientsTaxpayerType.PRIVATE_SOCIETY, label: "Sociedad Privada" },
+		{ key: ClientsTaxpayerType.PERSON_NON_OBLIGATED, label: TAXPAYER_TYPE_LABELS["person-non-obligated"] },
+		{ key: ClientsTaxpayerType.PERSON_OBLIGATED, label: TAXPAYER_TYPE_LABELS["person-obligated"] },
+		{ key: ClientsTaxpayerType.PUBLIC_SOCIETY, label: TAXPAYER_TYPE_LABELS["public-society"] },
+		{ key: ClientsTaxpayerType.PRIVATE_SOCIETY, label: TAXPAYER_TYPE_LABELS["private-society"] },
 	];
 
 	return (

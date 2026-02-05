@@ -1,135 +1,144 @@
 import { Title } from "@solidjs/meta";
-import { FaSolidPlus } from "solid-icons/fa";
-import { createSignal, For } from "solid-js";
+import { useNavigate } from "@solidjs/router";
+import { createEffect, createResource, For } from "solid-js";
+
+import BlueBoard from "~/components/core/BlueBoard";
+import Breadcrumb from "~/components/core/Breadcrumb";
+import Pagination from "~/components/core/Pagination";
+import RowActions from "~/components/core/RowActions";
+import Table from "~/components/core/Table";
 import DashboardLayout from "~/components/layouts/Dashboard";
 
-interface Cliente {
-	id: string;
-	nombre: string;
-	ruc: string;
-	email: string;
-	telefono: string;
-	status: boolean;
-}
+import { Routes } from "~/config/routes";
+import { useApp } from "~/context/app";
+import { usePagination } from "~/hooks/usePagination";
+import { deleteClient, listClients } from "~/services/sales/clients";
+import type { Clients } from "~/types/appwrite";
 
-const ClientsPage = () => {
-	const [clientes, setClientes] = createSignal<Cliente[]>([
-		// Example data - in real app this would come from Appwrite
-	]);
+const ClientsListPage = () => {
+	const nav = useNavigate();
+	const { addAlert } = useApp();
+	const pageControl = usePagination();
+
+	const [clientsData, { refetch: reloadClients }] = createResource(
+		() => ({
+			page: pageControl.page(),
+			perPage: pageControl.perPage(),
+		}),
+		listClients,
+	);
+
+	createEffect(() => {
+		const fetchedData = clientsData();
+		if (fetchedData) {
+			pageControl.setTotalItems(fetchedData.total);
+		}
+	});
+
+	const navigateToEdit = (clientId: string): void => {
+		nav(`${Routes.client}/${clientId}`);
+	};
+
+	const removeClientRecord = async (clientId: string, contactName: string): Promise<void> => {
+		const userConfirmed = window.confirm(
+			`¿Confirma eliminar al cliente "${contactName}"?`,
+		);
+		if (!userConfirmed) return;
+
+		try {
+			await deleteClient(clientId);
+			addAlert({ type: "success", message: "Cliente eliminado exitosamente" });
+			reloadClients();
+		} catch (err: any) {
+			addAlert({
+				type: "error",
+				message: err.message || "No se pudo eliminar el cliente",
+			});
+		}
+	};
+
+	const getContactFullName = (client: Clients): string => {
+		const contact = client.contactId;
+		return `${contact.firstName} ${contact.lastName}`;
+	};
+
+	const getTaxpayerLabel = (type: string): string => {
+		const labels: Record<string, string> = {
+			"person-non-obligated": "Persona No Obligada",
+			"person-obligated": "Persona Obligada",
+			"public-society": "Sociedad Pública",
+			"private-society": "Sociedad Privada",
+		};
+		return labels[type] || type;
+	};
 
 	return (
 		<>
 			<Title>Clientes - Grafos</Title>
 			<DashboardLayout>
-				<div>
-					<div class="flex justify-between items-center">
-						<h1 class="text-3xl font-bold">Gestión de Clientes</h1>
-						<button type="button" class="btn btn-primary">
-							<FaSolidPlus size={16} />
-							Nuevo
-						</button>
-					</div>
-
-					{/* Search and Filter */}
-					<div class="card bg-base-100 shadow-xl">
-						<div class="card-body">
-							<div class="flex gap-4">
-								<div class="form-control flex-1">
-									<input
-										type="text"
-										placeholder="Buscar cliente..."
-										class="input input-bordered"
-									/>
-								</div>
-								<button class="btn btn-secondary">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="h-5 w-5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-										/>
-									</svg>
-								</button>
-							</div>
-						</div>
-					</div>
-
-					{/* Table */}
-					<div class="card bg-base-100 shadow-xl">
-						<div class="card-body">
-							<h2 class="card-title">Lista de Clientes</h2>
-
-							<div class="overflow-x-auto">
-								<table class="table table-zebra">
-									<thead>
-										<tr>
-											<th>Nombre</th>
-											<th>RUC</th>
-											<th>Email</th>
-											<th>Teléfono</th>
-											<th>Estado</th>
-											<th>Acciones</th>
-										</tr>
-									</thead>
-									<tbody>
-										<For
-											each={clientes()}
-											fallback={
-												<tr>
-													<td colspan="6" class="text-center py-8">
-														No hay clientes registrados. Haz clic en "Nuevo
-														Cliente" para crear uno.
-													</td>
-												</tr>
+				<Breadcrumb links={[{ label: "Ventas" }, { label: "Clientes" }]} />
+				<BlueBoard
+					title="Administrar Clientes"
+					links={[
+						{
+							href: Routes.client,
+							label: "Agregar Cliente",
+						},
+					]}
+				>
+					<Table
+						headers={[
+							{ label: "Contacto" },
+							{ label: "Empresa" },
+							{ label: "Tipo Contribuyente" },
+							{ label: "Seguimiento" },
+							{ label: "", class: "w-1/12" },
+						]}
+					>
+						<For each={clientsData()?.rows || []}>
+							{(clientRecord: Clients) => (
+								<tr>
+									<td>{getContactFullName(clientRecord)}</td>
+									<td>{clientRecord.companyId.name}</td>
+									<td>{getTaxpayerLabel(clientRecord.taxpayerType)}</td>
+									<td>
+										<span
+											class={
+												clientRecord.followUp
+													? "badge badge-success"
+													: "badge badge-ghost"
 											}
 										>
-											{(cliente) => (
-												<tr>
-													<td>{cliente.nombre}</td>
-													<td>{cliente.ruc}</td>
-													<td>{cliente.email}</td>
-													<td>{cliente.telefono}</td>
-													<td>
-														<span
-															class={
-																cliente.status
-																	? "badge badge-success"
-																	: "badge badge-error"
-															}
-														>
-															{cliente.status ? "Activo" : "Inactivo"}
-														</span>
-													</td>
-													<td>
-														<div class="join">
-															<button class="btn btn-sm join-item">Ver</button>
-															<button class="btn btn-sm join-item">
-																Editar
-															</button>
-															<button class="btn btn-sm btn-error join-item">
-																Eliminar
-															</button>
-														</div>
-													</td>
-												</tr>
-											)}
-										</For>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
+											{clientRecord.followUp ? "Activo" : "Inactivo"}
+										</span>
+									</td>
+									<td>
+										<RowActions
+											onEdit={() => navigateToEdit(clientRecord.$id)}
+											onDelete={() =>
+												removeClientRecord(
+													clientRecord.$id,
+													getContactFullName(clientRecord),
+												)
+											}
+										/>
+									</td>
+								</tr>
+							)}
+						</For>
+					</Table>
+					<Pagination
+						page={pageControl.page()}
+						totalPages={pageControl.totalPages()}
+						totalItems={pageControl.totalItems()}
+						perPage={pageControl.perPage()}
+						onPageChange={pageControl.setPage}
+						onPerPageChange={pageControl.setPerPage}
+					/>
+				</BlueBoard>
 			</DashboardLayout>
 		</>
 	);
 };
 
-export default ClientsPage;
+export default ClientsListPage;

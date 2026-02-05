@@ -9,4 +9,6 @@ export enum Modals {
 	Material = "material-modal",
 	Ink = "ink-modal",
 	Supplier = "supplier-modal",
+	// sales
+	Comment = "comment-modal",
 }

@@ -17,10 +17,18 @@ export enum Routes {
 	paymentsReport = "/app/report/payments",
 	processesReport = "/app/report/processes",
 	// sales
-	clients = "/app/clients",
+	companies = "/app/companies",
+	salesCompany = "/app/company",
 	contacts = "/app/contacts",
+	contact = "/app/contact",
+	clients = "/app/clients",
+	client = "/app/client",
 	crm = "/app/crm",
+	crmItem = "/app/crm-item",
 	activities = "/app/activities",
+	activity = "/app/activity",
+	templates = "/app/templates",
+	template = "/app/template",
 	// employees
 	rrhh = "/app/rrhh",
 	attendance = "/app/attendance",
@@ -31,7 +39,7 @@ export enum Routes {
 	users = "/app/users",
 	user = "/app/user",
 	// system
-	company = "/app/company",
+	company = "/app/company-details",
 	billingCompanies = "/app/billing-companies",
 	credentials = "/app/credentials",
 }

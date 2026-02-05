@@ -68,7 +68,7 @@ const ContactPage = () => {
 
 	const [contact] = createResource(() => params.id ?? "", getContact);
 	const [companies] = createResource(
-		() => ({ perPage: MAX_DROPDOWN_ITEMS }),
+		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listCompanies,
 	);
 

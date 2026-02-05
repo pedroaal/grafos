@@ -50,12 +50,12 @@ getComment,
 );
 
 const [usersList] = createResource(
-() => ({ page: 1, perPage: 100 }),
+() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 listUsers,
 );
 
 const [contactsList] = createResource(
-() => ({ page: 1, perPage: 100 }),
+() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 listContacts,
 );
 

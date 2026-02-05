@@ -36,7 +36,7 @@ const CompaniesPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		navigate(`${Routes.company}/${id}`);
+		navigate(`${Routes.salesCompany}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string) => {
@@ -66,7 +66,7 @@ const CompaniesPage = () => {
 					title="Gestionar Empresas"
 					links={[
 						{
-							href: Routes.company,
+							href: Routes.salesCompany,
 							label: "Nueva Empresa",
 						},
 					]}

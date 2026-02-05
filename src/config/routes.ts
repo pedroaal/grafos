@@ -18,7 +18,7 @@ export enum Routes {
 	processesReport = "/app/report/processes",
 	// sales
 	companies = "/app/companies",
-	company = "/app/company",
+	salesCompany = "/app/company",
 	contacts = "/app/contacts",
 	contact = "/app/contact",
 	clients = "/app/clients",
@@ -39,7 +39,7 @@ export enum Routes {
 	users = "/app/users",
 	user = "/app/user",
 	// system
-	companyDetails = "/app/company-details",
+	company = "/app/company-details",
 	billingCompanies = "/app/billing-companies",
 	credentials = "/app/credentials",
 }

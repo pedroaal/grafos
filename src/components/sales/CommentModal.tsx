@@ -42,11 +42,11 @@ const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 const isModifying = (): boolean => Boolean(appStore.modalProps?.id);
 
 const [commentData] = createResource(
-() =>
-appStore.showModal === Modals.Comment
-? appStore.modalProps?.id || ""
-: false || "",
-getComment,
+	() => {
+		if (appStore.showModal !== Modals.Comment) return "";
+		return appStore.modalProps?.id || "";
+	},
+	getComment,
 );
 
 const [usersList] = createResource(

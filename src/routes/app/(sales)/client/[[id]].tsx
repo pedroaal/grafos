@@ -24,24 +24,24 @@ import { listContacts } from "~/services/sales/contacts";
 import { type Clients, ClientsTaxpayerType } from "~/types/appwrite.d";
 import type { IOption } from "~/types/core";
 
-const ClientFormSchema = object({
+const ClientSchema = object({
 	contactId: string(),
 	companyId: string(),
 	followUp: boolean(),
 	taxpayerType: vEnum(ClientsTaxpayerType),
 });
 
-type ClientFormData = Omit<Clients, keyof Models.Row>;
+type ClientForm = Omit<Clients, keyof Models.Row>;
 
-const ClientFormPage = () => {
+const ClientPage = () => {
 	const routeParams = useParams();
 	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const editMode = (): boolean => Boolean(routeParams.id);
 
-	const [formInstance, { Form, Field }] = createForm<ClientFormData>({
-		validate: valiForm(ClientFormSchema),
+	const [formInstance, { Form, Field }] = createForm<ClientForm>({
+		validate: valiForm(ClientSchema),
 		initialValues: {
 			contactId: "" as any,
 			companyId: "" as any,
@@ -78,7 +78,7 @@ const ClientFormPage = () => {
 		),
 	);
 
-	const processSubmit = async (formData: ClientFormData): Promise<void> => {
+	const processSubmit = async (formData: ClientForm): Promise<void> => {
 		const loadingId = addLoader();
 		try {
 			if (editMode()) {
@@ -228,4 +228,4 @@ const ClientFormPage = () => {
 	);
 };
 
-export default ClientFormPage;
+export default ClientPage;

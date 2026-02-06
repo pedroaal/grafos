@@ -29,8 +29,8 @@ export enum Routes {
 	contact = "/app/contact",
 	clients = "/app/clients",
 	client = "/app/client",
-	crm = "/app/crm",
-	crmItem = "/app/crm-item",
+	tasks = "/app/tasks",
+	task = "/app/task",
 	activities = "/app/activities",
 	activity = "/app/activity",
 	templates = "/app/templates",
@@ -55,4 +55,4 @@ export enum Routes {
 	credentials = "/app/credentials",
 }
 
-export enum RoutesApi {}
+export enum RoutesApi { }

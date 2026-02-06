@@ -15,7 +15,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteActivity, listActivities } from "~/services/sales/activities";
 import type { Activities } from "~/types/appwrite";
 
-const ActivitiesIndexPage = () => {
+const ActivitiesPage = () => {
 	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const pageHandler = usePagination();
@@ -146,4 +146,4 @@ const ActivitiesIndexPage = () => {
 	);
 };
 
-export default ActivitiesIndexPage;
+export default ActivitiesPage;

@@ -23,7 +23,7 @@ import { listTemplates } from "~/services/sales/templates";
 import type { Activities } from "~/types/appwrite";
 import type { IOption } from "~/types/core";
 
-const ActivityValidationRules = object({
+const ActivitySchema = object({
 	name: string(),
 	goal: nullable(number()),
 	templateId: string(),
@@ -31,17 +31,17 @@ const ActivityValidationRules = object({
 	followUp: boolean(),
 });
 
-type ActivityFormPayload = Omit<Activities, keyof Models.Row>;
+type ActivityForm = Omit<Activities, keyof Models.Row>;
 
-const ActivityFormPage = () => {
+const ActivityPage = () => {
 	const routeParameters = useParams();
 	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const inEditMode = (): boolean => Boolean(routeParameters.id);
 
-	const [activityForm, { Form, Field }] = createForm<ActivityFormPayload>({
-		validate: valiForm(ActivityValidationRules),
+	const [activityForm, { Form, Field }] = createForm<ActivityForm>({
+		validate: valiForm(ActivitySchema),
 		initialValues: {
 			name: "",
 			goal: null,
@@ -78,7 +78,7 @@ const ActivityFormPage = () => {
 		),
 	);
 
-	const handleFormSave = async (values: ActivityFormPayload): Promise<void> => {
+	const handleFormSave = async (values: ActivityForm): Promise<void> => {
 		const operationId = addLoader();
 		try {
 			if (inEditMode()) {
@@ -212,4 +212,4 @@ const ActivityFormPage = () => {
 	);
 };
 
-export default ActivityFormPage;
+export default ActivityPage;

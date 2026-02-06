@@ -15,7 +15,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteCrm, listCrm } from "~/services/sales/crm";
 import type { Crm } from "~/types/appwrite";
 
-const CrmManagementPage = () => {
+const TasksPage = () => {
 	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const paginationState = usePagination();
@@ -36,7 +36,7 @@ const CrmManagementPage = () => {
 	});
 
 	const openEditForm = (recordId: string): void => {
-		nav(`${Routes.crmItem}/${recordId}`);
+		nav(`${Routes.task}/${recordId}`);
 	};
 
 	const deleteRecord = async (recordId: string): Promise<void> => {
@@ -87,7 +87,7 @@ const CrmManagementPage = () => {
 					title="Gestión de CRM"
 					links={[
 						{
-							href: Routes.crmItem,
+							href: Routes.task,
 							label: "Nueva Actividad CRM",
 						},
 					]}
@@ -144,4 +144,4 @@ const CrmManagementPage = () => {
 	);
 };
 
-export default CrmManagementPage;
+export default TasksPage;

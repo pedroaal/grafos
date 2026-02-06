@@ -16,7 +16,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteClient, listClients } from "~/services/sales/clients";
 import type { Clients } from "~/types/appwrite";
 
-const ClientsListPage = () => {
+const ClientsPage = () => {
 	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const pageControl = usePagination();
@@ -139,4 +139,4 @@ const ClientsListPage = () => {
 	);
 };
 
-export default ClientsListPage;
+export default ClientsPage;

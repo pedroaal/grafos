@@ -127,7 +127,7 @@ export const SidebarLinks: SidebarLink[] = [
 			},
 			{
 				feature: "sales",
-				href: Routes.crm,
+				href: Routes.tasks,
 				label: "CRM",
 			},
 			{

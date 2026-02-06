@@ -22,7 +22,7 @@ import { listUsers } from "~/services/users/users";
 import type { Crm } from "~/types/appwrite";
 import type { IOption } from "~/types/core";
 
-const CrmEntryValidation = object({
+const TaskSchema = object({
 	scheduled: string(),
 	activityId: string(),
 	assignedId: string(),
@@ -33,17 +33,17 @@ const CrmEntryValidation = object({
 	active: boolean(),
 });
 
-type CrmEntryData = Omit<Crm, keyof Models.Row>;
+type TaskForm = Omit<Crm, keyof Models.Row>;
 
-const CrmItemFormPage = () => {
+const TaskPage = () => {
 	const urlParams = useParams();
 	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isUpdateMode = (): boolean => Boolean(urlParams.id);
 
-	const [formControl, { Form, Field }] = createForm<CrmEntryData>({
-		validate: valiForm(CrmEntryValidation),
+	const [formControl, { Form, Field }] = createForm<TaskForm>({
+		validate: valiForm(TaskSchema),
 		initialValues: {
 			scheduled: "",
 			activityId: "" as any,
@@ -90,7 +90,7 @@ const CrmItemFormPage = () => {
 		),
 	);
 
-	const submitFormData = async (payload: CrmEntryData): Promise<void> => {
+	const submitFormData = async (payload: TaskForm): Promise<void> => {
 		const taskId = addLoader();
 		try {
 			if (isUpdateMode()) {
@@ -101,7 +101,7 @@ const CrmItemFormPage = () => {
 				addAlert({ type: "success", message: "Nueva entrada CRM creada" });
 			}
 
-			nav(Routes.crm);
+			nav(Routes.tasks);
 		} catch (errorObj: any) {
 			addAlert({
 				type: "error",
@@ -143,7 +143,7 @@ const CrmItemFormPage = () => {
 				<Breadcrumb
 					links={[
 						{ label: "Ventas" },
-						{ label: "CRM", route: Routes.crm },
+						{ label: "CRM", route: Routes.tasks },
 						{ label: isUpdateMode() ? "Modificar" : "Nueva" },
 					]}
 				/>
@@ -283,4 +283,4 @@ const CrmItemFormPage = () => {
 	);
 };
 
-export default CrmItemFormPage;
+export default TaskPage;

@@ -13,30 +13,30 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import type { Templates } from "~/types/appwrite";
 import {
 	createTemplate,
 	getTemplate,
 	updateTemplate,
 } from "~/services/sales/templates";
+import type { Templates } from "~/types/appwrite";
 
-const TemplateSchemaValidation = object({
+const TemplateSchema = object({
 	name: string(),
 	content: string(),
 	logo: nullable(string()),
 });
 
-type TemplateFormInput = Omit<Templates, keyof Models.Row>;
+type TemplateForm = Omit<Templates, keyof Models.Row>;
 
-const TemplateEditorPage = () => {
+const TemplatePage = () => {
 	const urlParams = useParams();
 	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEditing = (): boolean => Boolean(urlParams.id);
 
-	const [templateEditor, { Form, Field }] = createForm<TemplateFormInput>({
-		validate: valiForm(TemplateSchemaValidation),
+	const [templateEditor, { Form, Field }] = createForm<TemplateForm>({
+		validate: valiForm(TemplateSchema),
 		initialValues: {
 			name: "",
 			content: "",
@@ -64,9 +64,7 @@ const TemplateEditorPage = () => {
 		),
 	);
 
-	const persistTemplate = async (
-		formData: TemplateFormInput,
-	): Promise<void> => {
+	const persistTemplate = async (formData: TemplateForm): Promise<void> => {
 		const processId = addLoader();
 		try {
 			if (isEditing()) {
@@ -170,4 +168,4 @@ const TemplateEditorPage = () => {
 	);
 };
 
-export default TemplateEditorPage;
+export default TemplatePage;

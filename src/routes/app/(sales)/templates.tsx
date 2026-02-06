@@ -15,7 +15,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteTemplate, listTemplates } from "~/services/sales/templates";
 import type { Templates } from "~/types/appwrite";
 
-const TemplatesLibraryPage = () => {
+const TemplatesPage = () => {
 	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const pager = usePagination();
@@ -126,4 +126,4 @@ const TemplatesLibraryPage = () => {
 	);
 };
 
-export default TemplatesLibraryPage;
+export default TemplatesPage;

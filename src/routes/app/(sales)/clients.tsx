@@ -10,11 +10,11 @@ import Table from "~/components/core/Table";
 import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
+import { TAXPAYER_TYPE_LABELS } from "~/config/taxes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteClient, listClients } from "~/services/sales/clients";
 import type { Clients } from "~/types/appwrite";
-import { TAXPAYER_TYPE_LABELS } from "~/lib/constants";
 
 const ClientsListPage = () => {
 	const nav = useNavigate();
@@ -40,7 +40,10 @@ const ClientsListPage = () => {
 		nav(`${Routes.client}/${clientId}`);
 	};
 
-	const removeClientRecord = async (clientId: string, contactName: string): Promise<void> => {
+	const removeClientRecord = async (
+		clientId: string,
+		contactName: string,
+	): Promise<void> => {
 		const userConfirmed = window.confirm(
 			`¿Confirma eliminar al cliente "${contactName}"?`,
 		);

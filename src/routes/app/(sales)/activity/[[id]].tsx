@@ -11,18 +11,17 @@ import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import DashboardLayout from "~/components/layouts/Dashboard";
-
+import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import type { Activities } from "~/types/appwrite";
 import {
 	createActivity,
 	getActivity,
 	updateActivity,
 } from "~/services/sales/activities";
 import { listTemplates } from "~/services/sales/templates";
+import type { Activities } from "~/types/appwrite";
 import type { IOption } from "~/types/core";
-import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 
 const ActivityValidationRules = object({
 	name: string(),
@@ -36,7 +35,7 @@ type ActivityFormPayload = Omit<Activities, keyof Models.Row>;
 
 const ActivityFormPage = () => {
 	const routeParameters = useParams();
-	const redirectTo = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const inEditMode = (): boolean => Boolean(routeParameters.id);
@@ -84,13 +83,16 @@ const ActivityFormPage = () => {
 		try {
 			if (inEditMode()) {
 				await updateActivity(routeParameters.id!, values);
-				addAlert({ type: "success", message: "Actividad actualizada exitosamente" });
+				addAlert({
+					type: "success",
+					message: "Actividad actualizada exitosamente",
+				});
 			} else {
 				await createActivity(values as Activities);
 				addAlert({ type: "success", message: "Actividad creada exitosamente" });
 			}
 
-			redirectTo(Routes.activities);
+			nav(Routes.activities);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

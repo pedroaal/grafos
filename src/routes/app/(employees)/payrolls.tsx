@@ -16,7 +16,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deletePayroll, listPayrolls } from "~/services/employees/payroll";
 
 const PayrollsPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 
 	const pagination = usePagination();
@@ -37,7 +37,7 @@ const PayrollsPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		navigate(`${Routes.payroll}/${id}`);
+		nav(`${Routes.payroll}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string) => {
@@ -96,7 +96,9 @@ const PayrollsPage = () => {
 									<td>
 										<span
 											class={
-												item.active ? "badge badge-success" : "badge badge-error"
+												item.active
+													? "badge badge-success"
+													: "badge badge-error"
 											}
 										>
 											{item.active ? "Activo" : "Inactivo"}
@@ -106,7 +108,10 @@ const PayrollsPage = () => {
 										<RowActions
 											onEdit={() => handleEdit(item.$id)}
 											onDelete={() =>
-												handleDelete(item.$id, `${item.firstName} ${item.lastName}`)
+												handleDelete(
+													item.$id,
+													`${item.firstName} ${item.lastName}`,
+												)
 											}
 										/>
 									</td>

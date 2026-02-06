@@ -12,16 +12,15 @@ import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import Textarea from "~/components/core/Textarea";
 import DashboardLayout from "~/components/layouts/Dashboard";
-
+import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import type { Crm } from "~/types/appwrite";
-import { createCrm, getCrm, updateCrm } from "~/services/sales/crm";
 import { listActivities } from "~/services/sales/activities";
-import { listUsers } from "~/services/users/users";
 import { listContacts } from "~/services/sales/contacts";
+import { createCrm, getCrm, updateCrm } from "~/services/sales/crm";
+import { listUsers } from "~/services/users/users";
+import type { Crm } from "~/types/appwrite";
 import type { IOption } from "~/types/core";
-import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 
 const CrmEntryValidation = object({
 	scheduled: string(),
@@ -38,7 +37,7 @@ type CrmEntryData = Omit<Crm, keyof Models.Row>;
 
 const CrmItemFormPage = () => {
 	const urlParams = useParams();
-	const navigator = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isUpdateMode = (): boolean => Boolean(urlParams.id);
@@ -102,7 +101,7 @@ const CrmItemFormPage = () => {
 				addAlert({ type: "success", message: "Nueva entrada CRM creada" });
 			}
 
-			navigator(Routes.crm);
+			nav(Routes.crm);
 		} catch (errorObj: any) {
 			addAlert({
 				type: "error",

@@ -63,9 +63,7 @@ export const syncPayrollEquipment = async (
 ) => {
 	const existing = await listPayrollEquipment({ payrollId });
 	const existingIds = new Set(existing.rows.map((item) => item.$id));
-	const incomingIds = new Set(
-		equipment.filter((e) => e.$id).map((e) => e.$id),
-	);
+	const incomingIds = new Set(equipment.filter((e) => e.$id).map((e) => e.$id));
 
 	// Delete items that are no longer in the incoming list
 	const toDelete = existing.rows.filter((item) => !incomingIds.has(item.$id));

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import dayjs from "dayjs";
 import { createEffect, createResource, on } from "solid-js";
-import { nullable, number, object, string } from "valibot";
+import { nullable, object, string } from "valibot";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
@@ -49,7 +49,7 @@ const attendanceDefault: AttendanceForm = {
 
 const AttendancePage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -99,7 +99,7 @@ const AttendancePage = () => {
 					message: "Asistencia creada correctamente",
 				});
 			}
-			navigate(Routes.attendances);
+			nav(Routes.attendances);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

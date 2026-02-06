@@ -32,7 +32,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteOrder, listOrders } from "~/services/production/orders";
 
 const OrdersPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, closeModal, openModal } = useApp();
 
 	const pagination = usePagination();
@@ -54,7 +54,7 @@ const OrdersPage = () => {
 	});
 
 	const goTo = (orderId: string) => {
-		navigate(`${Routes.order}/${orderId}`);
+		nav(`${Routes.order}/${orderId}`);
 	};
 
 	const handleViewOrder = (orderId: string) => {

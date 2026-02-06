@@ -12,11 +12,11 @@ import {
 } from "solid-js";
 import {
 	boolean,
-	enum as vEnum,
 	number,
 	object,
 	optional,
 	string,
+	enum as vEnum,
 } from "valibot";
 
 import BlueBoard from "~/components/core/BlueBoard";
@@ -24,22 +24,16 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import DashboardLayout from "~/components/layouts/Dashboard";
-
+import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
-import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
+import { listBillingCompanies } from "~/services/accounting/billingCompanies";
 import {
-	type InvoiceProducts,
-	type Invoices,
-	InvoicesPaymentType,
-	InvoicesStatus,
-} from "~/types/appwrite.d";
-import {
-	createInvoice,
-	getInvoice,
-	updateInvoice,
-} from "~/services/accounting/invoices";
+	createInvoiceOrder,
+	deleteInvoiceOrder,
+	listInvoiceOrders,
+} from "~/services/accounting/invoiceOrders";
 import {
 	createInvoiceProduct,
 	deleteInvoiceProduct,
@@ -47,15 +41,20 @@ import {
 	updateInvoiceProduct,
 } from "~/services/accounting/invoiceProducts";
 import {
-	createInvoiceOrder,
-	deleteInvoiceOrder,
-	listInvoiceOrders,
-} from "~/services/accounting/invoiceOrders";
-import { listBillingCompanies } from "~/services/accounting/billingCompanies";
-import { listClients } from "~/services/sales/clients";
-import { listWithholdings } from "~/services/accounting/withholdings";
+	createInvoice,
+	getInvoice,
+	updateInvoice,
+} from "~/services/accounting/invoices";
 import { listTaxes } from "~/services/accounting/taxes";
+import { listWithholdings } from "~/services/accounting/withholdings";
 import { listOrders } from "~/services/production/orders";
+import { listClients } from "~/services/sales/clients";
+import {
+	type InvoiceProducts,
+	type Invoices,
+	InvoicesPaymentType,
+	InvoicesStatus,
+} from "~/types/appwrite.d";
 
 const InvoiceSchema = object({
 	invoiceNumber: number(),
@@ -340,10 +339,7 @@ const InvoicePage = () => {
 					message: "Factura actualizada con éxito",
 				});
 			} else {
-				const newInvoice = await createInvoice(
-					authStore.tenantId!,
-					payload,
-				);
+				const newInvoice = await createInvoice(authStore.tenantId!, payload);
 				invoiceId = newInvoice.$id;
 				addAlert({
 					type: "success",
@@ -728,7 +724,11 @@ const InvoicePage = () => {
 					{/* Invoice Products */}
 					<div class="divider">Productos de Factura</div>
 					<div class="mb-4">
-						<button type="button" class="btn btn-sm btn-primary" onClick={addProduct}>
+						<button
+							type="button"
+							class="btn btn-sm btn-primary"
+							onClick={addProduct}
+						>
 							Agregar Producto
 						</button>
 					</div>
@@ -768,7 +768,11 @@ const InvoicePage = () => {
 													class="input input-sm input-bordered w-full"
 													value={product.detail}
 													onChange={(e) =>
-														updateProduct(index(), "detail", e.currentTarget.value)
+														updateProduct(
+															index(),
+															"detail",
+															e.currentTarget.value,
+														)
 													}
 												/>
 											</td>
@@ -777,7 +781,11 @@ const InvoicePage = () => {
 													class="select select-sm select-bordered"
 													value={product.taxId}
 													onChange={(e) =>
-														updateProduct(index(), "taxId", e.currentTarget.value)
+														updateProduct(
+															index(),
+															"taxId",
+															e.currentTarget.value,
+														)
 													}
 												>
 													<option value="">Seleccione...</option>
@@ -822,7 +830,11 @@ const InvoicePage = () => {
 					{/* Invoice Orders */}
 					<div class="divider">Órdenes de Trabajo</div>
 					<div class="mb-4">
-						<button type="button" class="btn btn-sm btn-primary" onClick={addOrder}>
+						<button
+							type="button"
+							class="btn btn-sm btn-primary"
+							onClick={addOrder}
+						>
 							Agregar Orden
 						</button>
 					</div>

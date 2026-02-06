@@ -3,17 +3,17 @@ import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
-import { boolean, enum as vEnum, object, string } from "valibot";
+import { boolean, object, string, enum as vEnum } from "valibot";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Select from "~/components/core/Select";
 import DashboardLayout from "~/components/layouts/Dashboard";
-
+import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
+import { TAXPAYER_TYPE_LABELS } from "~/config/taxes";
 import { useApp } from "~/context/app";
-import { ClientsTaxpayerType, type Clients } from "~/types/appwrite.d";
 import {
 	createClient,
 	getClient,
@@ -21,8 +21,8 @@ import {
 } from "~/services/sales/clients";
 import { listCompanies } from "~/services/sales/companies";
 import { listContacts } from "~/services/sales/contacts";
+import { type Clients, ClientsTaxpayerType } from "~/types/appwrite.d";
 import type { IOption } from "~/types/core";
-import { MAX_DROPDOWN_ITEMS, TAXPAYER_TYPE_LABELS } from "~/lib/constants";
 
 const ClientFormSchema = object({
 	contactId: string(),
@@ -50,10 +50,7 @@ const ClientFormPage = () => {
 		},
 	});
 
-	const [clientInfo] = createResource(
-		() => routeParams.id ?? "",
-		getClient,
-	);
+	const [clientInfo] = createResource(() => routeParams.id ?? "", getClient);
 
 	const [contactsList] = createResource(
 		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
@@ -86,10 +83,16 @@ const ClientFormPage = () => {
 		try {
 			if (editMode()) {
 				await updateClient(routeParams.id!, formData);
-				addAlert({ type: "success", message: "Cliente modificado correctamente" });
+				addAlert({
+					type: "success",
+					message: "Cliente modificado correctamente",
+				});
 			} else {
 				await createClient(formData as Clients);
-				addAlert({ type: "success", message: "Cliente registrado correctamente" });
+				addAlert({
+					type: "success",
+					message: "Cliente registrado correctamente",
+				});
 			}
 
 			nav(Routes.clients);
@@ -120,10 +123,22 @@ const ClientFormPage = () => {
 	};
 
 	const taxpayerOptions: IOption[] = [
-		{ key: ClientsTaxpayerType.PERSON_NON_OBLIGATED, label: TAXPAYER_TYPE_LABELS["person-non-obligated"] },
-		{ key: ClientsTaxpayerType.PERSON_OBLIGATED, label: TAXPAYER_TYPE_LABELS["person-obligated"] },
-		{ key: ClientsTaxpayerType.PUBLIC_SOCIETY, label: TAXPAYER_TYPE_LABELS["public-society"] },
-		{ key: ClientsTaxpayerType.PRIVATE_SOCIETY, label: TAXPAYER_TYPE_LABELS["private-society"] },
+		{
+			key: ClientsTaxpayerType.PERSON_NON_OBLIGATED,
+			label: TAXPAYER_TYPE_LABELS["person-non-obligated"],
+		},
+		{
+			key: ClientsTaxpayerType.PERSON_OBLIGATED,
+			label: TAXPAYER_TYPE_LABELS["person-obligated"],
+		},
+		{
+			key: ClientsTaxpayerType.PUBLIC_SOCIETY,
+			label: TAXPAYER_TYPE_LABELS["public-society"],
+		},
+		{
+			key: ClientsTaxpayerType.PRIVATE_SOCIETY,
+			label: TAXPAYER_TYPE_LABELS["private-society"],
+		},
 	];
 
 	return (

@@ -17,10 +17,9 @@ interface IProps {
 	setState: SetStoreFunction<FamilyForm[]>;
 }
 
-export type FamilyForm = Omit<
-	PayrollFamily,
-	keyof Models.Row | "payrollId"
-> & { $id: string };
+export type FamilyForm = Omit<PayrollFamily, keyof Models.Row | "payrollId"> & {
+	$id: string;
+};
 
 const familyDefault: FamilyForm = {
 	$id: "",
@@ -43,12 +42,12 @@ const PayrollFamilySection: Component<IProps> = (props) => {
 	const add = () =>
 		props.setState(props.state.length, { ...familyDefault, $id: makeId() });
 
-	const update = (
-		id: string,
-		col: Part<FamilyForm>,
-		value: string | null,
-	) => {
-		props.setState((item) => item.$id === id, col, () => value);
+	const update = (id: string, col: Part<FamilyForm>, value: string | null) => {
+		props.setState(
+			(item) => item.$id === id,
+			col,
+			() => value,
+		);
 	};
 
 	const remove = (idx: number) =>

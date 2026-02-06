@@ -63,7 +63,10 @@ export const TaxModal = (props: IProps) => {
 		try {
 			if (isEdit()) {
 				await updateTax(appStore.modalProps!.id, values);
-				addAlert({ type: "success", message: "Impuesto actualizado con éxito" });
+				addAlert({
+					type: "success",
+					message: "Impuesto actualizado con éxito",
+				});
 			} else {
 				await createTax(authStore.tenantId!, values as Taxes);
 				addAlert({ type: "success", message: "Impuesto creado con éxito" });

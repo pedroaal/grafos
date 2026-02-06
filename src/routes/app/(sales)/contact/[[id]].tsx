@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import DashboardLayout from "~/components/layouts/Dashboard";
-
+import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { listCompanies } from "~/services/sales/companies";
@@ -20,7 +20,6 @@ import {
 	updateContact,
 } from "~/services/sales/contacts";
 import type { Companies, Contacts } from "~/types/appwrite";
-import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 
 const ContactSchema = object({
 	title: nullable(string()),
@@ -43,7 +42,7 @@ type ContactForm = Omit<Contacts, keyof Models.Row | "companyId"> & {
 
 const ContactPage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -93,7 +92,7 @@ const ContactPage = () => {
 					companyId:
 						typeof contactData.companyId === "string"
 							? contactData.companyId
-							: contactData.companyId?.$id ?? "",
+							: (contactData.companyId?.$id ?? ""),
 				});
 			},
 		),
@@ -109,13 +108,16 @@ const ContactPage = () => {
 
 			if (isEdit()) {
 				await updateContact(params.id!, payload);
-				addAlert({ type: "success", message: "Contacto actualizado con éxito" });
+				addAlert({
+					type: "success",
+					message: "Contacto actualizado con éxito",
+				});
 			} else {
 				await createContact(payload as Contacts);
 				addAlert({ type: "success", message: "Contacto creado con éxito" });
 			}
 
-			navigate(Routes.contacts);
+			nav(Routes.contacts);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -135,10 +137,9 @@ const ContactPage = () => {
 						{ label: "Ventas" },
 						{ label: "Contactos", route: Routes.contacts },
 						{
-							label:
-								contact()
-									? `${contact()?.firstName} ${contact()?.lastName}`
-									: "Nuevo",
+							label: contact()
+								? `${contact()?.firstName} ${contact()?.lastName}`
+								: "Nuevo",
 						},
 					]}
 				/>

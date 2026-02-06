@@ -16,7 +16,7 @@ import { deleteContact, listContacts } from "~/services/sales/contacts";
 import type { Contacts } from "~/types/appwrite";
 
 const ContactsPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const pagination = usePagination();
 
@@ -36,7 +36,7 @@ const ContactsPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		navigate(`${Routes.contact}/${id}`);
+		nav(`${Routes.contact}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string) => {

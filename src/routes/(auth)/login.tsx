@@ -13,11 +13,11 @@ type LoginForm = {
 };
 
 const LoginPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { authStore, login, getAuth } = useAuth();
 
 	createRenderEffect(() => {
-		if (authStore.session && authStore.user) navigate(Routes.dashboard);
+		if (authStore.session && authStore.user) nav(Routes.dashboard);
 		getAuth({ navigateOnSuccess: true });
 	});
 

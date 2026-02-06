@@ -43,12 +43,12 @@ const PayrollEducationSection: Component<IProps> = (props) => {
 	const add = () =>
 		props.setState(props.state.length, { ...educationDefault, $id: makeId() });
 
-	const update = (
-		id: string,
-		col: Part<EducationForm>,
-		value: string,
-	) => {
-		props.setState((item) => item.$id === id, col, () => value);
+	const update = (id: string, col: Part<EducationForm>, value: string) => {
+		props.setState(
+			(item) => item.$id === id,
+			col,
+			() => value,
+		);
 	};
 
 	const remove = (idx: number) =>

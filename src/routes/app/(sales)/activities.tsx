@@ -16,7 +16,7 @@ import { deleteActivity, listActivities } from "~/services/sales/activities";
 import type { Activities } from "~/types/appwrite";
 
 const ActivitiesIndexPage = () => {
-	const navigator = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const pageHandler = usePagination();
 
@@ -36,10 +36,13 @@ const ActivitiesIndexPage = () => {
 	});
 
 	const navigateToForm = (activityId: string): void => {
-		navigator(`${Routes.activity}/${activityId}`);
+		nav(`${Routes.activity}/${activityId}`);
 	};
 
-	const removeActivity = async (activityId: string, activityName: string): Promise<void> => {
+	const removeActivity = async (
+		activityId: string,
+		activityName: string,
+	): Promise<void> => {
 		const userApproves = window.confirm(
 			`¿Eliminar la actividad "${activityName}"?`,
 		);

@@ -113,9 +113,7 @@ const BanksPage = () => {
 		<>
 			<Title>Bancos - Grafos</Title>
 			<DashboardLayout>
-				<Breadcrumb
-					links={[{ label: "Contabilidad" }, { label: "Bancos" }]}
-				/>
+				<Breadcrumb links={[{ label: "Contabilidad" }, { label: "Bancos" }]} />
 				<BlueBoard
 					title="Cuentas Bancarias"
 					modals={[

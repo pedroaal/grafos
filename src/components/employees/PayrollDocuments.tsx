@@ -1,5 +1,5 @@
 import type { Models } from "appwrite";
-import { type Component } from "solid-js";
+import type { Component } from "solid-js";
 import type { SetStoreFunction } from "solid-js/store";
 import type { PayrollDocuments } from "~/types/appwrite";
 

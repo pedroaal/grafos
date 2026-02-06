@@ -123,10 +123,7 @@ const TaxesPage = () => {
 		}
 	};
 
-	const handleCostCenterDelete = async (
-		costCenterId: string,
-		name: string,
-	) => {
+	const handleCostCenterDelete = async (costCenterId: string, name: string) => {
 		const confirm = window.confirm(
 			`¿Está seguro de eliminar el centro de costos "${name}"?`,
 		);
@@ -180,7 +177,9 @@ const TaxesPage = () => {
 									<td>
 										<RowActions
 											onEdit={() => editRow(Modals.Tax, item.$id)}
-											onDelete={() => handleTaxDelete(item.$id, item.percentage)}
+											onDelete={() =>
+												handleTaxDelete(item.$id, item.percentage)
+											}
 										/>
 									</td>
 								</tr>
@@ -263,7 +262,9 @@ const TaxesPage = () => {
 									<td>
 										<RowActions
 											onEdit={() => editRow(Modals.CostCenter, item.$id)}
-											onDelete={() => handleCostCenterDelete(item.$id, item.name)}
+											onDelete={() =>
+												handleCostCenterDelete(item.$id, item.name)
+											}
 										/>
 									</td>
 								</tr>

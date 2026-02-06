@@ -30,7 +30,7 @@ type TemplateFormInput = Omit<Templates, keyof Models.Row>;
 
 const TemplateEditorPage = () => {
 	const urlParams = useParams();
-	const goTo = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEditing = (): boolean => Boolean(urlParams.id);
@@ -64,18 +64,26 @@ const TemplateEditorPage = () => {
 		),
 	);
 
-	const persistTemplate = async (formData: TemplateFormInput): Promise<void> => {
+	const persistTemplate = async (
+		formData: TemplateFormInput,
+	): Promise<void> => {
 		const processId = addLoader();
 		try {
 			if (isEditing()) {
 				await updateTemplate(urlParams.id!, formData as Templates);
-				addAlert({ type: "success", message: "Plantilla modificada correctamente" });
+				addAlert({
+					type: "success",
+					message: "Plantilla modificada correctamente",
+				});
 			} else {
 				await createTemplate(formData as Templates);
-				addAlert({ type: "success", message: "Plantilla creada correctamente" });
+				addAlert({
+					type: "success",
+					message: "Plantilla creada correctamente",
+				});
 			}
 
-			goTo(Routes.templates);
+			nav(Routes.templates);
 		} catch (errorInstance: any) {
 			addAlert({
 				type: "error",

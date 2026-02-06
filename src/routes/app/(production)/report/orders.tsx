@@ -18,12 +18,12 @@ import { Routes } from "~/config/routes";
 import { listOrders } from "~/services/production/orders";
 
 const OrdersPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 
 	const [orders, { refetch }] = createResource({}, listOrders);
 
 	const goTo = (orderId: string) => {
-		navigate(`${Routes.order}/${orderId}`);
+		nav(`${Routes.order}/${orderId}`);
 	};
 
 	return (

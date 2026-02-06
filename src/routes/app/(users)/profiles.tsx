@@ -17,7 +17,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteProfile, listProfiles } from "~/services/users/profiles";
 
 const ProfilesPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 
 	const pagination = usePagination();
@@ -35,7 +35,7 @@ const ProfilesPage = () => {
 	});
 
 	const goTo = (profileId: string) => {
-		navigate(`${Routes.profile}/${profileId}`);
+		nav(`${Routes.profile}/${profileId}`);
 	};
 
 	const handleDelete = async (profileId: string, name: string) => {

@@ -29,7 +29,7 @@ const Notifications = [
 
 const DashboardLayout: ParentComponent = (props) => {
 	const location = useLocation();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { authStore, logout, checkFeature } = useAuth();
 	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
@@ -41,7 +41,7 @@ const DashboardLayout: ParentComponent = (props) => {
 			() => location.pathname,
 			() => {
 				if (!authStore.session || !authStore.user) {
-					navigate(Routes.login);
+					nav(Routes.login);
 					return;
 				}
 			},

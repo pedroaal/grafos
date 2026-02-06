@@ -163,7 +163,7 @@ const payrollDefault: PayrollForm = {
 
 const PayrollPage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -387,7 +387,7 @@ const PayrollPage = () => {
 				type: "success",
 				message: "Nómina guardada correctamente",
 			});
-			navigate(Routes.payrolls);
+			nav(Routes.payrolls);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -989,9 +989,15 @@ const PayrollPage = () => {
 							setState={setDocuments}
 						/>
 
-						<PayrollEducationSection state={education} setState={setEducation} />
+						<PayrollEducationSection
+							state={education}
+							setState={setEducation}
+						/>
 
-						<PayrollEquipmentSection state={equipment} setState={setEquipment} />
+						<PayrollEquipmentSection
+							state={equipment}
+							setState={setEquipment}
+						/>
 
 						<PayrollFamilySection state={family} setState={setFamily} />
 

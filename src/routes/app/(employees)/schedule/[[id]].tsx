@@ -42,7 +42,7 @@ const scheduleDefault: ScheduleForm = {
 
 const SchedulePage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -90,7 +90,7 @@ const SchedulePage = () => {
 					message: "Horario creado correctamente",
 				});
 			}
-			navigate(Routes.schedules);
+			nav(Routes.schedules);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

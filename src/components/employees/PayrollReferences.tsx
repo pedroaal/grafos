@@ -41,7 +41,11 @@ const PayrollReferencesSection: Component<IProps> = (props) => {
 		col: Part<ReferenceForm>,
 		value: string | boolean | null,
 	) => {
-		props.setState((item) => item.$id === id, col, () => value);
+		props.setState(
+			(item) => item.$id === id,
+			col,
+			() => value,
+		);
 	};
 
 	const remove = (idx: number) =>

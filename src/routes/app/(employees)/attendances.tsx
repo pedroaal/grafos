@@ -13,10 +13,13 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
-import { deleteAttendance, listAttendance } from "~/services/employees/attendance";
+import {
+	deleteAttendance,
+	listAttendance,
+} from "~/services/employees/attendance";
 
 const AttendancesPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 
 	const pagination = usePagination();
@@ -37,7 +40,7 @@ const AttendancesPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		navigate(`${Routes.attendance}/${id}`);
+		nav(`${Routes.attendance}/${id}`);
 	};
 
 	const handleDelete = async (id: string) => {

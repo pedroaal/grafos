@@ -1,4 +1,4 @@
-import { createForm, setValues, valiForm, submit } from "@modular-forms/solid";
+import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
@@ -36,7 +36,7 @@ type ProfileForm = Omit<Profiles, keyof Models.Row>;
 
 const ProfilePage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
@@ -128,7 +128,7 @@ const ProfilePage = () => {
 
 			await syncProfileFeatures(profileId, selectedFeatures());
 
-			navigate(Routes.profiles);
+			nav(Routes.profiles);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

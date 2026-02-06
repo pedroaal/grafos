@@ -15,7 +15,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteSchedule, listSchedules } from "~/services/employees/schedules";
 
 const SchedulesPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 
 	const pagination = usePagination();
@@ -36,13 +36,11 @@ const SchedulesPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		navigate(`${Routes.schedule}/${id}`);
+		nav(`${Routes.schedule}/${id}`);
 	};
 
 	const handleDelete = async (id: string) => {
-		const confirm = window.confirm(
-			"¿Está seguro de eliminar este horario?",
-		);
+		const confirm = window.confirm("¿Está seguro de eliminar este horario?");
 		if (!confirm) return;
 
 		try {

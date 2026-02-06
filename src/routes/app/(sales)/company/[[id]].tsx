@@ -29,7 +29,7 @@ type CompanyForm = Omit<Companies, keyof Models.Row>;
 
 const CompanyPage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -71,7 +71,7 @@ const CompanyPage = () => {
 				addAlert({ type: "success", message: "Empresa creada con éxito" });
 			}
 
-			navigate(Routes.companies);
+			nav(Routes.companies);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

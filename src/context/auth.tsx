@@ -45,7 +45,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: ParentComponent = (props) => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const [store, setStore] = createStore<AuthStore>({
 		session: null,
@@ -71,12 +71,12 @@ export const AuthProvider: ParentComponent = (props) => {
 				features: featuresData.rows.map((item) => item.featureId),
 			});
 
-			if (options?.navigateOnSuccess) navigate(Routes.dashboard);
+			if (options?.navigateOnSuccess) nav(Routes.dashboard);
 			return true;
 		} catch {
 			setStore("session", null);
 			setStore("user", null);
-			if (options?.navigateOnFail) navigate(Routes.login);
+			if (options?.navigateOnFail) nav(Routes.login);
 			return false;
 		}
 	};
@@ -86,7 +86,7 @@ export const AuthProvider: ParentComponent = (props) => {
 			await account.createEmailPasswordSession({ email, password });
 			getAuth({});
 			addAlert({ type: "success", message: "Inicio de sesión exitoso" });
-			navigate(Routes.dashboard);
+			nav(Routes.dashboard);
 			return true;
 		} catch (error: any) {
 			addAlert({
@@ -103,7 +103,7 @@ export const AuthProvider: ParentComponent = (props) => {
 			setStore("session", null);
 			setStore("user", null);
 			addAlert({ type: "success", message: "Sesión cerrada" });
-			navigate(Routes.home);
+			nav(Routes.home);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

@@ -10,18 +10,17 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import DashboardLayout from "~/components/layouts/Dashboard";
-
+import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
-import { MAX_DROPDOWN_ITEMS } from "~/lib/constants";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
-import type { BillingCompanies } from "~/types/appwrite";
 import {
 	createBillingCompany,
 	getBillingCompany,
 	updateBillingCompany,
 } from "~/services/accounting/billingCompanies";
 import { listTaxes } from "~/services/accounting/taxes";
+import type { BillingCompanies } from "~/types/appwrite";
 
 const BillingCompanySchema = object({
 	email: string(),
@@ -147,7 +146,10 @@ const BillingCompanyPage = () => {
 				<Breadcrumb
 					links={[
 						{ label: "Contabilidad" },
-						{ label: "Empresas de Facturación", route: Routes.billingCompanies },
+						{
+							label: "Empresas de Facturación",
+							route: Routes.billingCompanies,
+						},
 						{ label: billingCompany()?.businessName ?? "Nueva" },
 					]}
 				/>

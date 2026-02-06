@@ -106,9 +106,7 @@ const BillingCompaniesPage = () => {
 									<td>
 										<RowActions
 											onEdit={() => handleEdit(item.$id)}
-											onDelete={() =>
-												handleDelete(item.$id, item.businessName)
-											}
+											onDelete={() => handleDelete(item.$id, item.businessName)}
 										/>
 									</td>
 								</tr>

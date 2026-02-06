@@ -33,7 +33,7 @@ const equipmentDefault: EquipmentForm = {
 
 const EquipmentItemPage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -76,7 +76,7 @@ const EquipmentItemPage = () => {
 					message: "Equipo creado correctamente",
 				});
 			}
-			navigate(Routes.equipment);
+			nav(Routes.equipment);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

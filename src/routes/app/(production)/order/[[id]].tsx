@@ -113,7 +113,7 @@ const ordersDefault = {
 
 const OrderPage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
@@ -349,7 +349,7 @@ const OrderPage = () => {
 			]);
 
 			addAlert({ type: "success", message: "Orden guardada correctamente" });
-			navigate(Routes.orders);
+			nav(Routes.orders);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

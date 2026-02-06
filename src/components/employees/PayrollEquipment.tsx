@@ -32,12 +32,12 @@ const PayrollEquipmentSection: Component<IProps> = (props) => {
 	const add = () =>
 		props.setState(props.state.length, { ...equipmentDefault, $id: makeId() });
 
-	const update = (
-		id: string,
-		col: Part<EquipmentForm>,
-		value: string,
-	) => {
-		props.setState((item) => item.$id === id, col, () => value);
+	const update = (id: string, col: Part<EquipmentForm>, value: string) => {
+		props.setState(
+			(item) => item.$id === id,
+			col,
+			() => value,
+		);
 	};
 
 	const remove = (idx: number) =>

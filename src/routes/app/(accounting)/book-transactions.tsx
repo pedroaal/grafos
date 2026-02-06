@@ -99,16 +99,8 @@ const BookTransactionsPage = () => {
 									<td>{item.bookId?.name || ""}</td>
 									<td>{item.beneficiary}</td>
 									<td>{item.detail}</td>
-									<td>
-										{item.income
-											? `$${item.income.toFixed(2)}`
-											: "-"}
-									</td>
-									<td>
-										{item.expense
-											? `$${item.expense.toFixed(2)}`
-											: "-"}
-									</td>
+									<td>{item.income ? `$${item.income.toFixed(2)}` : "-"}</td>
+									<td>{item.expense ? `$${item.expense.toFixed(2)}` : "-"}</td>
 									<td>{item.bankId?.name || ""}</td>
 									<td>
 										<RowActions

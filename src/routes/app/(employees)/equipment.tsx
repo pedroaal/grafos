@@ -15,7 +15,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { deleteEquipment, listEquipment } from "~/services/employees/equipment";
 
 const EquipmentPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 
 	const pagination = usePagination();
@@ -36,13 +36,11 @@ const EquipmentPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		navigate(`${Routes.equipmentItem}/${id}`);
+		nav(`${Routes.equipmentItem}/${id}`);
 	};
 
 	const handleDelete = async (id: string) => {
-		const confirm = window.confirm(
-			"¿Está seguro de eliminar este equipo?",
-		);
+		const confirm = window.confirm("¿Está seguro de eliminar este equipo?");
 		if (!confirm) return;
 
 		try {
@@ -85,7 +83,9 @@ const EquipmentPage = () => {
 									<td>
 										<span
 											class={
-												item.active ? "badge badge-success" : "badge badge-error"
+												item.active
+													? "badge badge-success"
+													: "badge badge-error"
 											}
 										>
 											{item.active ? "Activo" : "Inactivo"}

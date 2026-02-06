@@ -16,7 +16,7 @@ import { deleteCompany, listCompanies } from "~/services/sales/companies";
 import type { Companies } from "~/types/appwrite";
 
 const CompaniesPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const pagination = usePagination();
 
@@ -36,7 +36,7 @@ const CompaniesPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		navigate(`${Routes.salesCompany}/${id}`);
+		nav(`${Routes.salesCompany}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string) => {

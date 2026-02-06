@@ -16,7 +16,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { listUsers } from "~/services/users/users";
 
 const UsersPage = () => {
-	const navigate = useNavigate();
+	const nav = useNavigate();
 
 	const pagination = usePagination();
 
@@ -33,7 +33,7 @@ const UsersPage = () => {
 	});
 
 	const goTo = (userId: string) => {
-		navigate(`${Routes.user}/${userId}`);
+		nav(`${Routes.user}/${userId}`);
 	};
 
 	const handleDelete = (userId: string, name: string) => {};

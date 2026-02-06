@@ -16,7 +16,7 @@ import { deleteTemplate, listTemplates } from "~/services/sales/templates";
 import type { Templates } from "~/types/appwrite";
 
 const TemplatesLibraryPage = () => {
-	const navigator = useNavigate();
+	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const pager = usePagination();
 
@@ -36,10 +36,13 @@ const TemplatesLibraryPage = () => {
 	});
 
 	const openTemplateEditor = (templateId: string): void => {
-		navigator(`${Routes.template}/${templateId}`);
+		nav(`${Routes.template}/${templateId}`);
 	};
 
-	const destroyTemplate = async (templateId: string, templateName: string): Promise<void> => {
+	const destroyTemplate = async (
+		templateId: string,
+		templateName: string,
+	): Promise<void> => {
 		const shouldDelete = window.confirm(
 			`¿Desea eliminar la plantilla "${templateName}"?`,
 		);
@@ -47,7 +50,10 @@ const TemplatesLibraryPage = () => {
 
 		try {
 			await deleteTemplate(templateId);
-			addAlert({ type: "success", message: "Plantilla eliminada correctamente" });
+			addAlert({
+				type: "success",
+				message: "Plantilla eliminada correctamente",
+			});
 			refreshTemplates();
 		} catch (err: any) {
 			addAlert({

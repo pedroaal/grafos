@@ -1,4 +1,4 @@
-import { createForm, setValues, valiForm, submit } from "@modular-forms/solid";
+import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
@@ -37,7 +37,7 @@ type UserForm = Omit<Users, keyof Models.Row | "authId" | "profileId"> & {
 
 const UserPage = () => {
 	const params = useParams();
-	const navigate = useNavigate();
+	const nav = useNavigate();
 	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
@@ -115,7 +115,7 @@ const UserPage = () => {
 				addAlert({ type: "success", message: "Usuario creado con éxito" });
 			}
 
-			navigate(Routes.users);
+			nav(Routes.users);
 		} catch (error: any) {
 			addAlert({
 				type: "error",

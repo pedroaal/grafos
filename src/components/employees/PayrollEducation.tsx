@@ -46,7 +46,7 @@ const PayrollEducationSection: Component<IProps> = (props) => {
 	const update = (
 		id: string,
 		col: Part<EducationForm>,
-		value: string | number,
+		value: string,
 	) => {
 		props.setState((item) => item.$id === id, col, () => value);
 	};

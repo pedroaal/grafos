@@ -39,7 +39,7 @@ const PayrollReferencesSection: Component<IProps> = (props) => {
 	const update = (
 		id: string,
 		col: Part<ReferenceForm>,
-		value: string | number | boolean | null,
+		value: string | boolean | null,
 	) => {
 		props.setState((item) => item.$id === id, col, () => value);
 	};

@@ -46,7 +46,7 @@ const PayrollFamilySection: Component<IProps> = (props) => {
 	const update = (
 		id: string,
 		col: Part<FamilyForm>,
-		value: string | number | null,
+		value: string | null,
 	) => {
 		props.setState((item) => item.$id === id, col, () => value);
 	};

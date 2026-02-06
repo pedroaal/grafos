@@ -1,4 +1,4 @@
-type,percentage,description,status
+type,percentage,description,active
 "tax",0,"default",true
 "tax",30,"default",true
 "tax",70,"default",true

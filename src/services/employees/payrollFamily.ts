@@ -55,3 +55,36 @@ export const deletePayrollFamily = (id: string) => {
 		rowId: id,
 	});
 };
+
+export const syncPayrollFamily = async (
+	payrollId: string,
+	family: Partial<PayrollFamily>[],
+) => {
+	const existing = await listPayrollFamily({ payrollId });
+
+	// Delete existing family records
+	await Promise.all(
+		existing.rows.map((item) =>
+			tables.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_FAMILY,
+				rowId: item.$id,
+			}),
+		),
+	);
+
+	// Create new family records
+	const promises = family.map((fam) =>
+		tables.createRow<PayrollFamily>({
+			databaseId: DATABASE_ID,
+			tableId: TABLES.PAYROLL_FAMILY,
+			rowId: makeId(),
+			data: {
+				payrollId,
+				...fam,
+			} as PayrollFamily,
+		}),
+	);
+
+	return await Promise.all(promises);
+};

@@ -60,3 +60,36 @@ export const deletePayrollReference = (id: string) => {
 		rowId: id,
 	});
 };
+
+export const syncPayrollReferences = async (
+	payrollId: string,
+	references: Partial<PayrollReferences>[],
+) => {
+	const existing = await listPayrollReferences({ payrollId });
+
+	// Delete existing references
+	await Promise.all(
+		existing.rows.map((item) =>
+			tables.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_REFERENCES,
+				rowId: item.$id,
+			}),
+		),
+	);
+
+	// Create new references
+	const promises = references.map((ref) =>
+		tables.createRow<PayrollReferences>({
+			databaseId: DATABASE_ID,
+			tableId: TABLES.PAYROLL_REFERENCES,
+			rowId: makeId(),
+			data: {
+				payrollId,
+				...ref,
+			} as PayrollReferences,
+		}),
+	);
+
+	return await Promise.all(promises);
+};

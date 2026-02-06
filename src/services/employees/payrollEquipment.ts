@@ -56,3 +56,36 @@ export const deletePayrollEquipment = (id: string) => {
 		rowId: id,
 	});
 };
+
+export const syncPayrollEquipment = async (
+	payrollId: string,
+	equipment: Partial<PayrollEquipment>[],
+) => {
+	const existing = await listPayrollEquipment({ payrollId });
+
+	// Delete existing equipment records
+	await Promise.all(
+		existing.rows.map((item) =>
+			tables.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_EQUIPMENT,
+				rowId: item.$id,
+			}),
+		),
+	);
+
+	// Create new equipment records
+	const promises = equipment.map((eq) =>
+		tables.createRow<PayrollEquipment>({
+			databaseId: DATABASE_ID,
+			tableId: TABLES.PAYROLL_EQUIPMENT,
+			rowId: makeId(),
+			data: {
+				payrollId,
+				...eq,
+			} as PayrollEquipment,
+		}),
+	);
+
+	return await Promise.all(promises);
+};

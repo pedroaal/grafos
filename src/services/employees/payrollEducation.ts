@@ -55,3 +55,36 @@ export const deletePayrollEducation = (id: string) => {
 		rowId: id,
 	});
 };
+
+export const syncPayrollEducation = async (
+	payrollId: string,
+	education: Partial<PayrollEducation>[],
+) => {
+	const existing = await listPayrollEducation({ payrollId });
+
+	// Delete existing education records
+	await Promise.all(
+		existing.rows.map((item) =>
+			tables.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_EDUCATION,
+				rowId: item.$id,
+			}),
+		),
+	);
+
+	// Create new education records
+	const promises = education.map((edu) =>
+		tables.createRow<PayrollEducation>({
+			databaseId: DATABASE_ID,
+			tableId: TABLES.PAYROLL_EDUCATION,
+			rowId: makeId(),
+			data: {
+				payrollId,
+				...edu,
+			} as PayrollEducation,
+		}),
+	);
+
+	return await Promise.all(promises);
+};

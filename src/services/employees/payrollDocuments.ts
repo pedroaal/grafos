@@ -55,3 +55,34 @@ export const deletePayrollDocument = (id: string) => {
 		rowId: id,
 	});
 };
+
+export const syncPayrollDocuments = async (
+	payrollId: string,
+	document: Partial<PayrollDocuments>,
+) => {
+	const existing = await listPayrollDocuments({ payrollId });
+
+	// Delete existing document
+	await Promise.all(
+		existing.rows.map((item) =>
+			tables.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_DOCUMENTS,
+				rowId: item.$id,
+			}),
+		),
+	);
+
+	// Create new document
+	if (Object.keys(document).length > 0) {
+		return await tables.createRow<PayrollDocuments>({
+			databaseId: DATABASE_ID,
+			tableId: TABLES.PAYROLL_DOCUMENTS,
+			rowId: makeId(),
+			data: {
+				payrollId,
+				...document,
+			} as PayrollDocuments,
+		});
+	}
+};

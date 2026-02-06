@@ -48,7 +48,7 @@
     ],
     "tables": [
         {
-            "$id": "notifications",
+            "$id": "accounting-books",
             "$permissions": [
                 "create(\"users\")",
                 "read(\"users\")",
@@ -56,24 +56,47 @@
                 "delete(\"users\")"
             ],
             "databaseId": "6939a3d8001b326ff905",
-            "name": "Notifications",
+            "name": "Accounting Books",
             "enabled": true,
             "rowSecurity": true,
             "columns": [
                 {
-                    "key": "userId",
-                    "type": "relationship",
-                    "required": false,
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
                     "array": false,
-                    "relatedTable": "users",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "notifications",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
                 {
-                    "key": "type",
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "activities",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Activities",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
                     "type": "string",
                     "required": true,
                     "array": false,
@@ -82,39 +105,276 @@
                     "encrypt": false
                 },
                 {
-                    "key": "content",
+                    "key": "goal",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "templateId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "templates",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "activities",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "canEvaluate",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "followUp",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "areas",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Areas",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
                     "type": "string",
                     "required": true,
                     "array": false,
-                    "size": 2048,
+                    "size": 255,
                     "default": null,
                     "encrypt": false
                 },
                 {
-                    "key": "readAt",
-                    "type": "datetime",
-                    "required": false,
+                    "key": "sortOrder",
+                    "type": "integer",
+                    "required": true,
                     "array": false,
-                    "format": "",
+                    "min": 0,
+                    "max": 255,
                     "default": null
                 }
             ],
             "indexes": [
                 {
-                    "key": "typeIdx",
+                    "key": "sortOrderIdx",
                     "type": "key",
                     "status": "available",
                     "columns": [
-                        "type"
+                        "sortOrder"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "bank-accounts",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Bank Accounts",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "accountNumber",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 32,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
                     ],
                     "orders": []
                 },
                 {
-                    "key": "readAtIdx",
+                    "key": "accountNumberIdx",
                     "type": "key",
                     "status": "available",
                     "columns": [
-                        "readAt"
+                        "accountNumber"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "book-references",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Book References",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "reference",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "categories",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Categories",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "companies",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Companies",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "ruc",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "activity",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "rucIdx",
+                    "type": "unique",
+                    "status": "available",
+                    "columns": [
+                        "ruc"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
                     ],
                     "orders": []
                 }
@@ -260,6 +520,31 @@
             ]
         },
         {
+            "$id": "cost-centers",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Cost Centers",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
             "$id": "credentials",
             "$permissions": [
                 "create(\"users\")",
@@ -324,6 +609,249 @@
                     "status": "available",
                     "columns": [
                         "account"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "equipment",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Equipment",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "features",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Features",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "isMain",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "isMainIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "isMain"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "inks",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Inks",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "color",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "colorIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "color"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "product-categories",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Product Categories",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "parentId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 36,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "parentIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "parentId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "profiles",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Profiles",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
                     ],
                     "orders": []
                 }
@@ -407,6 +935,989 @@
                 }
             ],
             "indexes": []
+        },
+        {
+            "$id": "suppliers",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Suppliers",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "phone",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "address",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "taxes",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Taxes",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "percentage",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 100,
+                    "default": null
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "templates",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Templates",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "logo",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "withholdings",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Withholdings",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "percentage",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 100,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "tax",
+                        "source"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "billing-companies",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Billing Companies",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                },
+                {
+                    "key": "validFrom",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "validTo",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "startNumber",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 999999999,
+                    "default": null
+                },
+                {
+                    "key": "taxId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "taxes",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "billing-companies",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "businessName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "legalRepresentative",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "address",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "city",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "phone",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "mobile",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "ruc",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "sriKey",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "sriSignatureKey",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "cashierCode",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 8,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "taxWithholdingId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "withholdings",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "tax-billing-companies",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "sourceWithholdingId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "withholdings",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "source-billing-companies",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "canPrint",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "logo",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "rucIdx",
+                    "type": "unique",
+                    "status": "available",
+                    "columns": [
+                        "ruc"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "contacts",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Contacts",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "firstName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "lastName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "position",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "address",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "sector",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "phone",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "mobile",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "extension",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 999999,
+                    "default": null
+                },
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                },
+                {
+                    "key": "website",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "companyId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "companies",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "contacts",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "firstName",
+                        "lastName"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "materials",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Materials",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "categoryId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "categories",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "materials",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "hasColor",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "height",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "width",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "price",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000,
+                    "default": null
+                },
+                {
+                    "key": "hasUv",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "hasLaminated",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "processes",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Processes",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "areaId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "areas",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "processes",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "goal",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000,
+                    "default": null
+                },
+                {
+                    "key": "machineTime",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "operatorTime",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "internal",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "followUp",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "parentId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 36,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "parentIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "parentId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "internalIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "internal"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "products",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Products",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "categoryId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "product-categories",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "products",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "profile-features",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Profile Features",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "profileId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "profiles",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "profile-features",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "featureId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "features",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "profile-features",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "users",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Users",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "authId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 36,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "idNumber",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "reserveOrder",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "bookAccess",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "profitAccess",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "profileId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "profiles",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "693f0d0c0022c74c75fc",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "firstName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "lastName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "idNumberIdx",
+                    "type": "unique",
+                    "status": "available",
+                    "columns": [
+                        "idNumber"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "authIdx",
+                    "type": "unique",
+                    "status": "available",
+                    "columns": [
+                        "authId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                }
+            ]
         },
         {
             "$id": "attendance",
@@ -509,7 +2020,7 @@
             ]
         },
         {
-            "$id": "equipment",
+            "$id": "book-transactions",
             "$permissions": [
                 "create(\"users\")",
                 "read(\"users\")",
@@ -517,12 +2028,48 @@
                 "delete(\"users\")"
             ],
             "databaseId": "6939a3d8001b326ff905",
-            "name": "Equipment",
+            "name": "Book Transactions",
             "enabled": true,
             "rowSecurity": true,
             "columns": [
                 {
-                    "key": "name",
+                    "key": "userId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "users",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "book-transactions",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "bookId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "accounting-books",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "book-transactions",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "bookReferenceId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "book-references",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "book-transactions",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "beneficiary",
                     "type": "string",
                     "required": true,
                     "array": false,
@@ -531,7 +2078,81 @@
                     "encrypt": false
                 },
                 {
-                    "key": "active",
+                    "key": "idNumber",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 32,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "detail",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "income",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "expense",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "bankId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "bank-accounts",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "book-transactions",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "accountNumber",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 32,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "checkNumber",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 32,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "date",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "type",
                     "type": "boolean",
                     "required": false,
                     "array": false,
@@ -540,11 +2161,166 @@
             ],
             "indexes": [
                 {
-                    "key": "activeIdx",
+                    "key": "dateIdx",
                     "type": "key",
                     "status": "available",
                     "columns": [
-                        "active"
+                        "date"
+                    ],
+                    "orders": [
+                        "DESC"
+                    ]
+                },
+                {
+                    "key": "typeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "type"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "clients",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Clients",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "contactId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "contacts",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "clients",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "followUp",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "taxpayerType",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "person-non-obligated",
+                        "person-obligated",
+                        "public-society",
+                        "private-society"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "companyId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "companies",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "clients",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "followUpIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "followUp"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "notifications",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Notifications",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "userId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "users",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "notifications",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "readAt",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "typeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "type"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "readAtIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "readAt"
                     ],
                     "orders": []
                 }
@@ -976,769 +2752,6 @@
             ]
         },
         {
-            "$id": "payroll-education",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Payroll Education",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "payrollId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "payroll",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "education",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "educationLevel",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "primary",
-                        "secondary",
-                        "post-secondary",
-                        "tertiary",
-                        "other"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "institutionName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "startDate",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "endDate",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "degree",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "payroll-family",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Payroll Family",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "payrollId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "payroll",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "family",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "relationship",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "parent",
-                        "spouse",
-                        "child",
-                        "other"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "birthDate",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "occupation",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "phone",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "mobile",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "payroll-references",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Payroll References",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "payrollId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "payroll",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "references",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "referenceType",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                },
-                {
-                    "key": "companyName",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "contactName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "phone",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "relationship",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "startDate",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "endDate",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "position",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "separationReason",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "typeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "referenceType"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "payroll-documents",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Payroll Documents",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "payrollId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "payroll",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "documents",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "entryNotice",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "workContract",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "jobApplication",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "resume",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "idCard",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "voterCard",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "policeRecord",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "militaryCard",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "elementaryCertificate",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "highSchoolCertificate",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "universityCertificate",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "otherCertificate",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "employmentReferences",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "personalReferences",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "medicalCertificate",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "exitNotice",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "settlementAct",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "settlementPaymentReceipt",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "payroll-equipment",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Payroll Equipment",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "payrollId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "payroll",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "equipment",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "deliveryDate",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "equipmentId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "equipment",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "payroll",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "deliveryDateIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "deliveryDate"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "features",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Features",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "isMain",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "isMainIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "isMain"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "profiles",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Profiles",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "profile-features",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Profile Features",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "profileId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "profiles",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "profile-features",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "featureId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "features",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "profile-features",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "users",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Users",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "authId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 36,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "idNumber",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                },
-                {
-                    "key": "reserveOrder",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "bookAccess",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "profitAccess",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                },
-                {
-                    "key": "profileId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "profiles",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "693f0d0c0022c74c75fc",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "firstName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "lastName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "idNumberIdx",
-                    "type": "unique",
-                    "status": "available",
-                    "columns": [
-                        "idNumber"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "authIdx",
-                    "type": "unique",
-                    "status": "available",
-                    "columns": [
-                        "authId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
             "$id": "user-book",
             "$permissions": [
                 "create(\"users\")",
@@ -1819,7 +2832,7 @@
             "indexes": []
         },
         {
-            "$id": "companies",
+            "$id": "comments",
             "$permissions": [
                 "create(\"users\")",
                 "read(\"users\")",
@@ -1827,278 +2840,9 @@
                 "delete(\"users\")"
             ],
             "databaseId": "6939a3d8001b326ff905",
-            "name": "Companies",
+            "name": "Comments",
             "enabled": true,
             "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "ruc",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "activity",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "rucIdx",
-                    "type": "unique",
-                    "status": "available",
-                    "columns": [
-                        "ruc"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "contacts",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Contacts",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "title",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "firstName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "lastName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "position",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "address",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "sector",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "phone",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "mobile",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "extension",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 999999,
-                    "default": null
-                },
-                {
-                    "key": "email",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "format": "email",
-                    "default": null
-                },
-                {
-                    "key": "website",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "format": "url",
-                    "default": null
-                },
-                {
-                    "key": "companyId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "companies",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "contacts",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "firstName",
-                        "lastName"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "clients",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Clients",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "contactId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "contacts",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "clients",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "followUp",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "taxpayerType",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "person-non-obligated",
-                        "person-obligated",
-                        "public-society",
-                        "private-society"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "companyId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "companies",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "clients",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "followUpIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "followUp"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "user-clients",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "User Clients",
-            "enabled": true,
-            "rowSecurity": false,
             "columns": [
                 {
                     "key": "userId",
@@ -2108,361 +2852,30 @@
                     "relatedTable": "users",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "user-clients",
+                    "twoWayKey": "comments",
                     "onDelete": "restrict",
                     "side": "parent"
                 },
                 {
-                    "key": "clientId",
+                    "key": "contactId",
                     "type": "relationship",
                     "required": false,
                     "array": false,
-                    "relatedTable": "clients",
+                    "relatedTable": "contacts",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "user-clients",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "inks",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Inks",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "color",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "colorIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "color"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "categories",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Categories",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "suppliers",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Suppliers",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "phone",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "address",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "materials",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Materials",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "categoryId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "categories",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "materials",
+                    "twoWayKey": "comments",
                     "onDelete": "restrict",
                     "side": "parent"
                 },
                 {
-                    "key": "hasColor",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                },
-                {
-                    "key": "height",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "width",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "price",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 10000,
-                    "default": null
-                },
-                {
-                    "key": "hasUv",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "hasLaminated",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "areas",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Areas",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
+                    "key": "comment",
                     "type": "string",
                     "required": true,
                     "array": false,
-                    "size": 255,
+                    "size": 2048,
                     "default": null,
                     "encrypt": false
-                },
-                {
-                    "key": "sortOrder",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 255,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "sortOrderIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "sortOrder"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "processes",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Processes",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "areaId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "areas",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "processes",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "goal",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 10000,
-                    "default": null
-                },
-                {
-                    "key": "machineTime",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "operatorTime",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "internal",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                },
-                {
-                    "key": "followUp",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
                 },
                 {
                     "key": "parentId",
@@ -2485,13 +2898,273 @@
                     "orders": [
                         "ASC"
                     ]
+                }
+            ]
+        },
+        {
+            "$id": "invoices",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Invoices",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "userId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "users",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "invoices",
+                    "onDelete": "restrict",
+                    "side": "parent"
                 },
                 {
-                    "key": "internalIdx",
+                    "key": "invoiceNumber",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 999999999,
+                    "default": null
+                },
+                {
+                    "key": "billingCompanyId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "billing-companies",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "invoices",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "clientId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "clients",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "invoices",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "issueDate",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "dueDate",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "type",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "status",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "pending",
+                        "paid"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "paymentDate",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "paymentType",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "cash",
+                        "transfer",
+                        "exchange",
+                        "card"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "subtotal",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "discountPercentage",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 100,
+                    "default": null
+                },
+                {
+                    "key": "discount",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "tax",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "taxExempt",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "total",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "withholdingId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "withholdings",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "invoices",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "withholding",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "sourceWithholdingId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "withholdings",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "source-invoices",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "sourceWithholding",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "totalPayable",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "notes",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "invoiceNumberIdx",
                     "type": "key",
                     "status": "available",
                     "columns": [
-                        "internal"
+                        "invoiceNumber"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "issueDateIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "issueDate"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "statusIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "status"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "typeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "type"
                     ],
                     "orders": []
                 }
@@ -2758,6 +3431,767 @@
             ]
         },
         {
+            "$id": "payroll-documents",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Payroll Documents",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "payrollId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "payroll",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "documents",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "entryNotice",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "workContract",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "jobApplication",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "resume",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "idCard",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "voterCard",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "policeRecord",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "militaryCard",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "elementaryCertificate",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "highSchoolCertificate",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "universityCertificate",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "otherCertificate",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "employmentReferences",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "personalReferences",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "medicalCertificate",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "exitNotice",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "settlementAct",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "settlementPaymentReceipt",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "payroll-education",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Payroll Education",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "payrollId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "payroll",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "education",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "educationLevel",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "primary",
+                        "secondary",
+                        "post-secondary",
+                        "tertiary",
+                        "other"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "institutionName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "startDate",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "endDate",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "degree",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "payroll-equipment",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Payroll Equipment",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "payrollId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "payroll",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "equipment",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "deliveryDate",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "equipmentId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "equipment",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "payroll",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "deliveryDateIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "deliveryDate"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "payroll-family",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Payroll Family",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "payrollId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "payroll",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "family",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "relationship",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "parent",
+                        "spouse",
+                        "child",
+                        "other"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "birthDate",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "occupation",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "phone",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "mobile",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "payroll-references",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Payroll References",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "payrollId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "payroll",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "references",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "referenceType",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "companyName",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "contactName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "phone",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "relationship",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "startDate",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "endDate",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "position",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "separationReason",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "typeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "referenceType"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "tasks",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Tasks",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "scheduled",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "activityId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "activities",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "tasks",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "assignedId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "users",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "tasks",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "contactId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "contacts",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "tasks",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "source",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "campaign",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "note",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "scheduledIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "scheduled"
+                    ],
+                    "orders": [
+                        "DESC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "user-clients",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "User Clients",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "userId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "users",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "user-clients",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "clientId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "clients",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "user-clients",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "invoice-orders",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Invoice Orders",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "invoiceId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "invoices",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "orders",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "orderId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "orders",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "invoices",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "invoice-products",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Invoice Products",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "invoiceId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "invoices",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "invoice-products",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "quantity",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 65535,
+                    "default": null
+                },
+                {
+                    "key": "detail",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "taxId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "taxes",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "invoice-products",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "unitPrice",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "subtotal",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
             "$id": "order-inks",
             "$permissions": [
                 "create(\"users\")",
@@ -2796,9 +4230,14 @@
                 },
                 {
                     "key": "side",
-                    "type": "boolean",
+                    "type": "string",
                     "required": true,
                     "array": false,
+                    "elements": [
+                        "front",
+                        "back"
+                    ],
+                    "format": "enum",
                     "default": null
                 }
             ],
@@ -3093,1440 +4532,6 @@
                     "status": "available",
                     "columns": [
                         "date"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "cost-centers",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Cost Centers",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "taxes",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Taxes",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "percentage",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 100,
-                    "default": null
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "withholdings",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Withholdings",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "percentage",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 100,
-                    "default": null
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "tax",
-                        "source"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "billing-companies",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Billing Companies",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "email",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "format": "email",
-                    "default": null
-                },
-                {
-                    "key": "validFrom",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "validTo",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "startNumber",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 999999999,
-                    "default": null
-                },
-                {
-                    "key": "taxId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "taxes",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "billing-companies",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "businessName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "legalRepresentative",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "address",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "city",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "phone",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "mobile",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "ruc",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "sriKey",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "sriSignatureKey",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "cashierCode",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 8,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "taxWithholdingId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "withholdings",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "tax-billing-companies",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "sourceWithholdingId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "withholdings",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "source-billing-companies",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "canPrint",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                },
-                {
-                    "key": "logo",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "format": "url",
-                    "default": null
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "rucIdx",
-                    "type": "unique",
-                    "status": "available",
-                    "columns": [
-                        "ruc"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "invoices",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Invoices",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "userId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "users",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "invoices",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "invoiceNumber",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 999999999,
-                    "default": null
-                },
-                {
-                    "key": "billingCompanyId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "billing-companies",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "invoices",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "clientId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "clients",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "invoices",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "issueDate",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "dueDate",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "type",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "pending",
-                        "paid"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "paymentDate",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "paymentType",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "cash",
-                        "transfer",
-                        "exchange",
-                        "card"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "subtotal",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "discountPercentage",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 100,
-                    "default": null
-                },
-                {
-                    "key": "discount",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "tax",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "taxExempt",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "total",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "withholdingId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "withholdings",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "invoices",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "withholding",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "sourceWithholdingId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "withholdings",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "source-invoices",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "sourceWithholding",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "totalPayable",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "notes",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "invoiceNumberIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "invoiceNumber"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "issueDateIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "issueDate"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "statusIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "status"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "typeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "type"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "invoice-orders",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Invoice Orders",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "invoiceId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "invoices",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "orders",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "orderId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "orders",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "invoices",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "invoice-products",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Invoice Products",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "invoiceId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "invoices",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "invoice-products",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "quantity",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 65535,
-                    "default": null
-                },
-                {
-                    "key": "detail",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "taxId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "taxes",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "invoice-products",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "unitPrice",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "subtotal",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "accounting-books",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Accounting Books",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "book-references",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Book References",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "reference",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "bank-accounts",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Bank Accounts",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "accountNumber",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 32,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "accountNumberIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "accountNumber"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "book-transactions",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Book Transactions",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "userId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "users",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "book-transactions",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "bookId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "accounting-books",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "book-transactions",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "bookReferenceId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "book-references",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "book-transactions",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "beneficiary",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "idNumber",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "detail",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "income",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "expense",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "bankId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "bank-accounts",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "book-transactions",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "accountNumber",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "checkNumber",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "date",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "type",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "dateIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "date"
-                    ],
-                    "orders": [
-                        "DESC"
-                    ]
-                },
-                {
-                    "key": "typeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "type"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "templates",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Templates",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "content",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "logo",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "format": "url",
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "activities",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Activities",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "goal",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "templateId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "templates",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "activities",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "canEvaluate",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "followUp",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "tasks",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Tasks",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "scheduled",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "activityId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "activities",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "tasks",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "assignedId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "users",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "tasks",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "contactId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "contacts",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "tasks",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "source",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "campaign",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "note",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "scheduledIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "scheduled"
-                    ],
-                    "orders": [
-                        "DESC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "comments",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Comments",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "userId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "users",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "comments",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "contactId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "contacts",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "comments",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "comment",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "parentId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 36,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "parentIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "parentId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "product-categories",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Product Categories",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "parentId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 36,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "parentIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "parentId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "products",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Products",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "categoryId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "product-categories",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "products",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
                     ],
                     "orders": []
                 }

@@ -12,7 +12,7 @@ import {
 	getCostCenter,
 	updateCostCenter,
 } from "~/services/accounting/costCenters";
-import type { CostCenters } from "~/types/appwrite";
+import type { CostCenters } from "~/types/appwrite.d";
 
 interface IProps {
 	onSuccess?: () => void;

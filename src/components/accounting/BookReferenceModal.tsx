@@ -12,7 +12,7 @@ import {
 	getBookReference,
 	updateBookReference,
 } from "~/services/accounting/bookReferences";
-import type { BookReferences } from "~/types/appwrite";
+import type { BookReferences } from "~/types/appwrite.d";
 
 interface IProps {
 	onSuccess?: () => void;

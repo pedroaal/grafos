@@ -12,7 +12,7 @@ import {
 	getBankAccount,
 	updateBankAccount,
 } from "~/services/accounting/bankAccounts";
-import type { BankAccounts } from "~/types/appwrite";
+import type { BankAccounts } from "~/types/appwrite.d";
 
 interface IProps {
 	onSuccess?: () => void;

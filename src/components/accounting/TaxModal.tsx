@@ -9,7 +9,7 @@ import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 import { createTax, getTax, updateTax } from "~/services/accounting/taxes";
-import type { Taxes } from "~/types/appwrite";
+import type { Taxes } from "~/types/appwrite.d";
 
 interface IProps {
 	onSuccess?: () => void;

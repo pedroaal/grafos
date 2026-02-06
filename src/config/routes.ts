@@ -46,7 +46,6 @@ export enum Routes {
 	user = "/app/user",
 	// system
 	company = "/app/company-details",
-	billingCompanies = "/app/billing-companies",
 	credentials = "/app/credentials",
 }
 

@@ -34,7 +34,7 @@ import {
 	type Invoices,
 	InvoicesPaymentType,
 	InvoicesStatus,
-} from "~/types/appwrite";
+} from "~/types/appwrite.d";
 import {
 	createInvoice,
 	getInvoice,

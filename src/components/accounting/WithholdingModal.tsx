@@ -14,7 +14,7 @@ import {
 	getWithholding,
 	updateWithholding,
 } from "~/services/accounting/withholdings";
-import { type Withholdings, WithholdingsType } from "~/types/appwrite";
+import { type Withholdings, WithholdingsType } from "~/types/appwrite.d";
 
 interface IProps {
 	onSuccess?: () => void;

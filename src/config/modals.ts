@@ -11,4 +11,10 @@ export enum Modals {
 	Supplier = "supplier-modal",
 	// sales
 	Comment = "comment-modal",
+	// accounting
+	Tax = "tax-modal",
+	Withholding = "withholding-modal",
+	CostCenter = "cost-center-modal",
+	BankAccount = "bank-account-modal",
+	BookReference = "book-reference-modal",
 }

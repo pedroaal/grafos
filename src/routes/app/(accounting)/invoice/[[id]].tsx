@@ -44,6 +44,7 @@ import {
 	createInvoiceProduct,
 	deleteInvoiceProduct,
 	listInvoiceProducts,
+	updateInvoiceProduct,
 } from "~/services/accounting/invoiceProducts";
 import {
 	createInvoiceOrder,
@@ -362,7 +363,8 @@ const InvoicePage = () => {
 				} as InvoiceProducts;
 
 				if (product.id) {
-					// Update existing product - not available in service, skip
+					// Update existing product
+					await updateInvoiceProduct(product.id, productPayload);
 				} else {
 					await createInvoiceProduct(authStore.tenantId!, productPayload);
 				}
@@ -755,7 +757,7 @@ const InvoicePage = () => {
 														updateProduct(
 															index(),
 															"quantity",
-															Number.parseFloat(e.currentTarget.value),
+															Number(e.currentTarget.value) || 0,
 														)
 													}
 												/>
@@ -795,7 +797,7 @@ const InvoicePage = () => {
 														updateProduct(
 															index(),
 															"unitPrice",
-															Number.parseFloat(e.currentTarget.value),
+															Number(e.currentTarget.value) || 0,
 														)
 													}
 												/>

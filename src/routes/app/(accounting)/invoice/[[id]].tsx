@@ -2,14 +2,7 @@ import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
-import {
-	createEffect,
-	createResource,
-	createSignal,
-	For,
-	on,
-	Show,
-} from "solid-js";
+import { createEffect, createResource, createSignal, For, on } from "solid-js";
 import {
 	boolean,
 	number,
@@ -81,15 +74,15 @@ const InvoiceSchema = object({
 type InvoiceForm = Omit<Invoices, keyof Models.Row | "userId">;
 
 const INVOICE_STATUS_OPTIONS = [
-	{ value: InvoicesStatus.PENDING, label: "Pendiente" },
-	{ value: InvoicesStatus.PAID, label: "Pagado" },
+	{ key: InvoicesStatus.PENDING, label: "Pendiente" },
+	{ key: InvoicesStatus.PAID, label: "Pagado" },
 ];
 
 const PAYMENT_TYPE_OPTIONS = [
-	{ value: InvoicesPaymentType.CASH, label: "Efectivo" },
-	{ value: InvoicesPaymentType.TRANSFER, label: "Transferencia" },
-	{ value: InvoicesPaymentType.EXCHANGE, label: "Permuta" },
-	{ value: InvoicesPaymentType.CARD, label: "Tarjeta" },
+	{ key: InvoicesPaymentType.CASH, label: "Efectivo" },
+	{ key: InvoicesPaymentType.TRANSFER, label: "Transferencia" },
+	{ key: InvoicesPaymentType.EXCHANGE, label: "Permuta" },
+	{ key: InvoicesPaymentType.CARD, label: "Tarjeta" },
 ];
 
 interface InvoiceProductItem {
@@ -482,7 +475,7 @@ const InvoicePage = () => {
 											label="Empresa de Facturación"
 											options={
 												billingCompaniesList()?.rows.map((company) => ({
-													value: company.$id,
+													key: company.$id,
 													label: company.businessName,
 												})) || []
 											}
@@ -502,7 +495,7 @@ const InvoicePage = () => {
 											label="Cliente"
 											options={
 												clientsList()?.rows.map((client) => ({
-													value: client.$id,
+													key: client.$id,
 													label: `${client.contactId.firstName} ${client.contactId.lastName}`,
 												})) || []
 											}
@@ -550,8 +543,8 @@ const InvoicePage = () => {
 											{...props}
 											label="Tipo de Factura"
 											options={[
-												{ value: "true", label: "Venta" },
-												{ value: "false", label: "Compra" },
+												{ key: "true", label: "Venta" },
+												{ key: "false", label: "Compra" },
 											]}
 											value={field.value ? "true" : "false"}
 											error={field.error}
@@ -659,7 +652,7 @@ const InvoicePage = () => {
 											label="Retención"
 											options={
 												withholdingsList()?.rows.map((w) => ({
-													value: w.$id,
+													key: w.$id,
 													label: w.description,
 												})) || []
 											}
@@ -693,7 +686,7 @@ const InvoicePage = () => {
 											label="Retención en Fuente"
 											options={
 												withholdingsList()?.rows.map((w) => ({
-													value: w.$id,
+													key: w.$id,
 													label: w.description,
 												})) || []
 											}

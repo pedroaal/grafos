@@ -31,8 +31,8 @@ const WithholdingSchema = object({
 type WithholdingForm = Omit<Withholdings, keyof Models.Row>;
 
 const WITHHOLDING_TYPE_OPTIONS = [
-	{ value: WithholdingsType.TAX, label: "Impuesto" },
-	{ value: WithholdingsType.SOURCE, label: "Fuente" },
+	{ key: WithholdingsType.TAX, label: "Impuesto" },
+	{ key: WithholdingsType.SOURCE, label: "Fuente" },
 ];
 
 export const WithholdingModal = (props: IProps) => {

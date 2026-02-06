@@ -174,7 +174,7 @@ const BookTransactionPage = () => {
 											label="Libro Contable"
 											options={
 												accountingBooksList()?.rows.map((book) => ({
-													value: book.$id,
+													key: book.$id,
 													label: book.name,
 												})) || []
 											}
@@ -194,7 +194,7 @@ const BookTransactionPage = () => {
 											label="Referencia de Libro"
 											options={
 												bookReferencesList()?.rows.map((ref) => ({
-													value: ref.$id,
+													key: ref.$id,
 													label: `${ref.reference} - ${ref.description}`,
 												})) || []
 											}
@@ -306,7 +306,7 @@ const BookTransactionPage = () => {
 											label="Banco"
 											options={
 												bankAccountsList()?.rows.map((bank) => ({
-													value: bank.$id,
+													key: bank.$id,
 													label: bank.name,
 												})) || []
 											}
@@ -355,8 +355,8 @@ const BookTransactionPage = () => {
 											{...props}
 											label="Tipo"
 											options={[
-												{ value: "true", label: "Ingreso" },
-												{ value: "false", label: "Egreso" },
+												{ key: "true", label: "Ingreso" },
+												{ key: "false", label: "Egreso" },
 											]}
 											value={field.value ? "true" : "false"}
 											error={field.error}

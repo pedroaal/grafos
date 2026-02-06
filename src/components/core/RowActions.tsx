@@ -1,7 +1,8 @@
-import { FaSolidPencil, FaSolidTrash } from "solid-icons/fa";
+import { FaSolidEye, FaSolidPencil, FaSolidTrash } from "solid-icons/fa";
 import { type Component, Show } from "solid-js";
 
 interface IProps {
+	onView?: () => void;
 	onEdit?: () => void;
 	onDelete?: () => void;
 }
@@ -9,6 +10,15 @@ interface IProps {
 const RowActions: Component<IProps> = (props) => {
 	return (
 		<div class="flex gap-2">
+			<Show when={props.onView}>
+				<button
+					type="button"
+					class="btn btn-sm btn-square btn-ghost"
+					onClick={props.onView}
+				>
+					<FaSolidEye size={16} />
+				</button>
+			</Show>
 			<Show when={props.onEdit}>
 				<button
 					type="button"

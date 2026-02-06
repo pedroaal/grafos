@@ -2,6 +2,7 @@ export enum Modals {
 	Confirm = "confirm-modal",
 	// production
 	Order = "order-modal",
+	ViewOrder = "view-order-modal",
 	SearchOrder = "search-order-modal",
 	Area = "area-modal",
 	Process = "process-modal",

@@ -1,4 +1,5 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { nullable, object, string } from "valibot";
@@ -9,7 +10,8 @@ import Textarea from "~/components/core/Textarea";
 import { Modals } from "~/config/modals";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
+
 import {
 	createComment,
 	getComment,
@@ -35,7 +37,7 @@ const CommentValidationSchema = object({
 type CommentFormFields = Omit<Comments, keyof Models.Row>;
 
 const CommentModal = (props: CommentModalProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 
 	const isModifying = (): boolean => Boolean(appStore.modalProps?.id);
@@ -58,7 +60,7 @@ const CommentModal = (props: CommentModalProps) => {
 	const [commentForm, { Form, Field }] = createForm<CommentFormFields>({
 		validate: valiForm(CommentValidationSchema),
 		initialValues: {
-			userId: (authStore.user?.$id || "") as any,
+			userId: (auth()?.user?.$id || "") as any,
 			contactId: (appStore.modalProps?.contactId || "") as any,
 			comment: "",
 			parentId: null,

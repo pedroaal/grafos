@@ -1,11 +1,12 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
 import { createInk, getInk, updateInk } from "~/services/production/inks";
 import type { Inks } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
@@ -22,7 +23,7 @@ const InkSchema = object({
 type InkForm = Omit<Inks, keyof Models.Row>;
 
 const InkModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -61,7 +62,7 @@ const InkModal = (props: IProps) => {
 				await updateInk(appStore.modalProps!.id, values);
 				addAlert({ type: "success", message: "Tinta actualizada con éxito" });
 			} else {
-				await createInk(authStore.tenantId!, values as Inks);
+				await createInk(auth()?.tenantId!, values as Inks);
 				addAlert({ type: "success", message: "Tinta creada con éxito" });
 			}
 

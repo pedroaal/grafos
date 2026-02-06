@@ -1,4 +1,4 @@
-import { A, useLocation, useNavigate } from "@solidjs/router";
+import { A, createAsync } from "@solidjs/router";
 import {
 	FaSolidBars,
 	FaSolidBell,
@@ -6,19 +6,19 @@ import {
 	FaSolidChevronRight,
 } from "solid-icons/fa";
 import {
-	createRenderEffect,
 	createSignal,
 	For,
 	Match,
-	on,
 	type ParentComponent,
 	Switch,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { Routes } from "~/config/routes";
 import { SidebarLinks } from "~/config/sidebar";
-import { useAuth } from "~/context/auth";
+
 import { useWindowSize } from "~/hooks/useWindowSize";
+import { logout } from "~/services/auth/login";
+import { requireAuth } from "~/services/auth/session";
 
 const Notifications = [
 	{
@@ -28,25 +28,16 @@ const Notifications = [
 ];
 
 const DashboardLayout: ParentComponent = (props) => {
-	const location = useLocation();
-	const nav = useNavigate();
-	const { authStore, logout, checkFeature } = useAuth();
+	const auth = createAsync(() => requireAuth(), {
+		deferStream: true,
+	});
 	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
 	const iconsSize = () => (sidebarOpen() ? 16 : 24);
 
-	createRenderEffect(
-		on(
-			() => location.pathname,
-			() => {
-				if (!authStore.session || !authStore.user) {
-					nav(Routes.login);
-					return;
-				}
-			},
-		),
-	);
+	const checkFeature = (featureId: string) =>
+		auth()?.features.includes(featureId);
 
 	return (
 		<div class="drawer md:drawer-open h-dvh">
@@ -209,7 +200,7 @@ const DashboardLayout: ParentComponent = (props) => {
 								class="btn btn-sm btn-secondary btn-circle avatar"
 							>
 								<span class="text-xl">
-									{authStore.user?.firstName?.[0]?.toUpperCase() || "U"}
+									{auth()?.user?.firstName?.[0]?.toUpperCase() || "U"}
 								</span>
 							</button>
 							<ul

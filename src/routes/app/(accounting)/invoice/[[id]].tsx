@@ -1,6 +1,7 @@
 import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+
+import { createAsync, useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, createSignal, For, on } from "solid-js";
 import {
@@ -20,7 +21,7 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+
 import { listBillingCompanies } from "~/services/accounting/billingCompanies";
 import {
 	createInvoiceOrder,
@@ -40,6 +41,7 @@ import {
 } from "~/services/accounting/invoices";
 import { listTaxes } from "~/services/accounting/taxes";
 import { listWithholdings } from "~/services/accounting/withholdings";
+import { getSession } from "~/services/auth/session";
 import { listOrders } from "~/services/production/orders";
 import { listClients } from "~/services/sales/clients";
 import {
@@ -102,7 +104,7 @@ interface InvoiceOrderItem {
 const InvoicePage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -319,7 +321,7 @@ const InvoicePage = () => {
 		try {
 			const payload = {
 				...formValues,
-				userId: authStore.user!.$id,
+				userId: auth()?.user!.$id,
 			} as Invoices;
 
 			let invoiceId: string;
@@ -332,7 +334,7 @@ const InvoicePage = () => {
 					message: "Factura actualizada con éxito",
 				});
 			} else {
-				const newInvoice = await createInvoice(authStore.tenantId!, payload);
+				const newInvoice = await createInvoice(auth()?.tenantId!, payload);
 				invoiceId = newInvoice.$id;
 				addAlert({
 					type: "success",
@@ -355,14 +357,14 @@ const InvoicePage = () => {
 					// Update existing product
 					await updateInvoiceProduct(product.id, productPayload);
 				} else {
-					await createInvoiceProduct(authStore.tenantId!, productPayload);
+					await createInvoiceProduct(auth()?.tenantId!, productPayload);
 				}
 			}
 
 			// Save invoice orders
 			for (const order of invoiceOrders()) {
 				if (!order.id && order.orderId) {
-					await createInvoiceOrder(authStore.tenantId!, {
+					await createInvoiceOrder(auth()?.tenantId!, {
 						invoiceId,
 						orderId: order.orderId,
 					} as any);

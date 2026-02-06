@@ -1,6 +1,6 @@
 import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+import { createAsync, useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { object, string } from "valibot";
@@ -12,13 +12,14 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
-import type { AccountingBooks } from "~/types/appwrite";
+
 import {
 	createAccountingBook,
 	getAccountingBook,
 	updateAccountingBook,
 } from "~/services/accounting/accountingBooks";
+import { getSession } from "~/services/auth/session";
+import type { AccountingBooks } from "~/types/appwrite";
 
 const AccountingBookSchema = object({
 	name: string(),
@@ -29,7 +30,7 @@ type AccountingBookForm = Omit<AccountingBooks, keyof Models.Row>;
 const AccountingBookPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -70,7 +71,7 @@ const AccountingBookPage = () => {
 				});
 			} else {
 				await createAccountingBook(
-					authStore.tenantId!,
+					auth()?.tenantId!,
 					formValues as AccountingBooks,
 				);
 				addAlert({

@@ -136,7 +136,8 @@ const OrdersPage = () => {
 									<td>{item.clientId?.companyId?.name ?? ""}</td>
 									<td>{item.description}</td>
 									<td>{item.quantity}</td>
-									<td>{item.processes.length}</td>
+									{/* <td>{item.processes.length}</td> */}
+									<td>Processes</td>
 									<td>
 										<RowActions
 											onView={() => handleViewOrder(item.$id)}

@@ -1,6 +1,6 @@
 import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+import { createAsync, useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { number, object, optional, string } from "valibot";
@@ -13,13 +13,14 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+
 import {
 	createBillingCompany,
 	getBillingCompany,
 	updateBillingCompany,
 } from "~/services/accounting/billingCompanies";
 import { listTaxes } from "~/services/accounting/taxes";
+import { getSession } from "~/services/auth/session";
 import type { BillingCompanies } from "~/types/appwrite";
 
 const BillingCompanySchema = object({
@@ -45,7 +46,7 @@ type BillingCompanyForm = Omit<BillingCompanies, keyof Models.Row>;
 const BillingCompanyPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -119,7 +120,7 @@ const BillingCompanyPage = () => {
 				});
 			} else {
 				await createBillingCompany(
-					authStore.tenantId!,
+					auth()?.tenantId!,
 					formValues as BillingCompanies,
 				);
 				addAlert({

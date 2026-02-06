@@ -1,6 +1,6 @@
 import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+import { createAsync, useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import dayjs from "dayjs";
 import { createEffect, createResource, createSignal, on } from "solid-js";
@@ -33,7 +33,7 @@ import ProcessesSection, {
 import { OrdersStatus } from "~/config/appwrite";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
 import { listInks } from "~/services/production/inks";
 import { listOrderInks, syncOrderInks } from "~/services/production/orderInks";
 import {
@@ -114,7 +114,7 @@ const ordersDefault = {
 const OrderPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -307,10 +307,10 @@ const OrderPage = () => {
 		const loader = addLoader();
 
 		try {
-			const tenantId = authStore.tenantId;
+			const tenantId = auth()?.tenantId;
 			if (!tenantId) throw new Error("No hay sesión de tenant");
 
-			const userId = authStore.user?.$id;
+			const userId = auth()?.user?.$id;
 			if (!userId) throw new Error("No hay sesión de usuario");
 
 			// Prepare order payload
@@ -389,8 +389,7 @@ const OrderPage = () => {
 							disabled: !isEdit(),
 						},
 						{
-							onClick: () =>
-								duplicateOrder(params.id || "", authStore.tenantId!),
+							onClick: () => duplicateOrder(params.id || "", auth()?.tenantId!),
 							label: "Duplicar",
 							disabled: !isEdit(),
 						},

@@ -1,11 +1,12 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
 import {
 	createSupplier,
 	getSupplier,
@@ -28,7 +29,7 @@ const SupplierSchema = object({
 type SupplierForm = Omit<Suppliers, keyof Models.Row>;
 
 const SupplierModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -74,7 +75,7 @@ const SupplierModal = (props: IProps) => {
 					message: "Proveedor actualizado con éxito",
 				});
 			} else {
-				await createSupplier(authStore.tenantId!, values as Suppliers);
+				await createSupplier(auth()?.tenantId!, values as Suppliers);
 				addAlert({ type: "success", message: "Proveedor creado con éxito" });
 			}
 

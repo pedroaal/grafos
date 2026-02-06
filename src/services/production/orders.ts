@@ -21,7 +21,7 @@ export const listOrders = async (options: {
 	const queries = [
 		Query.limit(perPage),
 		Query.offset((page - 1) * perPage),
-		Query.select(["*", "clientId.companyId.name", "processes.$id"]),
+		Query.select(["*", "clientId.companyId.name"]),
 	];
 	if (options?.orderNumber)
 		queries.push(Query.equal("number", options.orderNumber));

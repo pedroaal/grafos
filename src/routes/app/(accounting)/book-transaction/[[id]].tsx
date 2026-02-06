@@ -1,6 +1,6 @@
 import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+import { createAsync, useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { boolean, number, object, optional, string } from "valibot";
@@ -13,7 +13,7 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+
 import { listAccountingBooks } from "~/services/accounting/accountingBooks";
 import { listBankAccounts } from "~/services/accounting/bankAccounts";
 import { listBookReferences } from "~/services/accounting/bookReferences";
@@ -22,6 +22,7 @@ import {
 	getBookTransaction,
 	updateBookTransaction,
 } from "~/services/accounting/bookTransactions";
+import { getSession } from "~/services/auth/session";
 import type { BookTransactions } from "~/types/appwrite";
 
 const BookTransactionSchema = object({
@@ -44,7 +45,7 @@ type BookTransactionForm = Omit<BookTransactions, keyof Models.Row | "userId">;
 const BookTransactionPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -116,7 +117,7 @@ const BookTransactionPage = () => {
 		try {
 			const payload = {
 				...formValues,
-				userId: authStore.user!.$id,
+				userId: auth()?.user!.$id,
 			} as BookTransactions;
 
 			if (isEdit()) {
@@ -126,7 +127,7 @@ const BookTransactionPage = () => {
 					message: "Transacción actualizada con éxito",
 				});
 			} else {
-				await createBookTransaction(authStore.tenantId!, payload);
+				await createBookTransaction(auth()?.tenantId!, payload);
 				addAlert({
 					type: "success",
 					message: "Transacción creada con éxito",

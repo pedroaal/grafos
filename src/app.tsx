@@ -9,7 +9,6 @@ import { Suspense } from "solid-js";
 import Alerts from "./components/core/Alerts";
 import Loader from "./components/core/Loader";
 import { AppProvider } from "./context/app";
-import { AuthProvider } from "./context/auth";
 
 import "./app.css";
 
@@ -27,11 +26,9 @@ const App: Component = () => {
 					<Meta property="og:image:alt" content="Grafos logo" />
 					<Meta property="og:site_name" content="Grafos" />
 					<AppProvider>
-						<AuthProvider>
-							<Suspense>{props.children}</Suspense>
-							<Alerts />
-							<Loader />
-						</AuthProvider>
+						<Suspense>{props.children}</Suspense>
+						<Alerts />
+						<Loader />
 					</AppProvider>
 				</MetaProvider>
 			)}

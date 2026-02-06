@@ -1,11 +1,12 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { number, object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
 import { createArea, getArea, updateArea } from "~/services/production/areas";
 import type { Areas } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
@@ -23,7 +24,7 @@ const AreaSchema = object({
 type AreaForm = Omit<Areas, keyof Models.Row>;
 
 const AreaModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -64,7 +65,7 @@ const AreaModal = (props: IProps) => {
 				await updateArea(appStore.modalProps!.id, values);
 				addAlert({ type: "success", message: "Área actualizada con éxito" });
 			} else {
-				await createArea(authStore.tenantId!, values as Areas);
+				await createArea(auth()?.tenantId!, values as Areas);
 				addAlert({ type: "success", message: "Área creada con éxito" });
 			}
 

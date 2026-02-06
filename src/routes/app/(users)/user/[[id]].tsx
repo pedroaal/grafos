@@ -1,6 +1,6 @@
 import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+import { createAsync, useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { boolean, object, string } from "valibot";
@@ -14,7 +14,8 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
+
 import { createAccount } from "~/services/users/accounts";
 import { listProfiles } from "~/services/users/profiles";
 import { createUser, getUser, updateUser } from "~/services/users/users";
@@ -38,7 +39,7 @@ type UserForm = Omit<Users, keyof Models.Row | "authId" | "profileId"> & {
 const UserPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -108,10 +109,10 @@ const UserPage = () => {
 				);
 
 				// create tenant membership
-				// await createMembership(authId, authStore.tenantId!);
+				// await createMembership(authId, auth()?.tenantId!);
 
 				// create db user
-				await createUser(authStore.tenantId!, { ...payload, authId } as Users);
+				await createUser(auth()?.tenantId!, { ...payload, authId } as Users);
 				addAlert({ type: "success", message: "Usuario creado con éxito" });
 			}
 

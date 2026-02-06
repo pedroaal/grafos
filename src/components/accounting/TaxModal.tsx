@@ -1,4 +1,5 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { boolean, number, object } from "valibot";
@@ -7,8 +8,9 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+
 import { createTax, getTax, updateTax } from "~/services/accounting/taxes";
+import { getSession } from "~/services/auth/session";
 import type { Taxes } from "~/types/appwrite.d";
 
 interface IProps {
@@ -24,7 +26,7 @@ const TaxSchema = object({
 type TaxForm = Omit<Taxes, keyof Models.Row>;
 
 export const TaxModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -68,7 +70,7 @@ export const TaxModal = (props: IProps) => {
 					message: "Impuesto actualizado con éxito",
 				});
 			} else {
-				await createTax(authStore.tenantId!, values as Taxes);
+				await createTax(auth()?.tenantId!, values as Taxes);
 				addAlert({ type: "success", message: "Impuesto creado con éxito" });
 			}
 

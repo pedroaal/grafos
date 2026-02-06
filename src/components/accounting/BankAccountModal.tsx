@@ -1,4 +1,5 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { object, string } from "valibot";
@@ -6,12 +7,13 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+
 import {
 	createBankAccount,
 	getBankAccount,
 	updateBankAccount,
 } from "~/services/accounting/bankAccounts";
+import { getSession } from "~/services/auth/session";
 import type { BankAccounts } from "~/types/appwrite.d";
 
 interface IProps {
@@ -27,7 +29,7 @@ const BankAccountSchema = object({
 type BankAccountForm = Omit<BankAccounts, keyof Models.Row>;
 
 export const BankAccountModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -71,7 +73,7 @@ export const BankAccountModal = (props: IProps) => {
 					message: "Cuenta bancaria actualizada con éxito",
 				});
 			} else {
-				await createBankAccount(authStore.tenantId!, values as BankAccounts);
+				await createBankAccount(auth()?.tenantId!, values as BankAccounts);
 				addAlert({
 					type: "success",
 					message: "Cuenta bancaria creada con éxito",

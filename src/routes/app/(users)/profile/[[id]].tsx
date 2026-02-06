@@ -1,6 +1,6 @@
 import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+import { createAsync, useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, createSignal, For, on } from "solid-js";
 import { boolean, object, string } from "valibot";
@@ -13,7 +13,8 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
+
 import { listFeatures } from "~/services/users/features";
 import {
 	listProfileFeatures,
@@ -37,7 +38,7 @@ type ProfileForm = Omit<Profiles, keyof Models.Row>;
 const ProfilePage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -119,7 +120,7 @@ const ProfilePage = () => {
 				addAlert({ type: "success", message: "Perfil actualizado con éxito" });
 			} else {
 				const newProfile = await createProfile(
-					authStore.tenantId!,
+					auth()?.tenantId!,
 					formValues as Profiles,
 				);
 				profileId = newProfile.$id;

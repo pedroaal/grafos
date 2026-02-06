@@ -1,4 +1,5 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { object, string } from "valibot";
@@ -6,12 +7,13 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+
 import {
 	createBookReference,
 	getBookReference,
 	updateBookReference,
 } from "~/services/accounting/bookReferences";
+import { getSession } from "~/services/auth/session";
 import type { BookReferences } from "~/types/appwrite.d";
 
 interface IProps {
@@ -27,7 +29,7 @@ const BookReferenceSchema = object({
 type BookReferenceForm = Omit<BookReferences, keyof Models.Row>;
 
 export const BookReferenceModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -71,10 +73,7 @@ export const BookReferenceModal = (props: IProps) => {
 					message: "Referencia de libro actualizada con éxito",
 				});
 			} else {
-				await createBookReference(
-					authStore.tenantId!,
-					values as BookReferences,
-				);
+				await createBookReference(auth()?.tenantId!, values as BookReferences);
 				addAlert({
 					type: "success",
 					message: "Referencia de libro creada con éxito",

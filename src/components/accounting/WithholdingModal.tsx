@@ -1,19 +1,21 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
-import { boolean, enum as vEnum, number, object, string } from "valibot";
+import { boolean, number, object, string, enum as vEnum } from "valibot";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
-import Select from "~/components/core/Select";
 import { Modal } from "~/components/core/Modal";
+import Select from "~/components/core/Select";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+
 import {
 	createWithholding,
 	getWithholding,
 	updateWithholding,
 } from "~/services/accounting/withholdings";
+import { getSession } from "~/services/auth/session";
 import { type Withholdings, WithholdingsType } from "~/types/appwrite.d";
 
 interface IProps {
@@ -36,7 +38,7 @@ const WITHHOLDING_TYPE_OPTIONS = [
 ];
 
 export const WithholdingModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -84,7 +86,7 @@ export const WithholdingModal = (props: IProps) => {
 					message: "Retención actualizada con éxito",
 				});
 			} else {
-				await createWithholding(authStore.tenantId!, values as Withholdings);
+				await createWithholding(auth()?.tenantId!, values as Withholdings);
 				addAlert({ type: "success", message: "Retención creada con éxito" });
 			}
 

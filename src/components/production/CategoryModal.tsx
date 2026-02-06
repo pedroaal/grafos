@@ -1,11 +1,12 @@
 import { createForm, setValues, valiForm } from "@modular-forms/solid";
+import { createAsync } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
 import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useAuth } from "~/context/auth";
+import { getSession } from "~/services/auth/session";
 import {
 	createCategory,
 	getCategory,
@@ -26,7 +27,7 @@ const CategorySchema = object({
 type CategoryForm = Omit<Categories, keyof Models.Row>;
 
 const CategoryModal = (props: IProps) => {
-	const { authStore } = useAuth();
+	const auth = createAsync(() => getSession());
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -66,7 +67,7 @@ const CategoryModal = (props: IProps) => {
 					message: "Categoría actualizada con éxito",
 				});
 			} else {
-				await createCategory(authStore.tenantId!, values as Categories);
+				await createCategory(auth()?.tenantId!, values as Categories);
 				addAlert({ type: "success", message: "Categoría creada con éxito" });
 			}
 

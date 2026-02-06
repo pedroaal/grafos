@@ -5,9 +5,15 @@ export enum Routes {
 	dashboard = "/app",
 	// accounting
 	invoices = "/app/invoices",
-	books = "/app/books",
-	costCenter = "/app/cost-center",
+	invoice = "/app/invoice",
+	accountingBooks = "/app/accounting-books",
+	accountingBook = "/app/accounting-book",
+	bookTransactions = "/app/book-transactions",
+	bookTransaction = "/app/book-transaction",
+	billingCompanies = "/app/billing-companies",
+	billingCompany = "/app/billing-company",
 	taxes = "/app/taxes",
+	banks = "/app/banks",
 	// production
 	orders = "/app/orders",
 	order = "/app/order",

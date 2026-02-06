@@ -48,7 +48,7 @@
     ],
     "tables": [
         {
-            "$id": "schedules",
+            "$id": "notifications",
             "$permissions": [
                 "create(\"users\")",
                 "read(\"users\")",
@@ -56,86 +56,7 @@
                 "delete(\"users\")"
             ],
             "databaseId": "6939a3d8001b326ff905",
-            "name": "Schedules",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "morningArrival",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "morningDeparture",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "afternoonArrival",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "afternoonDeparture",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "waitMinutes",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 59,
-                    "default": 3
-                },
-                {
-                    "key": "graceMinutes",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 59,
-                    "default": 2
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "attendance",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Attendance",
+            "name": "Notifications",
             "enabled": true,
             "rowSecurity": true,
             "columns": [
@@ -147,109 +68,57 @@
                     "relatedTable": "users",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "attendance",
+                    "twoWayKey": "notifications",
                     "onDelete": "restrict",
                     "side": "parent"
                 },
                 {
-                    "key": "date",
-                    "type": "datetime",
+                    "key": "type",
+                    "type": "string",
                     "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "readAt",
+                    "type": "datetime",
+                    "required": false,
                     "array": false,
                     "format": "",
                     "default": null
-                },
-                {
-                    "key": "morningArrival",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "morningDeparture",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "afternoonArrival",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "afternoonDeparture",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "totalHours",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "overtimeHours",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
                 }
             ],
             "indexes": [
                 {
-                    "key": "dateIdx",
+                    "key": "typeIdx",
                     "type": "key",
                     "status": "available",
                     "columns": [
-                        "date"
+                        "type"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "readAtIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "readAt"
                     ],
                     "orders": []
                 }
             ]
-        },
-        {
-            "$id": "cost-centers",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Cost Centers",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": []
         },
         {
             "$id": "company-details",
@@ -455,6 +324,227 @@
                     "status": "available",
                     "columns": [
                         "account"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "schedules",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Schedules",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "morningArrival",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "morningDeparture",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "afternoonArrival",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "afternoonDeparture",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "waitMinutes",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 59,
+                    "default": 3
+                },
+                {
+                    "key": "graceMinutes",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 59,
+                    "default": 2
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "attendance",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Attendance",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "userId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "users",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "attendance",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "date",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "morningArrival",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "morningDeparture",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "afternoonArrival",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "afternoonDeparture",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "totalHours",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "overtimeHours",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "dateIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "date"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "equipment",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Equipment",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
                     ],
                     "orders": []
                 }
@@ -1376,48 +1466,6 @@
             ]
         },
         {
-            "$id": "equipment",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Equipment",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
             "$id": "features",
             "$permissions": [
                 "create(\"users\")",
@@ -2080,6 +2128,376 @@
             "indexes": []
         },
         {
+            "$id": "inks",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Inks",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "color",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "colorIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "color"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "categories",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Categories",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "suppliers",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Suppliers",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "phone",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 16,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "address",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "materials",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Materials",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "categoryId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "categories",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "materials",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "hasColor",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "height",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "width",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "price",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000,
+                    "default": null
+                },
+                {
+                    "key": "hasUv",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "hasLaminated",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "areas",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Areas",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "sortOrder",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 255,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "sortOrderIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "sortOrder"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "processes",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Processes",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "areaId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "areas",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "processes",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "goal",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000,
+                    "default": null
+                },
+                {
+                    "key": "machineTime",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "operatorTime",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "internal",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "followUp",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "parentId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 36,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "parentIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "parentId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "internalIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "internal"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
             "$id": "orders",
             "$permissions": [
                 "create(\"users\")",
@@ -2681,7 +3099,7 @@
             ]
         },
         {
-            "$id": "areas",
+            "$id": "cost-centers",
             "$permissions": [
                 "create(\"users\")",
                 "read(\"users\")",
@@ -2689,286 +3107,11 @@
                 "delete(\"users\")"
             ],
             "databaseId": "6939a3d8001b326ff905",
-            "name": "Areas",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "sortOrder",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 255,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "sortOrderIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "sortOrder"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "processes",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Processes",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "areaId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "areas",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "processes",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "goal",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 10000,
-                    "default": null
-                },
-                {
-                    "key": "machineTime",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "operatorTime",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "internal",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                },
-                {
-                    "key": "followUp",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "parentId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 36,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "parentIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "parentId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "internalIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "internal"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "suppliers",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Suppliers",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "phone",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 16,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "address",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "categories",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Categories",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "inks",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Inks",
+            "name": "Cost Centers",
             "enabled": true,
             "rowSecurity": false,
             "columns": [
                 {
-                    "key": "color",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "colorIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "color"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "materials",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Materials",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
                     "key": "name",
                     "type": "string",
                     "required": true,
@@ -2976,79 +3119,9 @@
                     "size": 255,
                     "default": null,
                     "encrypt": false
-                },
-                {
-                    "key": "categoryId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "categories",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "materials",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "hasColor",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                },
-                {
-                    "key": "height",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "width",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "price",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 10000,
-                    "default": null
-                },
-                {
-                    "key": "hasUv",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "hasLaminated",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
                 }
             ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
+            "indexes": []
         },
         {
             "$id": "taxes",
@@ -3070,6 +3143,69 @@
                     "array": false,
                     "min": 0,
                     "max": 100,
+                    "default": null
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "withholdings",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Withholdings",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "percentage",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 100,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "tax",
+                        "source"
+                    ],
+                    "format": "enum",
                     "default": null
                 },
                 {
@@ -3297,69 +3433,6 @@
                     ],
                     "orders": []
                 },
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
-            "$id": "withholdings",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Withholdings",
-            "enabled": true,
-            "rowSecurity": false,
-            "columns": [
-                {
-                    "key": "percentage",
-                    "type": "double",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 100,
-                    "default": null
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 512,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "tax",
-                        "source"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                }
-            ],
-            "indexes": [
                 {
                     "key": "activeIdx",
                     "type": "key",
@@ -4094,121 +4167,6 @@
             ]
         },
         {
-            "$id": "crm",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "CRM",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "scheduled",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "activityId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "activities",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "crm",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "assignedId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "users",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "crm",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "contactId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "contacts",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "crm",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "source",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "campaign",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "note",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "active",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "activeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "active"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "scheduledIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "scheduled"
-                    ],
-                    "orders": [
-                        "DESC"
-                    ]
-                }
-            ]
-        },
-        {
             "$id": "activities",
             "$permissions": [
                 "create(\"users\")",
@@ -4279,6 +4237,121 @@
             ]
         },
         {
+            "$id": "tasks",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Tasks",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "scheduled",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "activityId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "activities",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "tasks",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "assignedId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "users",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "tasks",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "contactId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "contacts",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "tasks",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "source",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "campaign",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "note",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "active",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "activeIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "active"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "scheduledIdx",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "scheduled"
+                    ],
+                    "orders": [
+                        "DESC"
+                    ]
+                }
+            ]
+        },
+        {
             "$id": "comments",
             "$permissions": [
                 "create(\"users\")",
@@ -4345,79 +4418,6 @@
                     "orders": [
                         "ASC"
                     ]
-                }
-            ]
-        },
-        {
-            "$id": "notifications",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Notifications",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "userId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "users",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "notifications",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "content",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "readAt",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "typeIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "type"
-                    ],
-                    "orders": []
-                },
-                {
-                    "key": "readAtIdx",
-                    "type": "key",
-                    "status": "available",
-                    "columns": [
-                        "readAt"
-                    ],
-                    "orders": []
                 }
             ]
         },

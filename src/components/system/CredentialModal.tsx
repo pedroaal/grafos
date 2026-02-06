@@ -34,9 +34,9 @@ const CredentialModal = (props: IProps) => {
 
 	const [credential] = createResource(
 		() =>
-			appStore.showModal === Modals.Credential
-				? appStore.modalProps?.id || ""
-				: false || "",
+			appStore.showModal === Modals.Credential && appStore.modalProps?.id
+				? appStore.modalProps.id
+				: false,
 		getCredential,
 	);
 

@@ -64,7 +64,7 @@ const CredentialsPage = () => {
 
 	const maskPassword = (password: string): string => {
 		if (!password) return "";
-		return "•".repeat(Math.min(password.length, 12));
+		return "•".repeat(8);
 	};
 
 	return (

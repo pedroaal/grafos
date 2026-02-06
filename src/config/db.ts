@@ -3,9 +3,9 @@ export const DATABASE_ID =
 
 export enum TABLES {
 	// Accounting
+	COST_CENTERS = "cost-centers",
 	TAXES = "taxes",
 	WITHHOLDINGS = "withholdings",
-	COST_CENTERS = "cost-centers",
 	BILLING_COMPANIES = "billing-companies",
 	ACCOUNTING_BOOKS = "accounting-books",
 	BANK_ACCOUNTS = "bank-accounts",
@@ -15,6 +15,8 @@ export enum TABLES {
 	INVOICE_PRODUCTS = "invoice-products",
 	INVOICE_ORDERS = "invoice-orders",
 	// Employees
+	SCHEDULES = "schedules",
+	ATTENDANCE = "attendance",
 	EQUIPMENT = "equipment",
 	PAYROLL = "payroll",
 	PAYROLL_DOCUMENTS = "payroll-documents",
@@ -22,15 +24,13 @@ export enum TABLES {
 	PAYROLL_EQUIPMENT = "payroll-equipment",
 	PAYROLL_FAMILY = "payroll-family",
 	PAYROLL_REFERENCES = "payroll-references",
-	SCHEDULES = "schedules",
-	ATTENDANCE = "attendance",
 	// Production
+	INKS = "inks",
+	CATEGORIES = "categories",
+	SUPPLIERS = "suppliers",
+	MATERIALS = "materials",
 	AREAS = "areas",
 	PROCESSES = "processes",
-	CATEGORIES = "categories",
-	MATERIALS = "materials",
-	SUPPLIERS = "suppliers",
-	INKS = "inks",
 	ORDERS = "orders",
 	ORDER_INKS = "order-inks",
 	ORDER_MATERIALS = "order-materials",
@@ -39,19 +39,19 @@ export enum TABLES {
 	CLIENT_FOLLOWERS = "client-followers",
 	// Sales
 	COMPANIES = "companies",
-	CLIENTS = "clients",
-	ACTIVITIES = "activities",
-	COMMENTS = "comments",
 	CONTACTS = "contacts",
-	CRM = "crm",
+	CLIENTS = "clients",
 	TEMPLATES = "templates",
+	ACTIVITIES = "activities",
+	TASKS = "tasks",
+	COMMENTS = "comments",
 	// Store
 	PRODUCT_CATEGORIES = "product-categories",
 	PRODUCTS = "products",
 	// System
+	NOTIFICATIONS = "notifications",
 	COMPANY_DETAILS = "company-details",
 	CREDENTIALS = "credentials",
-	NOTIFICATIONS = "notifications",
 	// Users
 	FEATURES = "features",
 	PROFILES = "profiles",

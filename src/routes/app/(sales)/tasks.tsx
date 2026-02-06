@@ -12,20 +12,20 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
-import { deleteCrm, listCrm } from "~/services/sales/crm";
-import type { Crm } from "~/types/appwrite";
+import { deleteTask, listTask } from "~/services/sales/tasks";
+import type { Task } from "~/types/appwrite";
 
 const TasksPage = () => {
 	const nav = useNavigate();
 	const { addAlert } = useApp();
 	const paginationState = usePagination();
 
-	const [crmRecords, { refetch: refreshCrm }] = createResource(
+	const [crmRecords, { refetch: refreshTask }] = createResource(
 		() => ({
 			page: paginationState.page(),
 			perPage: paginationState.perPage(),
 		}),
-		listCrm,
+		listTask,
 	);
 
 	createEffect(() => {
@@ -46,9 +46,9 @@ const TasksPage = () => {
 		if (!confirmDelete) return;
 
 		try {
-			await deleteCrm(recordId);
+			await deleteTask(recordId);
 			addAlert({ type: "success", message: "Registro CRM eliminado" });
-			refreshCrm();
+			refreshTask();
 		} catch (err: any) {
 			addAlert({
 				type: "error",
@@ -68,12 +68,12 @@ const TasksPage = () => {
 		});
 	};
 
-	const getAssignedUserName = (record: Crm): string => {
+	const getAssignedUserName = (record: Task): string => {
 		const user = record.assignedId;
 		return `${user.firstName} ${user.lastName}`;
 	};
 
-	const getContactName = (record: Crm): string => {
+	const getContactName = (record: Task): string => {
 		const contact = record.contactId;
 		return `${contact.firstName} ${contact.lastName}`;
 	};
@@ -88,7 +88,7 @@ const TasksPage = () => {
 					links={[
 						{
 							href: Routes.task,
-							label: "Nueva Actividad CRM",
+							label: "Nueva Tarea CRM",
 						},
 					]}
 				>
@@ -103,7 +103,7 @@ const TasksPage = () => {
 						]}
 					>
 						<For each={crmRecords()?.rows || []}>
-							{(entry: Crm) => (
+							{(entry: Task) => (
 								<tr>
 									<td>{formatScheduledDate(entry.scheduled)}</td>
 									<td>{entry.activityId.name}</td>

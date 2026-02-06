@@ -1,9 +1,9 @@
 import { Query } from "appwrite";
 import { DATABASE_ID, TABLES } from "~/config/db";
 import { makeId, tables } from "~/lib/appwrite";
-import type { Crm } from "~/types/appwrite";
+import type { Task } from "~/types/appwrite";
 
-export const listCrm = async (options: {
+export const listTask = async (options: {
 	assignedId?: string;
 	contactId?: string;
 	status?: boolean;
@@ -25,48 +25,48 @@ export const listCrm = async (options: {
 	if (options?.dateTo)
 		queries.push(Query.lessThan("scheduled", options.dateTo));
 
-	const res = await tables.listRows<Crm>({
+	const res = await tables.listRows<Task>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.CRM,
+		tableId: TABLES.TASKS,
 		queries,
 	});
 
 	return res;
 };
 
-export const getCrm = async (id: string) => {
-	const res = await tables.getRow<Crm>({
+export const getTask = async (id: string) => {
+	const res = await tables.getRow<Task>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.CRM,
+		tableId: TABLES.TASKS,
 		rowId: id,
 	});
 	return res;
 };
 
-export const createCrm = async (payload: Crm) => {
-	const res = await tables.createRow<Crm>({
+export const createTask = async (payload: Task) => {
+	const res = await tables.createRow<Task>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.CRM,
+		tableId: TABLES.TASKS,
 		rowId: makeId(),
 		data: payload,
 	});
 	return res;
 };
 
-export const updateCrm = async (id: string, payload: Partial<Crm>) => {
-	const res = await tables.updateRow<Crm>({
+export const updateTask = async (id: string, payload: Partial<Task>) => {
+	const res = await tables.updateRow<Task>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.CRM,
+		tableId: TABLES.TASKS,
 		rowId: id,
 		data: payload,
 	});
 	return res;
 };
 
-export const deleteCrm = (id: string) => {
+export const deleteTask = (id: string) => {
 	return tables.deleteRow({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.CRM,
+		tableId: TABLES.TASKS,
 		rowId: id,
 	});
 };

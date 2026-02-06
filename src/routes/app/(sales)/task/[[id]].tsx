@@ -17,9 +17,9 @@ import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { listActivities } from "~/services/sales/activities";
 import { listContacts } from "~/services/sales/contacts";
-import { createCrm, getCrm, updateCrm } from "~/services/sales/crm";
+import { createTask, getTask, updateTask } from "~/services/sales/tasks";
 import { listUsers } from "~/services/users/users";
-import type { Crm } from "~/types/appwrite";
+import type { Task } from "~/types/appwrite";
 import type { IOption } from "~/types/core";
 
 const TaskSchema = object({
@@ -33,7 +33,7 @@ const TaskSchema = object({
 	active: boolean(),
 });
 
-type TaskForm = Omit<Crm, keyof Models.Row>;
+type TaskForm = Omit<Task, keyof Models.Row>;
 
 const TaskPage = () => {
 	const urlParams = useParams();
@@ -56,7 +56,7 @@ const TaskPage = () => {
 		},
 	});
 
-	const [existingEntry] = createResource(() => urlParams.id ?? "", getCrm);
+	const [existingEntry] = createResource(() => urlParams.id ?? "", getTask);
 	const [activitiesSource] = createResource(
 		() => ({ page: 1, perPage: MAX_DROPDOWN_ITEMS }),
 		listActivities,
@@ -94,18 +94,18 @@ const TaskPage = () => {
 		const taskId = addLoader();
 		try {
 			if (isUpdateMode()) {
-				await updateCrm(urlParams.id!, payload);
-				addAlert({ type: "success", message: "Entrada CRM actualizada" });
+				await updateTask(urlParams.id!, payload);
+				addAlert({ type: "success", message: "Tarea CRM actualizada" });
 			} else {
-				await createCrm(payload as Crm);
-				addAlert({ type: "success", message: "Nueva entrada CRM creada" });
+				await createTask(payload as Task);
+				addAlert({ type: "success", message: "Nueva tarea CRM creada" });
 			}
 
 			nav(Routes.tasks);
 		} catch (errorObj: any) {
 			addAlert({
 				type: "error",
-				message: errorObj.message || "Fallo al guardar entrada CRM",
+				message: errorObj.message || "Fallo al guardar tarea CRM",
 			});
 		} finally {
 			removeLoader(taskId);

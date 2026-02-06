@@ -9,17 +9,17 @@ import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
 import { formatDate } from "~/lib/date";
-import { getOrder } from "~/services/production/orders";
 import { listOrderInks } from "~/services/production/orderInks";
 import { listOrderMaterials } from "~/services/production/orderMaterials";
 import { listOrderPayments } from "~/services/production/orderPayments";
 import { listOrderProcesses } from "~/services/production/orderProcesses";
+import { getOrder } from "~/services/production/orders";
 
 interface IProps {
 	onSuccess?: () => void;
 }
 
-const ViewOrderModal = (props: IProps) => {
+const ViewOrderModal = (_props: IProps) => {
 	const { appStore, closeModal } = useApp();
 
 	// Fetch order data when modal opens
@@ -33,22 +33,22 @@ const ViewOrderModal = (props: IProps) => {
 
 	// Fetch related data
 	const [orderMaterials] = createResource(
-		() => (order() ? { orderId: order()!.$id } : null),
+		() => (order() ? { orderId: order()?.$id } : null),
 		async (params) => (params ? await listOrderMaterials(params) : null),
 	);
 
 	const [orderProcesses] = createResource(
-		() => (order() ? { orderId: order()!.$id } : null),
+		() => (order() ? { orderId: order()?.$id } : null),
 		async (params) => (params ? await listOrderProcesses(params) : null),
 	);
 
 	const [orderPayments] = createResource(
-		() => (order() ? { orderId: order()!.$id } : null),
+		() => (order() ? { orderId: order()?.$id } : null),
 		async (params) => (params ? await listOrderPayments(params) : null),
 	);
 
 	const [orderInks] = createResource(
-		() => (order() ? { orderId: order()!.$id } : null),
+		() => (order() ? { orderId: order()?.$id } : null),
 		async (params) => (params ? await listOrderInks(params) : null),
 	);
 
@@ -111,7 +111,7 @@ const ViewOrderModal = (props: IProps) => {
 						<div>
 							<h4 class="text-lg font-semibold">Pedido #{order()?.number}</h4>
 							<p class="text-sm text-base-content/70">
-								Creado: {formatDate(order()!.$createdAt)}
+								Creado: {formatDate(order()?.$createdAt)}
 							</p>
 						</div>
 						<StatusIcon />
@@ -141,9 +141,7 @@ const ViewOrderModal = (props: IProps) => {
 										<span class="label-text font-semibold">Fecha Inicio</span>
 									</label>
 									<p class="text-base-content">
-										{order()?.startDate
-											? formatDate(order()!.startDate)
-											: "-"}
+										{order()?.startDate ? formatDate(order()?.startDate) : "-"}
 									</p>
 								</div>
 								<div>
@@ -151,7 +149,7 @@ const ViewOrderModal = (props: IProps) => {
 										<span class="label-text font-semibold">Fecha Entrega</span>
 									</label>
 									<p class="text-base-content">
-										{order()?.endDate ? formatDate(order()!.endDate) : "-"}
+										{order()?.endDate ? formatDate(order()?.endDate) : "-"}
 									</p>
 								</div>
 								<div>
@@ -175,7 +173,9 @@ const ViewOrderModal = (props: IProps) => {
 								<Show when={order()?.paperType}>
 									<div>
 										<label class="label">
-											<span class="label-text font-semibold">Tipo de Papel</span>
+											<span class="label-text font-semibold">
+												Tipo de Papel
+											</span>
 										</label>
 										<p class="text-base-content">{order()?.paperType}</p>
 									</div>
@@ -208,7 +208,9 @@ const ViewOrderModal = (props: IProps) => {
 					</div>
 
 					{/* Order Processes */}
-					<Show when={orderProcesses()?.rows && orderProcesses()!.rows.length > 0}>
+					<Show
+						when={orderProcesses()?.rows && orderProcesses()?.rows.length > 0}
+					>
 						<div class="card bg-base-200">
 							<div class="card-body">
 								<h3 class="card-title text-base">Procesos</h3>
@@ -258,7 +260,7 @@ const ViewOrderModal = (props: IProps) => {
 
 					{/* Order Materials */}
 					<Show
-						when={orderMaterials()?.rows && orderMaterials()!.rows.length > 0}
+						when={orderMaterials()?.rows && orderMaterials()?.rows.length > 0}
 					>
 						<div class="card bg-base-200">
 							<div class="card-body">
@@ -300,7 +302,7 @@ const ViewOrderModal = (props: IProps) => {
 					</Show>
 
 					{/* Order Inks */}
-					<Show when={orderInks()?.rows && orderInks()!.rows.length > 0}>
+					<Show when={orderInks()?.rows && orderInks()?.rows.length > 0}>
 						<div class="card bg-base-200">
 							<div class="card-body">
 								<h3 class="card-title text-base">Tintas</h3>
@@ -328,9 +330,7 @@ const ViewOrderModal = (props: IProps) => {
 													!orderInks()?.rows.some((ink) => ink.side === "front")
 												}
 											>
-												<span class="text-base-content/50">
-													No hay tintas
-												</span>
+												<span class="text-base-content/50">No hay tintas</span>
 											</Show>
 										</div>
 									</div>
@@ -357,9 +357,7 @@ const ViewOrderModal = (props: IProps) => {
 													!orderInks()?.rows.some((ink) => ink.side === "back")
 												}
 											>
-												<span class="text-base-content/50">
-													No hay tintas
-												</span>
+												<span class="text-base-content/50">No hay tintas</span>
 											</Show>
 										</div>
 									</div>
@@ -369,7 +367,9 @@ const ViewOrderModal = (props: IProps) => {
 					</Show>
 
 					{/* Order Payments */}
-					<Show when={orderPayments()?.rows && orderPayments()!.rows.length > 0}>
+					<Show
+						when={orderPayments()?.rows && orderPayments()?.rows.length > 0}
+					>
 						<div class="card bg-base-200">
 							<div class="card-body">
 								<h3 class="card-title text-base">Pagos</h3>
@@ -406,7 +406,9 @@ const ViewOrderModal = (props: IProps) => {
 							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
 									<label class="label">
-										<span class="label-text font-semibold">Precio Cotizado</span>
+										<span class="label-text font-semibold">
+											Precio Cotizado
+										</span>
 									</label>
 									<p class="text-base-content text-lg">
 										{formatCurrency(order()?.quotedPrice || 0)}

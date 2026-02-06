@@ -25,9 +25,9 @@ const ViewOrderModal = (_props: IProps) => {
 	// Fetch order data when modal opens
 	const [order] = createResource(
 		() =>
-			appStore.showModal === Modals.ViewOrder
-				? appStore.modalProps?.id || ""
-				: false || "",
+			appStore.showModal === Modals.ViewOrder && appStore.modalProps?.id
+				? appStore.modalProps.id
+				: false,
 		getOrder,
 	);
 

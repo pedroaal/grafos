@@ -33,22 +33,22 @@ const ViewOrderModal = (_props: IProps) => {
 
 	// Fetch related data
 	const [orderMaterials] = createResource(
-		() => (order() ? { orderId: order()?.$id } : null),
+		() => (order() ? { orderId: order().$id } : null),
 		async (params) => (params ? await listOrderMaterials(params) : null),
 	);
 
 	const [orderProcesses] = createResource(
-		() => (order() ? { orderId: order()?.$id } : null),
+		() => (order() ? { orderId: order().$id } : null),
 		async (params) => (params ? await listOrderProcesses(params) : null),
 	);
 
 	const [orderPayments] = createResource(
-		() => (order() ? { orderId: order()?.$id } : null),
+		() => (order() ? { orderId: order().$id } : null),
 		async (params) => (params ? await listOrderPayments(params) : null),
 	);
 
 	const [orderInks] = createResource(
-		() => (order() ? { orderId: order()?.$id } : null),
+		() => (order() ? { orderId: order().$id } : null),
 		async (params) => (params ? await listOrderInks(params) : null),
 	);
 

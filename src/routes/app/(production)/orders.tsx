@@ -23,6 +23,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import DashboardLayout from "~/components/layouts/Dashboard";
+import ViewOrderModal from "~/components/production/ViewOrderModal";
 
 import { Modals } from "~/config/modals";
 import { Routes } from "~/config/routes";
@@ -32,7 +33,7 @@ import { deleteOrder, listOrders } from "~/services/production/orders";
 
 const OrdersPage = () => {
 	const navigate = useNavigate();
-	const { addAlert, closeModal } = useApp();
+	const { addAlert, closeModal, openModal } = useApp();
 
 	const pagination = usePagination();
 	const [orderNumber, setOrderNumber] = createSignal<number | undefined>();
@@ -54,6 +55,10 @@ const OrdersPage = () => {
 
 	const goTo = (orderId: string) => {
 		navigate(`${Routes.order}/${orderId}`);
+	};
+
+	const handleViewOrder = (orderId: string) => {
+		openModal(Modals.ViewOrder, { id: orderId });
 	};
 
 	const handleDelete = async (orderId: string, number: number) => {
@@ -134,6 +139,7 @@ const OrdersPage = () => {
 									<td>{item.processes.length}</td>
 									<td>
 										<RowActions
+											onView={() => handleViewOrder(item.$id)}
 											onEdit={() => goTo(item.$id)}
 											onDelete={() => handleDelete(item.$id, item.number)}
 										/>
@@ -179,6 +185,7 @@ const OrdersPage = () => {
 						onChange={(ev) => setOrderNumber(ev.currentTarget.valueAsNumber)}
 					/>
 				</ConfirmModal>
+				<ViewOrderModal onSuccess={() => refetch()} />
 				<ConfirmModal
 					title="Eliminar Orden"
 					message="Buscar orden de trabajo por numero"

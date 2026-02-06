@@ -83,76 +83,6 @@
             ]
         },
         {
-            "$id": "activities",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"users\")",
-                "update(\"users\")",
-                "delete(\"users\")"
-            ],
-            "databaseId": "6939a3d8001b326ff905",
-            "name": "Activities",
-            "enabled": true,
-            "rowSecurity": true,
-            "columns": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "goal",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000000,
-                    "default": null
-                },
-                {
-                    "key": "templateId",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "templates",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "activities",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "canEvaluate",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "followUp",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "nameIdx",
-                    "type": "fulltext",
-                    "status": "available",
-                    "columns": [
-                        "name"
-                    ],
-                    "orders": []
-                }
-            ]
-        },
-        {
             "$id": "areas",
             "$permissions": [
                 "create(\"users\")",
@@ -1141,6 +1071,76 @@
                     "status": "available",
                     "columns": [
                         "active"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "activities",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "6939a3d8001b326ff905",
+            "name": "Activities",
+            "enabled": true,
+            "rowSecurity": true,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "goal",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000000,
+                    "default": null
+                },
+                {
+                    "key": "templateId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "templates",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "activities",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                },
+                {
+                    "key": "canEvaluate",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "followUp",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "nameIdx",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
                     ],
                     "orders": []
                 }
@@ -2772,7 +2772,7 @@
                     "relatedTable": "users",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "books",
+                    "twoWayKey": "user-book",
                     "onDelete": "restrict",
                     "side": "parent"
                 },
@@ -2784,7 +2784,7 @@
                     "relatedTable": "accounting-books",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "users",
+                    "twoWayKey": "user-book",
                     "onDelete": "restrict",
                     "side": "parent"
                 }
@@ -2812,7 +2812,7 @@
                     "relatedTable": "users",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "processes",
+                    "twoWayKey": "user-processes",
                     "onDelete": "restrict",
                     "side": "parent"
                 },
@@ -2824,7 +2824,7 @@
                     "relatedTable": "processes",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "users",
+                    "twoWayKey": "user-processes",
                     "onDelete": "restrict",
                     "side": "parent"
                 }
@@ -3377,18 +3377,6 @@
                     "size": 2048,
                     "default": null,
                     "encrypt": false
-                },
-                {
-                    "key": "processes",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedTable": "order-processes",
-                    "relationType": "oneToMany",
-                    "twoWay": true,
-                    "twoWayKey": "orderId",
-                    "onDelete": "cascade",
-                    "side": "parent"
                 }
             ],
             "indexes": [
@@ -4212,7 +4200,7 @@
                     "relatedTable": "orders",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "inks",
+                    "twoWayKey": "order-inks",
                     "onDelete": "restrict",
                     "side": "parent"
                 },
@@ -4224,7 +4212,7 @@
                     "relatedTable": "inks",
                     "relationType": "manyToOne",
                     "twoWay": false,
-                    "twoWayKey": "orders",
+                    "twoWayKey": "order-inks",
                     "onDelete": "restrict",
                     "side": "parent"
                 },
@@ -4273,10 +4261,9 @@
                     "array": false,
                     "relatedTable": "orders",
                     "relationType": "manyToOne",
-                    "twoWay": false,
+                    "twoWay": true,
                     "twoWayKey": "order-materials",
-                    "onDelete": "restrict",
-                    "side": "parent"
+                    "onDelete": "restrict"
                 },
                 {
                     "key": "materialId",

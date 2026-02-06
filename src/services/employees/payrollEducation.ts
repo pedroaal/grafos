@@ -61,10 +61,15 @@ export const syncPayrollEducation = async (
 	education: Partial<PayrollEducation>[],
 ) => {
 	const existing = await listPayrollEducation({ payrollId });
+	const existingIds = new Set(existing.rows.map((item) => item.$id));
+	const incomingIds = new Set(
+		education.filter((e) => e.$id).map((e) => e.$id),
+	);
 
-	// Delete existing education records
+	// Delete items that are no longer in the incoming list
+	const toDelete = existing.rows.filter((item) => !incomingIds.has(item.$id));
 	await Promise.all(
-		existing.rows.map((item) =>
+		toDelete.map((item) =>
 			tables.deleteRow({
 				databaseId: DATABASE_ID,
 				tableId: TABLES.PAYROLL_EDUCATION,
@@ -73,9 +78,23 @@ export const syncPayrollEducation = async (
 		),
 	);
 
-	// Create new education records
-	const promises = education.map((edu) =>
-		tables.createRow<PayrollEducation>({
+	// Create or update items
+	const promises = education.map((edu) => {
+		const hasId = edu.$id && existingIds.has(edu.$id);
+		if (hasId) {
+			// Update existing
+			return tables.updateRow<PayrollEducation>({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_EDUCATION,
+				rowId: edu.$id!,
+				data: {
+					...edu,
+					payrollId,
+				} as Partial<PayrollEducation>,
+			});
+		}
+		// Create new
+		return tables.createRow<PayrollEducation>({
 			databaseId: DATABASE_ID,
 			tableId: TABLES.PAYROLL_EDUCATION,
 			rowId: makeId(),
@@ -83,8 +102,8 @@ export const syncPayrollEducation = async (
 				payrollId,
 				...edu,
 			} as PayrollEducation,
-		}),
-	);
+		});
+	});
 
 	return await Promise.all(promises);
 };

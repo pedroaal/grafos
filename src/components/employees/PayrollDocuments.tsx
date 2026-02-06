@@ -1,8 +1,6 @@
 import type { Models } from "appwrite";
-import { FaSolidCheck, FaSolidXmark } from "solid-icons/fa";
-import { type Component, Show, createSignal } from "solid-js";
+import { type Component } from "solid-js";
 import type { SetStoreFunction } from "solid-js/store";
-import Checkbox from "~/components/core/Checkbox";
 import type { PayrollDocuments } from "~/types/appwrite";
 
 interface IProps {

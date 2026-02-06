@@ -66,10 +66,15 @@ export const syncPayrollReferences = async (
 	references: Partial<PayrollReferences>[],
 ) => {
 	const existing = await listPayrollReferences({ payrollId });
+	const existingIds = new Set(existing.rows.map((item) => item.$id));
+	const incomingIds = new Set(
+		references.filter((r) => r.$id).map((r) => r.$id),
+	);
 
-	// Delete existing references
+	// Delete items that are no longer in the incoming list
+	const toDelete = existing.rows.filter((item) => !incomingIds.has(item.$id));
 	await Promise.all(
-		existing.rows.map((item) =>
+		toDelete.map((item) =>
 			tables.deleteRow({
 				databaseId: DATABASE_ID,
 				tableId: TABLES.PAYROLL_REFERENCES,
@@ -78,9 +83,23 @@ export const syncPayrollReferences = async (
 		),
 	);
 
-	// Create new references
-	const promises = references.map((ref) =>
-		tables.createRow<PayrollReferences>({
+	// Create or update items
+	const promises = references.map((ref) => {
+		const hasId = ref.$id && existingIds.has(ref.$id);
+		if (hasId) {
+			// Update existing
+			return tables.updateRow<PayrollReferences>({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_REFERENCES,
+				rowId: ref.$id!,
+				data: {
+					...ref,
+					payrollId,
+				} as Partial<PayrollReferences>,
+			});
+		}
+		// Create new
+		return tables.createRow<PayrollReferences>({
 			databaseId: DATABASE_ID,
 			tableId: TABLES.PAYROLL_REFERENCES,
 			rowId: makeId(),
@@ -88,8 +107,8 @@ export const syncPayrollReferences = async (
 				payrollId,
 				...ref,
 			} as PayrollReferences,
-		}),
-	);
+		});
+	});
 
 	return await Promise.all(promises);
 };

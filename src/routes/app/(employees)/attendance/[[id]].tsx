@@ -3,7 +3,7 @@ import { Title } from "@solidjs/meta";
 import { useNavigate, useParams } from "@solidjs/router";
 import type { Models } from "appwrite";
 import dayjs from "dayjs";
-import { createEffect, createResource, on, createSignal } from "solid-js";
+import { createEffect, createResource, on } from "solid-js";
 import { nullable, number, object, string } from "valibot";
 
 import BlueBoard from "~/components/core/BlueBoard";

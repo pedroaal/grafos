@@ -62,10 +62,15 @@ export const syncPayrollEquipment = async (
 	equipment: Partial<PayrollEquipment>[],
 ) => {
 	const existing = await listPayrollEquipment({ payrollId });
+	const existingIds = new Set(existing.rows.map((item) => item.$id));
+	const incomingIds = new Set(
+		equipment.filter((e) => e.$id).map((e) => e.$id),
+	);
 
-	// Delete existing equipment records
+	// Delete items that are no longer in the incoming list
+	const toDelete = existing.rows.filter((item) => !incomingIds.has(item.$id));
 	await Promise.all(
-		existing.rows.map((item) =>
+		toDelete.map((item) =>
 			tables.deleteRow({
 				databaseId: DATABASE_ID,
 				tableId: TABLES.PAYROLL_EQUIPMENT,
@@ -74,9 +79,23 @@ export const syncPayrollEquipment = async (
 		),
 	);
 
-	// Create new equipment records
-	const promises = equipment.map((eq) =>
-		tables.createRow<PayrollEquipment>({
+	// Create or update items
+	const promises = equipment.map((eq) => {
+		const hasId = eq.$id && existingIds.has(eq.$id);
+		if (hasId) {
+			// Update existing
+			return tables.updateRow<PayrollEquipment>({
+				databaseId: DATABASE_ID,
+				tableId: TABLES.PAYROLL_EQUIPMENT,
+				rowId: eq.$id!,
+				data: {
+					...eq,
+					payrollId,
+				} as Partial<PayrollEquipment>,
+			});
+		}
+		// Create new
+		return tables.createRow<PayrollEquipment>({
 			databaseId: DATABASE_ID,
 			tableId: TABLES.PAYROLL_EQUIPMENT,
 			rowId: makeId(),
@@ -84,8 +103,8 @@ export const syncPayrollEquipment = async (
 				payrollId,
 				...eq,
 			} as PayrollEquipment,
-		}),
-	);
+		});
+	});
 
 	return await Promise.all(promises);
 };

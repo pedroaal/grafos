@@ -17,4 +17,6 @@ export enum Modals {
 	CostCenter = "cost-center-modal",
 	BankAccount = "bank-account-modal",
 	BookReference = "book-reference-modal",
+	// system
+	Credential = "credential-modal",
 }

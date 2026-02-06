@@ -37,8 +37,14 @@ export enum Routes {
 	template = "/app/template",
 	// employees
 	rrhh = "/app/rrhh",
+	attendances = "/app/attendances",
 	attendance = "/app/attendance",
+	equipment = "/app/equipment",
+	equipmentItem = "/app/equipment-item",
 	schedules = "/app/schedules",
+	schedule = "/app/schedule",
+	payrolls = "/app/payrolls",
+	payroll = "/app/payroll",
 	// users
 	profiles = "/app/profiles",
 	profile = "/app/profile",

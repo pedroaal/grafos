@@ -345,7 +345,7 @@ const BillingCompanyPage = () => {
 											label="Impuesto"
 											options={
 												taxesList()?.rows.map((tax) => ({
-													value: tax.$id,
+													key: tax.$id,
 													label: `${tax.percentage}%`,
 												})) || []
 											}

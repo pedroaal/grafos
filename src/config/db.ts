@@ -36,7 +36,6 @@ export enum TABLES {
 	ORDER_MATERIALS = "order-materials",
 	ORDER_PROCESSES = "order-processes",
 	ORDER_PAYMENTS = "order-payments",
-	CLIENT_FOLLOWERS = "client-followers",
 	// Sales
 	COMPANIES = "companies",
 	CONTACTS = "contacts",

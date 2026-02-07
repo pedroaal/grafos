@@ -26,7 +26,7 @@ export const listNotifications = async (options: {
 export const getNotification = async (id: string) => {
 	const res = await tables.getRow<Notifications>({
 		databaseId: DATABASE_ID,
-		tableId: TABLES.CLIENT_FOLLOWERS,
+		tableId: TABLES.NOTIFICATIONS,
 		rowId: id,
 	});
 	return res;

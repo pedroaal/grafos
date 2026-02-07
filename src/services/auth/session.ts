@@ -14,8 +14,6 @@ interface IAuth {
 }
 
 export const getSession = query(async (): Promise<IAuth | null> => {
-  "use server";
-
   try {
     const session = await account.get();
     const user = await getUserByAuthId(session.$id);
@@ -30,8 +28,6 @@ export const getSession = query(async (): Promise<IAuth | null> => {
 }, "session");
 
 export const requireAuth = query(async (): Promise<IAuth> => {
-  "use server";
-
   const auth = await getSession();
   if (!auth?.session) {
     throw redirect("/login");
@@ -40,8 +36,6 @@ export const requireAuth = query(async (): Promise<IAuth> => {
 }, "requireAuth");
 
 export const requireGuest = query(async (): Promise<void> => {
-  "use server";
-
   const auth = await getSession();
   if (auth?.session) {
     throw redirect("/app");

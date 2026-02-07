@@ -1,16 +1,18 @@
 import { action, redirect } from "@solidjs/router";
 import { account } from "~/lib/appwrite";
+import type { LoginForm } from "~/types/login";
 
-export const login = action(async (formData: FormData) => {
-  "use server";
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  await account.createEmailPasswordSession({ email, password });
+export const loginAction = action(async (formData: LoginForm) => {
+  try {
+    await account.createEmailPasswordSession(formData);
+  } catch (error) {
+    console.error("[login] Failed:", error);
+    throw new Error("Login failed");
+  }
   throw redirect("/app");
 });
 
-export const logout = action(async () => {
-  "use server";
+export const logoutAction = action(async () => {
   try {
     await account.deleteSession({ sessionId: "current" });
   } catch (error) {

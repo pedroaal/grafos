@@ -1,18 +1,14 @@
 import { createForm, type SubmitHandler, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
-import { A, createAsync } from "@solidjs/router";
+import { A, createAsync, useAction } from "@solidjs/router";
 import { object, string } from "valibot";
 
 import Input from "~/components/core/Input";
 import LandingLayout from "~/components/layouts/Landing";
 
-import { login } from "~/services/auth/login";
+import { loginAction } from "~/services/auth/login";
 import { requireGuest } from "~/services/auth/session";
-
-type LoginForm = {
-	email: string;
-	password: string;
-};
+import type { LoginForm } from "~/types/login";
 
 const LoginSchema = object({
 	email: string(),
@@ -21,6 +17,7 @@ const LoginSchema = object({
 
 const LoginPage = () => {
 	createAsync(() => requireGuest());
+	const login = useAction(loginAction);
 
 	const [_form, { Form, Field }] = createForm<LoginForm>({
 		validate: valiForm(LoginSchema),
@@ -36,7 +33,7 @@ const LoginPage = () => {
 			<LandingLayout>
 				<div class="flex h-full w-full justify-center items-center">
 					<div class="card w-full max-w-md shadow-lg bg-base-100">
-						<Form class="card-body" method="post" action={login}>
+						<Form class="card-body" onSubmit={(values) => login(values)}>
 							<h2 class="card-title justify-center">Iniciar Sesión</h2>
 							<Field name="email">
 								{(field, props) => (

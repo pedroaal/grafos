@@ -1,4 +1,4 @@
-import { A, createAsync } from "@solidjs/router";
+import { A, createAsync, useAction } from "@solidjs/router";
 import {
 	FaSolidBars,
 	FaSolidBell,
@@ -17,7 +17,7 @@ import { Routes } from "~/config/routes";
 import { SidebarLinks } from "~/config/sidebar";
 
 import { useWindowSize } from "~/hooks/useWindowSize";
-import { logout } from "~/services/auth/login";
+import { logoutAction } from "~/services/auth/login";
 import { requireAuth } from "~/services/auth/session";
 
 const Notifications = [
@@ -31,6 +31,7 @@ const DashboardLayout: ParentComponent = (props) => {
 	const auth = createAsync(() => requireAuth(), {
 		deferStream: true,
 	});
+	const logout = useAction(logoutAction);
 	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
 

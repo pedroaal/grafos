@@ -1,6 +1,5 @@
 import { Title } from "@solidjs/meta";
 import { For } from "solid-js";
-import LandingLayout from "~/components/layouts/Landing";
 
 const GalleryPage = () => {
 	const images = [
@@ -21,40 +20,38 @@ const GalleryPage = () => {
 	return (
 		<>
 			<Title>Gallery - Grafos</Title>
-			<LandingLayout>
-				<div>
-					<div
-						class="hero min-h-[400px] relative"
-						style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200');"
-					>
-						<div class="hero-overlay bg-black bg-opacity-40"></div>
-						<div class="hero-content text-center text-white">
-							<h1 class="text-5xl font-bold">Galería</h1>
-						</div>
-					</div>
-
-					<div class="container mx-auto px-4 py-16 max-w-6xl">
-						<h2 class="text-4xl font-bold text-center text-blue-600 mb-12">
-							Infraestructura
-						</h2>
-
-						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-							<For each={images}>
-								{(image) => (
-									<div class="card bg-base-100 shadow-xl hover:scale-105 transition-transform">
-										<figure class="h-64 bg-gradient-to-br from-blue-100 to-blue-300 flex items-center justify-center">
-											<div class="text-center p-6">
-												<div class="text-6xl mb-4">🖨️</div>
-												<p class="text-gray-700 font-semibold">{image.name}</p>
-											</div>
-										</figure>
-									</div>
-								)}
-							</For>
-						</div>
+			<div>
+				<div
+					class="hero min-h-[400px] relative"
+					style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200');"
+				>
+					<div class="hero-overlay bg-black bg-opacity-40"></div>
+					<div class="hero-content text-center text-white">
+						<h1 class="text-5xl font-bold">Galería</h1>
 					</div>
 				</div>
-			</LandingLayout>
+
+				<div class="container mx-auto px-4 py-16 max-w-6xl">
+					<h2 class="text-4xl font-bold text-center text-blue-600 mb-12">
+						Infraestructura
+					</h2>
+
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+						<For each={images}>
+							{(image) => (
+								<div class="card bg-base-100 shadow-xl hover:scale-105 transition-transform">
+									<figure class="h-64 bg-gradient-to-br from-blue-100 to-blue-300 flex items-center justify-center">
+										<div class="text-center p-6">
+											<div class="text-6xl mb-4">🖨️</div>
+											<p class="text-gray-700 font-semibold">{image.name}</p>
+										</div>
+									</figure>
+								</div>
+							)}
+						</For>
+					</div>
+				</div>
+			</div>
 		</>
 	);
 };

@@ -14,7 +14,7 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { getSession } from "~/services/auth/session";
+import { useUser } from "~/hooks/useUser";
 
 import { createAccount } from "~/services/users/accounts";
 import { listProfiles } from "~/services/users/profiles";
@@ -39,7 +39,7 @@ type UserForm = Omit<Users, keyof Models.Row | "authId" | "profileId"> & {
 const UserPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);

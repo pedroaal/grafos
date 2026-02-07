@@ -8,9 +8,9 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import { createTax, getTax, updateTax } from "~/services/accounting/taxes";
-import { getSession } from "~/services/auth/session";
 import type { Taxes } from "~/types/appwrite.d";
 
 interface IProps {
@@ -26,7 +26,7 @@ const TaxSchema = object({
 type TaxForm = Omit<Taxes, keyof Models.Row>;
 
 export const TaxModal = (props: IProps) => {
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 

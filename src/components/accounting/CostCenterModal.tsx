@@ -7,13 +7,13 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import {
 	createCostCenter,
 	getCostCenter,
 	updateCostCenter,
 } from "~/services/accounting/costCenters";
-import { getSession } from "~/services/auth/session";
 import type { CostCenters } from "~/types/appwrite.d";
 
 interface IProps {
@@ -28,7 +28,7 @@ const CostCenterSchema = object({
 type CostCenterForm = Omit<CostCenters, keyof Models.Row>;
 
 export const CostCenterModal = (props: IProps) => {
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 

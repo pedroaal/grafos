@@ -6,7 +6,6 @@ import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { getSession } from "~/services/auth/session";
 import {
 	createCategory,
 	getCategory,
@@ -14,6 +13,7 @@ import {
 } from "~/services/production/categories";
 import type { Categories } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
+import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -27,7 +27,7 @@ const CategorySchema = object({
 type CategoryForm = Omit<Categories, keyof Models.Row>;
 
 const CategoryModal = (props: IProps) => {
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 

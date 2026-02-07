@@ -13,6 +13,7 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import { listAccountingBooks } from "~/services/accounting/accountingBooks";
 import { listBankAccounts } from "~/services/accounting/bankAccounts";
@@ -22,7 +23,6 @@ import {
 	getBookTransaction,
 	updateBookTransaction,
 } from "~/services/accounting/bookTransactions";
-import { getSession } from "~/services/auth/session";
 import type { BookTransactions } from "~/types/appwrite";
 
 const BookTransactionSchema = object({
@@ -45,7 +45,7 @@ type BookTransactionForm = Omit<BookTransactions, keyof Models.Row | "userId">;
 const BookTransactionPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);

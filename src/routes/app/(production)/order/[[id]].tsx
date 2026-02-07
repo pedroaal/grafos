@@ -33,7 +33,7 @@ import ProcessesSection, {
 import { OrdersStatus } from "~/config/appwrite";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { getSession } from "~/services/auth/session";
+import { useUser } from "~/hooks/useUser";
 import { listInks } from "~/services/production/inks";
 import { listOrderInks, syncOrderInks } from "~/services/production/orderInks";
 import {
@@ -114,7 +114,7 @@ const ordersDefault = {
 const OrderPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);

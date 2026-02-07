@@ -12,13 +12,13 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import {
 	createAccountingBook,
 	getAccountingBook,
 	updateAccountingBook,
 } from "~/services/accounting/accountingBooks";
-import { getSession } from "~/services/auth/session";
 import type { AccountingBooks } from "~/types/appwrite";
 
 const AccountingBookSchema = object({
@@ -30,7 +30,7 @@ type AccountingBookForm = Omit<AccountingBooks, keyof Models.Row>;
 const AccountingBookPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);

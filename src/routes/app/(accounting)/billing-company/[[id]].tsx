@@ -13,6 +13,7 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import {
 	createBillingCompany,
@@ -20,7 +21,6 @@ import {
 	updateBillingCompany,
 } from "~/services/accounting/billingCompanies";
 import { listTaxes } from "~/services/accounting/taxes";
-import { getSession } from "~/services/auth/session";
 import type { BillingCompanies } from "~/types/appwrite";
 
 const BillingCompanySchema = object({
@@ -46,7 +46,7 @@ type BillingCompanyForm = Omit<BillingCompanies, keyof Models.Row>;
 const BillingCompanyPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);

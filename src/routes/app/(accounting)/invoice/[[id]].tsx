@@ -21,6 +21,7 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import { listBillingCompanies } from "~/services/accounting/billingCompanies";
 import {
@@ -41,7 +42,6 @@ import {
 } from "~/services/accounting/invoices";
 import { listTaxes } from "~/services/accounting/taxes";
 import { listWithholdings } from "~/services/accounting/withholdings";
-import { getSession } from "~/services/auth/session";
 import { listOrders } from "~/services/production/orders";
 import { listClients } from "~/services/sales/clients";
 import {
@@ -104,7 +104,7 @@ interface InvoiceOrderItem {
 const InvoicePage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);

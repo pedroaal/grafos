@@ -9,13 +9,13 @@ import { Modal } from "~/components/core/Modal";
 import Select from "~/components/core/Select";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import {
 	createWithholding,
 	getWithholding,
 	updateWithholding,
 } from "~/services/accounting/withholdings";
-import { getSession } from "~/services/auth/session";
 import { type Withholdings, WithholdingsType } from "~/types/appwrite.d";
 
 interface IProps {
@@ -38,7 +38,7 @@ const WITHHOLDING_TYPE_OPTIONS = [
 ];
 
 export const WithholdingModal = (props: IProps) => {
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 

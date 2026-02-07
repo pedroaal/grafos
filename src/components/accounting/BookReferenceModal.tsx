@@ -7,13 +7,13 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useUser } from "~/hooks/useUser";
 
 import {
 	createBookReference,
 	getBookReference,
 	updateBookReference,
 } from "~/services/accounting/bookReferences";
-import { getSession } from "~/services/auth/session";
 import type { BookReferences } from "~/types/appwrite.d";
 
 interface IProps {
@@ -29,7 +29,7 @@ const BookReferenceSchema = object({
 type BookReferenceForm = Omit<BookReferences, keyof Models.Row>;
 
 export const BookReferenceModal = (props: IProps) => {
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 

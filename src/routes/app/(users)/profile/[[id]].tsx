@@ -13,7 +13,7 @@ import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { getSession } from "~/services/auth/session";
+import { useUser } from "~/hooks/useUser";
 
 import { listFeatures } from "~/services/users/features";
 import {
@@ -38,7 +38,7 @@ type ProfileForm = Omit<Profiles, keyof Models.Row>;
 const ProfilePage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);

@@ -8,7 +8,6 @@ import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { getSession } from "~/services/auth/session";
 import { listAreas } from "~/services/production/areas";
 import {
 	createProcess,
@@ -18,6 +17,7 @@ import {
 } from "~/services/production/processes";
 import type { Areas, Processes } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
+import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -49,7 +49,7 @@ const processDefaults: ProcessForm = {
 };
 
 const ProcessModal = (props: IProps) => {
-	const auth = createAsync(() => getSession());
+	const auth = useUser();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 

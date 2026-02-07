@@ -38,18 +38,51 @@ export const SidebarLinks: SidebarLink[] = [
 			},
 			{
 				feature: "accounting_books",
-				href: Routes.books,
+				href: Routes.accountingBook,
 				label: "Libros",
 			},
 			{
 				feature: "billing",
-				href: Routes.costCenter,
-				label: "Centro de costos",
+				href: Routes.billingCompanies,
+				label: "Empresas",
+			},
+			{
+				feature: "billing",
+				href: Routes.banks,
+				label: "Bancos",
 			},
 			{
 				feature: "billing",
 				href: Routes.taxes,
 				label: "Ivas",
+			},
+		],
+	},
+	{
+		feature: "payroll",
+		href: Routes.rrhh,
+		label: "RRHH",
+		icon: FaSolidCalendarDays,
+		children: [
+			{
+				feature: "payroll",
+				href: Routes.rrhh,
+				label: "Nómina",
+			},
+			{
+				feature: "attendance",
+				href: Routes.attendance,
+				label: "Asistencia",
+			},
+			{
+				feature: "attendance",
+				href: Routes.schedules,
+				label: "Horarios",
+			},
+			{
+				feature: "payroll",
+				href: Routes.equipment,
+				label: "Equipo",
 			},
 		],
 	},
@@ -92,34 +125,21 @@ export const SidebarLinks: SidebarLink[] = [
 		],
 	},
 	{
-		feature: "payroll",
-		href: Routes.rrhh,
-		label: "RRHH",
-		icon: FaSolidCalendarDays,
-		children: [
-			{
-				feature: "payroll",
-				href: Routes.rrhh,
-				label: "Nómina",
-			},
-			{
-				feature: "attendance",
-				href: Routes.attendance,
-				label: "Asistencia",
-			},
-			{
-				feature: "attendance",
-				href: Routes.schedules,
-				label: "Horarios",
-			},
-		],
-	},
-	{
 		feature: "sales",
 		href: Routes.clients,
 		label: "Ventas",
 		icon: FaSolidAddressBook,
 		children: [
+			{
+				feature: "sales",
+				href: Routes.companies,
+				label: "Compañías",
+			},
+			{
+				feature: "sales",
+				href: Routes.contacts,
+				label: "Contactos",
+			},
 			{
 				feature: "contacts",
 				href: Routes.clients,
@@ -132,13 +152,13 @@ export const SidebarLinks: SidebarLink[] = [
 			},
 			{
 				feature: "activities",
-				href: Routes.activities,
-				label: "Actividades",
+				href: Routes.templates,
+				label: "Plantillas",
 			},
 			{
-				feature: "sales",
-				href: Routes.contacts,
-				label: "Contactos",
+				feature: "activities",
+				href: Routes.activities,
+				label: "Actividades",
 			},
 		],
 	},

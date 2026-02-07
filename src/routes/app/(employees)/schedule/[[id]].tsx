@@ -115,7 +115,7 @@ const SchedulePage = () => {
 				links={[
 					{
 						href: AppRoutes.schedule,
-						label: "Nuevo Horario",
+						label: "Nuevo",
 						disabled: !isEdit(),
 					},
 				]}

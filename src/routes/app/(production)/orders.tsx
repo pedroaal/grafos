@@ -83,17 +83,17 @@ const OrdersPage = () => {
 			<Title>Pedidos - Grafos</Title>
 			<Breadcrumb links={[{ label: "Produccion" }, { label: "Ordenes" }]} />
 			<BlueBoard
-				title="Gestionar Perfiles"
+				title="Ordenes"
 				links={[
 					{
 						href: AppRoutes.order,
-						label: "Nueva Orden",
+						label: "Nueva",
 					},
 				]}
 				modals={[
 					{
 						key: Modals.SearchOrder,
-						label: "Buscar Orden",
+						label: "Buscar",
 					},
 				]}
 			>

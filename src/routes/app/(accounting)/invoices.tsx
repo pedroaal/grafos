@@ -82,7 +82,7 @@ const InvoicesPage = () => {
 				links={[
 					{
 						href: AppRoutes.invoice,
-						label: "Nueva Factura",
+						label: "Nueva",
 					},
 				]}
 			>

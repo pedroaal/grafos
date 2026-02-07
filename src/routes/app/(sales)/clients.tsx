@@ -74,11 +74,11 @@ const ClientsPage = () => {
 			<Title>Clientes - Grafos</Title>
 			<Breadcrumb links={[{ label: "Ventas" }, { label: "Clientes" }]} />
 			<BlueBoard
-				title="Administrar Clientes"
+				title="Clientes"
 				links={[
 					{
 						href: AppRoutes.client,
-						label: "Agregar Cliente",
+						label: "Nueva",
 					},
 				]}
 			>

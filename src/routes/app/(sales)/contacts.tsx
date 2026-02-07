@@ -61,11 +61,11 @@ const ContactsPage = () => {
 			<Title>Contactos - Grafos</Title>
 			<Breadcrumb links={[{ label: "Ventas" }, { label: "Contactos" }]} />
 			<BlueBoard
-				title="Gestionar Contactos"
+				title="Contactos"
 				links={[
 					{
 						href: AppRoutes.contact,
-						label: "Nuevo Contacto",
+						label: "Nuevo",
 					},
 				]}
 			>

@@ -111,9 +111,9 @@ const CompanyDetailsPage = () => {
 
 	return (
 		<>
-			<Title>Detalles de la Compañía - Grafos</Title>
+			<Title>Compañía - Grafos</Title>
 			<Breadcrumb
-				links={[{ label: "Sistema" }, { label: "Detalles de la Compañía" }]}
+				links={[{ label: "Sistema" }, { label: "Compañía" }]}
 			/>
 			<BlueBoard
 				title="Detalles de la Compañía"

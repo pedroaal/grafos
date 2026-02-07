@@ -65,11 +65,11 @@ const AttendancesPage = () => {
 			<Title>Asistencias - Grafos</Title>
 			<Breadcrumb links={[{ label: "Empleados" }, { label: "Asistencias" }]} />
 			<BlueBoard
-				title="Gestionar Asistencias"
+				title="Asistencias"
 				links={[
 					{
 						href: AppRoutes.attendance,
-						label: "Nueva Asistencia",
+						label: "Nueva",
 					},
 				]}
 			>

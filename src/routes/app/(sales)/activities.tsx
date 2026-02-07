@@ -72,11 +72,11 @@ const ActivitiesPage = () => {
 			<Title>Actividades - Grafos</Title>
 			<Breadcrumb links={[{ label: "Ventas" }, { label: "Actividades" }]} />
 			<BlueBoard
-				title="Catálogo de Actividades"
+				title="Actividades"
 				links={[
 					{
 						href: AppRoutes.activity,
-						label: "Agregar Actividad",
+						label: "Nueva",
 					},
 				]}
 			>

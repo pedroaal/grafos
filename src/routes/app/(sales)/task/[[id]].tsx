@@ -39,7 +39,7 @@ const TaskPage = () => {
 	const nav = useNavigate();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
-	const isUpdateMode = (): boolean => Boolean(urlParams.id);
+	const isEdit = (): boolean => Boolean(urlParams.id);
 
 	const [formControl, { Form, Field }] = createForm<TaskForm>({
 		validate: valiForm(TaskSchema),
@@ -73,7 +73,7 @@ const TaskPage = () => {
 		on(
 			() => existingEntry(),
 			(loadedEntry) => {
-				if (!loadedEntry || !isUpdateMode()) return;
+				if (!loadedEntry || !isEdit()) return;
 
 				setValues(formControl, {
 					scheduled: loadedEntry.scheduled || "",
@@ -92,7 +92,7 @@ const TaskPage = () => {
 	const submitFormData = async (payload: TaskForm): Promise<void> => {
 		const taskId = addLoader();
 		try {
-			if (isUpdateMode()) {
+			if (isEdit()) {
 				await updateTask(urlParams.id!, payload);
 				addAlert({ type: "success", message: "Tarea CRM actualizada" });
 			} else {
@@ -141,12 +141,12 @@ const TaskPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Ventas" },
-					{ label: "CRM", route: AppRoutes.tasks },
-					{ label: isUpdateMode() ? "Modificar" : "Nueva" },
+					{ label: "Tareas", route: AppRoutes.tasks },
+					{ label: isEdit() ? "Editar" : "Nueva" },
 				]}
 			/>
 			<BlueBoard
-				title="Formulario CRM"
+				title="Gestionar Tarea"
 				actions={[
 					{
 						label: "Guardar",

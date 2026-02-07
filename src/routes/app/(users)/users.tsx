@@ -42,11 +42,11 @@ const UsersPage = () => {
 			<Title>Usuarios - Grafos</Title>
 			<Breadcrumb links={[{ label: "Usuarios" }, { label: "Usuarios" }]} />
 			<BlueBoard
-				title="Gestiónar Usuarios"
+				title="Usuarios"
 				links={[
 					{
 						href: AppRoutes.user,
-						label: "Nuevo Usuario",
+						label: "Nuevo",
 					},
 				]}
 			>

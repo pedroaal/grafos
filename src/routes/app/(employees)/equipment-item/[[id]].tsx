@@ -101,7 +101,7 @@ const EquipmentItemPage = () => {
 				links={[
 					{
 						href: AppRoutes.equipmentItem,
-						label: "Nuevo Equipo",
+						label: "Nuevo",
 						disabled: !isEdit(),
 					},
 				]}

@@ -73,7 +73,7 @@ const AccountingBooksPage = () => {
 				links={[
 					{
 						href: AppRoutes.accountingBook,
-						label: "Nuevo Libro Contable",
+						label: "Nuevo",
 					},
 				]}
 			>

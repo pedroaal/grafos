@@ -135,7 +135,7 @@ const ProcessesPage = () => {
 				modals={[
 					{
 						key: Modals.Area,
-						label: "Nueva Area",
+						label: "Nueva",
 					},
 				]}
 			>
@@ -175,7 +175,7 @@ const ProcessesPage = () => {
 				modals={[
 					{
 						key: Modals.Process,
-						label: "Nuevo Proceso",
+						label: "Nuevo",
 					},
 				]}
 			>
@@ -225,7 +225,7 @@ const ProcessesPage = () => {
 				modals={[
 					{
 						key: Modals.Ink,
-						label: "Nueva Tinta",
+						label: "Nueva",
 					},
 				]}
 			>

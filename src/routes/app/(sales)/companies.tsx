@@ -61,11 +61,11 @@ const CompaniesPage = () => {
 			<Title>Empresas - Grafos</Title>
 			<Breadcrumb links={[{ label: "Ventas" }, { label: "Empresas" }]} />
 			<BlueBoard
-				title="Gestionar Empresas"
+				title="Empresas"
 				links={[
 					{
 						href: AppRoutes.company,
-						label: "Nueva Empresa",
+						label: "Nueva",
 					},
 				]}
 			>

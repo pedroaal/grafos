@@ -79,14 +79,14 @@ const TasksPage = () => {
 
 	return (
 		<>
-			<Title>CRM - Grafos</Title>
-			<Breadcrumb links={[{ label: "Ventas" }, { label: "CRM" }]} />
+			<Title>Tareas - Grafos</Title>
+			<Breadcrumb links={[{ label: "Ventas" }, { label: "Tareas" }]} />
 			<BlueBoard
-				title="Gestión de CRM"
+				title="Tareas"
 				links={[
 					{
 						href: AppRoutes.task,
-						label: "Nueva Tarea CRM",
+						label: "Nueva",
 					},
 				]}
 			>

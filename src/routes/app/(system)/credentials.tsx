@@ -75,7 +75,7 @@ const CredentialsPage = () => {
 				modals={[
 					{
 						key: Modals.Credential,
-						label: "Nueva Credencial",
+						label: "Nueva",
 					},
 				]}
 			>

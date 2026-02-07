@@ -452,7 +452,7 @@ const PayrollPage = () => {
 				links={[
 					{
 						href: AppRoutes.payroll,
-						label: "Nuevo Empleado",
+						label: "Nuevo",
 						disabled: !isEdit(),
 					},
 				]}

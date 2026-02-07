@@ -64,16 +64,19 @@ const BookTransactionsPage = () => {
 
 	return (
 		<>
-			<Title>Transacciones de Libro - Grafos</Title>
+			<Title>Transacciones Contables - Grafos</Title>
 			<Breadcrumb
-				links={[{ label: "Contabilidad" }, { label: "Transacciones de Libro" }]}
+				links={[
+					{ label: "Contabilidad" },
+					{ label: "Transacciones Contables" },
+				]}
 			/>
 			<BlueBoard
-				title="Transacciones de Libro"
+				title="Transacciones Contables"
 				links={[
 					{
 						href: AppRoutes.bookTransaction,
-						label: "Nueva Transacción",
+						label: "Nueva",
 					},
 				]}
 			>

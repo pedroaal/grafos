@@ -366,7 +366,7 @@ const OrderPage = () => {
 				links={[
 					{ label: "Produccion" },
 					{ label: "Ordenes", route: AppRoutes.orders },
-					{ label: "Nuevo" },
+					{ label: isEdit() ? `Orden #${order()?.number}` : "Nueva Orden" },
 				]}
 			/>
 			<BlueBoard

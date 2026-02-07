@@ -79,7 +79,7 @@ const BillingCompaniesPage = () => {
 				links={[
 					{
 						href: AppRoutes.billingCompany,
-						label: "Nueva Empresa de Facturación",
+						label: "Nueva",
 					},
 				]}
 			>

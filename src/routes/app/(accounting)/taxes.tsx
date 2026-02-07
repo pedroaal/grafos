@@ -151,7 +151,7 @@ const TaxesPage = () => {
 				modals={[
 					{
 						key: Modals.Tax,
-						label: "Nuevo Impuesto",
+						label: "Nuevo",
 					},
 				]}
 			>
@@ -193,7 +193,7 @@ const TaxesPage = () => {
 				modals={[
 					{
 						key: Modals.Withholding,
-						label: "Nueva Retención",
+						label: "Nueva",
 					},
 				]}
 			>
@@ -241,7 +241,7 @@ const TaxesPage = () => {
 				modals={[
 					{
 						key: Modals.CostCenter,
-						label: "Nuevo Centro de Costos",
+						label: "Nuevo",
 					},
 				]}
 			>

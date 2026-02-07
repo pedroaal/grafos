@@ -124,7 +124,7 @@ const AttendancePage = () => {
 				links={[
 					{
 						href: AppRoutes.attendance,
-						label: "Nueva Asistencia",
+						label: "Nueva",
 						disabled: !isEdit(),
 					},
 				]}

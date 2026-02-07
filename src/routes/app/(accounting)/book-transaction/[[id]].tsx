@@ -158,7 +158,7 @@ const BookTransactionPage = () => {
 				]}
 			/>
 			<BlueBoard
-				title="Gestionar Transacción de Libro"
+				title="Gestionar Transacción Contable"
 				actions={[
 					{
 						label: "Guardar",

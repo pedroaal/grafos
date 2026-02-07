@@ -59,11 +59,11 @@ const SchedulesPage = () => {
 			<Title>Horarios - Grafos</Title>
 			<Breadcrumb links={[{ label: "Empleados" }, { label: "Horarios" }]} />
 			<BlueBoard
-				title="Gestionar Horarios"
+				title="Horarios"
 				links={[
 					{
 						href: AppRoutes.schedule,
-						label: "Nuevo Horario",
+						label: "Nuevo",
 					},
 				]}
 			>

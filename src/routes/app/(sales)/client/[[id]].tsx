@@ -151,7 +151,7 @@ const ClientPage = () => {
 				]}
 			/>
 			<BlueBoard
-				title="Formulario de Cliente"
+				title="Gestionar Cliente"
 				actions={[
 					{
 						label: "Guardar",

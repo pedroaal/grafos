@@ -60,11 +60,11 @@ const ProfilesPage = () => {
 			<Title>Perfiles - Grafos</Title>
 			<Breadcrumb links={[{ label: "Usuarios" }, { label: "Perfiles" }]} />
 			<BlueBoard
-				title="Gestionar Perfiles"
+				title="Perfiles"
 				links={[
 					{
 						href: AppRoutes.profile,
-						label: "Nuevo Perfil",
+						label: "Nuevo",
 					},
 				]}
 			>

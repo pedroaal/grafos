@@ -138,7 +138,7 @@ const MaterialsPage = () => {
 				modals={[
 					{
 						key: Modals.Category,
-						label: "Nueva Categoria",
+						label: "Nueva",
 					},
 				]}
 			>
@@ -171,7 +171,7 @@ const MaterialsPage = () => {
 				modals={[
 					{
 						key: Modals.Material,
-						label: "Nuevo Material",
+						label: "Nuevo",
 					},
 				]}
 			>
@@ -229,7 +229,7 @@ const MaterialsPage = () => {
 				modals={[
 					{
 						key: Modals.Supplier,
-						label: "Nuevo Proveedor",
+						label: "Nuevo",
 					},
 				]}
 			>

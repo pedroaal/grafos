@@ -116,7 +116,7 @@ const BanksPage = () => {
 				modals={[
 					{
 						key: Modals.BankAccount,
-						label: "Nueva Cuenta Bancaria",
+						label: "Nueva",
 					},
 				]}
 			>
@@ -154,11 +154,11 @@ const BanksPage = () => {
 				/>
 			</BlueBoard>
 			<BlueBoard
-				title="Referencias de Libros"
+				title="Referencias Contables"
 				modals={[
 					{
 						key: Modals.BookReference,
-						label: "Nueva Referencia de Libro",
+						label: "Nueva",
 					},
 				]}
 			>

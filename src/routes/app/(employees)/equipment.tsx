@@ -59,11 +59,11 @@ const EquipmentPage = () => {
 			<Title>Equipos - Grafos</Title>
 			<Breadcrumb links={[{ label: "Empleados" }, { label: "Equipos" }]} />
 			<BlueBoard
-				title="Gestionar Equipos"
+				title="Equipos"
 				links={[
 					{
 						href: AppRoutes.equipmentItem,
-						label: "Nuevo Equipo",
+						label: "Nuevo",
 					},
 				]}
 			>

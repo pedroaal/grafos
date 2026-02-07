@@ -27,7 +27,7 @@ const OrdersPage = () => {
 
 	return (
 		<>
-			<Title>Pagos - Grafos</Title>
+			<Title>Reporte - Grafos</Title>
 			<Breadcrumb
 				links={[
 					{ label: "Produccion" },
@@ -36,7 +36,7 @@ const OrdersPage = () => {
 				]}
 			/>
 			<BlueBoard
-				title="Gestionar Perfiles"
+				title="Reporte de Ordenes"
 				actions={[
 					{
 						label: "Imprimir",

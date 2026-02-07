@@ -76,11 +76,11 @@ const TemplatesPage = () => {
 			<Title>Plantillas - Grafos</Title>
 			<Breadcrumb links={[{ label: "Ventas" }, { label: "Plantillas" }]} />
 			<BlueBoard
-				title="Biblioteca de Plantillas"
+				title="Plantillas"
 				links={[
 					{
 						href: AppRoutes.template,
-						label: "Nueva Plantilla",
+						label: "Nueva",
 					},
 				]}
 			>

@@ -121,7 +121,7 @@ const ActivityPage = () => {
 				]}
 			/>
 			<BlueBoard
-				title="Gestión de Actividad"
+				title="Gestionar Actividad"
 				actions={[
 					{
 						label: "Guardar",

@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteContact, listContacts } from "~/services/sales/contacts";
@@ -35,7 +35,7 @@ const ContactsPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		nav(`${Routes.contact}/${id}`);
+		nav(`${AppRoutes.contact}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string) => {
@@ -64,7 +64,7 @@ const ContactsPage = () => {
 				title="Gestionar Contactos"
 				links={[
 					{
-						href: Routes.contact,
+						href: AppRoutes.contact,
 						label: "Nuevo Contacto",
 					},
 				]}

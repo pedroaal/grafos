@@ -30,7 +30,7 @@ import ProcessesSection, {
 	type ProcessForm,
 } from "~/components/production/ProcessesSection";
 import { OrdersStatus } from "~/config/appwrite";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 import { listInks } from "~/services/production/inks";
@@ -348,7 +348,7 @@ const OrderPage = () => {
 			]);
 
 			addAlert({ type: "success", message: "Orden guardada correctamente" });
-			nav(Routes.orders);
+			nav(AppRoutes.orders);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -365,7 +365,7 @@ const OrderPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Produccion" },
-					{ label: "Ordenes", route: Routes.orders },
+					{ label: "Ordenes", route: AppRoutes.orders },
 					{ label: "Nuevo" },
 				]}
 			/>
@@ -373,7 +373,7 @@ const OrderPage = () => {
 				title="Gestionar Orden"
 				links={[
 					{
-						href: Routes.order,
+						href: AppRoutes.order,
 						label: "Nueva Orden",
 						disabled: !isEdit(),
 					},

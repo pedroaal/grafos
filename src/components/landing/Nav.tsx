@@ -1,17 +1,18 @@
 import { A, useLocation } from "@solidjs/router";
 import { FaSolidBars } from "solid-icons/fa";
 import { For } from "solid-js";
+import { PublicRoutes } from "~/config/routes";
 
 const Nav = () => {
 	const location = useLocation();
 	const current = (path: string) => path === location.pathname;
 
 	const MenuItems = [
-		{ id: "/about", label: "Sobre Nosotros" },
-		{ id: "/services", label: "Servicios" },
-		{ id: "/gallery", label: "Galería" },
-		{ id: "/contact", label: "Contacto" },
-		{ id: "/login", label: "Login" },
+		{ id: PublicRoutes.about, label: "Sobre Nosotros" },
+		{ id: PublicRoutes.services, label: "Servicios" },
+		{ id: PublicRoutes.gallery, label: "Galería" },
+		{ id: PublicRoutes.contact, label: "Contacto" },
+		{ id: PublicRoutes.login, label: "Login" },
 	];
 
 	return (

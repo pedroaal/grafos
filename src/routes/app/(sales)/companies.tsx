@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteCompany, listCompanies } from "~/services/sales/companies";
@@ -35,7 +35,7 @@ const CompaniesPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		nav(`${Routes.salesCompany}/${id}`);
+		nav(`${AppRoutes.company}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string) => {
@@ -64,7 +64,7 @@ const CompaniesPage = () => {
 				title="Gestionar Empresas"
 				links={[
 					{
-						href: Routes.salesCompany,
+						href: AppRoutes.company,
 						label: "Nueva Empresa",
 					},
 				]}

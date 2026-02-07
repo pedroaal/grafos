@@ -11,7 +11,7 @@ import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 
@@ -115,7 +115,7 @@ const UserPage = () => {
 				addAlert({ type: "success", message: "Usuario creado con éxito" });
 			}
 
-			nav(Routes.users);
+			nav(AppRoutes.users);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -132,7 +132,7 @@ const UserPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Usuarios" },
-					{ label: "Usuarios", route: Routes.users },
+					{ label: "Usuarios", route: AppRoutes.users },
 					{
 						label: user()
 							? `${user()?.firstName} ${user()?.lastName}`

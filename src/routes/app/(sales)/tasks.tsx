@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteTask, listTask } from "~/services/sales/tasks";
@@ -35,7 +35,7 @@ const TasksPage = () => {
 	});
 
 	const openEditForm = (recordId: string): void => {
-		nav(`${Routes.task}/${recordId}`);
+		nav(`${AppRoutes.task}/${recordId}`);
 	};
 
 	const deleteRecord = async (recordId: string): Promise<void> => {
@@ -85,7 +85,7 @@ const TasksPage = () => {
 				title="Gestión de CRM"
 				links={[
 					{
-						href: Routes.task,
+						href: AppRoutes.task,
 						label: "Nueva Tarea CRM",
 					},
 				]}

@@ -1,58 +1,64 @@
-export enum Routes {
+export enum PublicRoutes {
+	about = "/about",
+	contact = "/contact",
+	gallery = "/gallery",
 	home = "/",
 	login = "/login",
+	services = "/services",
+}
+
+export enum AppRoutes {
 	// dashboard
 	dashboard = "/app",
 	// accounting
-	invoices = "/app/invoices",
-	invoice = "/app/invoice",
 	accountingBooks = "/app/accounting-books",
 	accountingBook = "/app/accounting-book",
-	bookTransactions = "/app/book-transactions",
-	bookTransaction = "/app/book-transaction",
+	banks = "/app/banks",
 	billingCompanies = "/app/billing-companies",
 	billingCompany = "/app/billing-company",
+	bookTransactions = "/app/book-transactions",
+	bookTransaction = "/app/book-transaction",
+	invoices = "/app/invoices",
+	invoice = "/app/invoice",
 	taxes = "/app/taxes",
-	banks = "/app/banks",
-	// production
-	orders = "/app/orders",
-	order = "/app/order",
-	processes = "/app/processes",
-	materials = "/app/materials",
-	ordersReport = "/app/report/orders",
-	paymentsReport = "/app/report/payments",
-	processesReport = "/app/report/processes",
-	// sales
-	companies = "/app/companies",
-	salesCompany = "/app/company",
-	contacts = "/app/contacts",
-	contact = "/app/contact",
-	clients = "/app/clients",
-	client = "/app/client",
-	tasks = "/app/tasks",
-	task = "/app/task",
-	activities = "/app/activities",
-	activity = "/app/activity",
-	templates = "/app/templates",
-	template = "/app/template",
 	// employees
-	rrhh = "/app/rrhh",
 	attendances = "/app/attendances",
 	attendance = "/app/attendance",
 	equipment = "/app/equipment",
 	equipmentItem = "/app/equipment-item",
-	schedules = "/app/schedules",
-	schedule = "/app/schedule",
 	payrolls = "/app/payrolls",
 	payroll = "/app/payroll",
+	schedules = "/app/schedules",
+	schedule = "/app/schedule",
+	// production
+	materials = "/app/materials",
+	orders = "/app/orders",
+	order = "/app/order",
+	processes = "/app/processes",
+	ordersReport = "/app/report/orders",
+	paymentsReport = "/app/report/payments",
+	processesReport = "/app/report/processes",
+	// sales
+	activities = "/app/activities",
+	activity = "/app/activity",
+	clients = "/app/clients",
+	client = "/app/client",
+	companies = "/app/companies",
+	company = "/app/company",
+	contacts = "/app/contacts",
+	contact = "/app/contact",
+	tasks = "/app/tasks",
+	task = "/app/task",
+	templates = "/app/templates",
+	template = "/app/template",
+	// system
+	companyDetails = "/app/company-details",
+	credentials = "/app/credentials",
 	// users
 	profiles = "/app/profiles",
 	profile = "/app/profile",
 	users = "/app/users",
 	user = "/app/user",
-	// system
-	company = "/app/company-details",
-	credentials = "/app/credentials",
 }
 
-export enum RoutesApi {}
+export enum RoutesApi { }

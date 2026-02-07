@@ -15,7 +15,7 @@ import {
 	Switch,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { SidebarLinks } from "~/config/sidebar";
 import { useAuth } from "~/context/auth";
 
@@ -203,7 +203,7 @@ const AppLayout: ParentComponent = (props) => {
 									class="dropdown-content menu mt-2 p-2 shadow bg-base-200 rounded-box w-52"
 								>
 									<li>
-										<A href={Routes.profile}>Perfil</A>
+										<A href={AppRoutes.profile}>Perfil</A>
 									</li>
 									<li>
 										<button type="button" onClick={logout}>

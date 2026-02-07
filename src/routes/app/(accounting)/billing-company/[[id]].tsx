@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 
@@ -128,7 +128,7 @@ const BillingCompanyPage = () => {
 				});
 			}
 
-			nav(Routes.billingCompanies);
+			nav(AppRoutes.billingCompanies);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -147,7 +147,7 @@ const BillingCompanyPage = () => {
 					{ label: "Contabilidad" },
 					{
 						label: "Empresas de Facturación",
-						route: Routes.billingCompanies,
+						route: AppRoutes.billingCompanies,
 					},
 					{ label: billingCompany()?.businessName ?? "Nueva" },
 				]}

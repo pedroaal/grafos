@@ -18,7 +18,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 
@@ -370,7 +370,7 @@ const InvoicePage = () => {
 				}
 			}
 
-			nav(Routes.invoices);
+			nav(AppRoutes.invoices);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -387,7 +387,7 @@ const InvoicePage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Contabilidad" },
-					{ label: "Facturas", route: Routes.invoices },
+					{ label: "Facturas", route: AppRoutes.invoices },
 					{
 						label: invoice() ? `Factura #${invoice()!.invoiceNumber}` : "Nueva",
 					},

@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import {
@@ -38,7 +38,7 @@ const BillingCompaniesPage = () => {
 	});
 
 	const handleEdit = (id: string): void => {
-		nav(`${Routes.billingCompany}/${id}`);
+		nav(`${AppRoutes.billingCompany}/${id}`);
 	};
 
 	const handleDelete = async (
@@ -78,7 +78,7 @@ const BillingCompaniesPage = () => {
 				title="Empresas de Facturación"
 				links={[
 					{
-						href: Routes.billingCompany,
+						href: AppRoutes.billingCompany,
 						label: "Nueva Empresa de Facturación",
 					},
 				]}

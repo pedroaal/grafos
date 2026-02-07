@@ -13,7 +13,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { listOrders } from "~/services/production/orders";
 
 const OrdersPage = () => {
@@ -22,7 +22,7 @@ const OrdersPage = () => {
 	const [orders, { refetch }] = createResource({}, listOrders);
 
 	const goTo = (orderId: string) => {
-		nav(`${Routes.order}/${orderId}`);
+		nav(`${AppRoutes.order}/${orderId}`);
 	};
 
 	return (

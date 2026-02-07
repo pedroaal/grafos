@@ -9,7 +9,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deletePayroll, listPayrolls } from "~/services/employees/payroll";
@@ -36,7 +36,7 @@ const PayrollsPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		nav(`${Routes.payroll}/${id}`);
+		nav(`${AppRoutes.payroll}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string) => {
@@ -65,7 +65,7 @@ const PayrollsPage = () => {
 				title="Gestionar Empleados"
 				links={[
 					{
-						href: Routes.payroll,
+						href: AppRoutes.payroll,
 						label: "Nuevo Empleado",
 					},
 				]}

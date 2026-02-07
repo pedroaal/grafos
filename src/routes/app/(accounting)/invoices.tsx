@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteInvoice, listInvoices } from "~/services/accounting/invoices";
@@ -46,7 +46,7 @@ const InvoicesPage = () => {
 	});
 
 	const handleEdit = (id: string): void => {
-		nav(`${Routes.invoice}/${id}`);
+		nav(`${AppRoutes.invoice}/${id}`);
 	};
 
 	const handleDelete = async (
@@ -81,7 +81,7 @@ const InvoicesPage = () => {
 				title="Facturas"
 				links={[
 					{
-						href: Routes.invoice,
+						href: AppRoutes.invoice,
 						label: "Nueva Factura",
 					},
 				]}

@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import {
@@ -38,7 +38,7 @@ const AccountingBooksPage = () => {
 	});
 
 	const handleEdit = (id: string): void => {
-		nav(`${Routes.accountingBook}/${id}`);
+		nav(`${AppRoutes.accountingBook}/${id}`);
 	};
 
 	const handleDelete = async (id: string, name: string): Promise<void> => {
@@ -72,7 +72,7 @@ const AccountingBooksPage = () => {
 				title="Libros Contables"
 				links={[
 					{
-						href: Routes.accountingBook,
+						href: AppRoutes.accountingBook,
 						label: "Nuevo Libro Contable",
 					},
 				]}

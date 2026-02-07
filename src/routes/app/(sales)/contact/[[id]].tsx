@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { listCompanies } from "~/services/sales/companies";
 import {
@@ -116,7 +116,7 @@ const ContactPage = () => {
 				addAlert({ type: "success", message: "Contacto creado con éxito" });
 			}
 
-			nav(Routes.contacts);
+			nav(AppRoutes.contacts);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -133,7 +133,7 @@ const ContactPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Ventas" },
-					{ label: "Contactos", route: Routes.contacts },
+					{ label: "Contactos", route: AppRoutes.contacts },
 					{
 						label: contact()
 							? `${contact()?.firstName} ${contact()?.lastName}`

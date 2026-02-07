@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 
@@ -133,7 +133,7 @@ const BookTransactionPage = () => {
 				});
 			}
 
-			nav(Routes.bookTransactions);
+			nav(AppRoutes.bookTransactions);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -150,7 +150,10 @@ const BookTransactionPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Contabilidad" },
-					{ label: "Transacciones de Libro", route: Routes.bookTransactions },
+					{
+						label: "Transacciones de Libro",
+						route: AppRoutes.bookTransactions,
+					},
 					{ label: bookTransaction()?.detail ?? "Nueva" },
 				]}
 			/>

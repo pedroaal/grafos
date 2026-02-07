@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteTemplate, listTemplates } from "~/services/sales/templates";
@@ -35,7 +35,7 @@ const TemplatesPage = () => {
 	});
 
 	const openTemplateEditor = (templateId: string): void => {
-		nav(`${Routes.template}/${templateId}`);
+		nav(`${AppRoutes.template}/${templateId}`);
 	};
 
 	const destroyTemplate = async (
@@ -79,7 +79,7 @@ const TemplatesPage = () => {
 				title="Biblioteca de Plantillas"
 				links={[
 					{
-						href: Routes.template,
+						href: AppRoutes.template,
 						label: "Nueva Plantilla",
 					},
 				]}

@@ -8,7 +8,7 @@ import { number, object, string } from "valibot";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
 	createSchedule,
@@ -89,7 +89,7 @@ const SchedulePage = () => {
 					message: "Horario creado correctamente",
 				});
 			}
-			nav(Routes.schedules);
+			nav(AppRoutes.schedules);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -106,7 +106,7 @@ const SchedulePage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Empleados" },
-					{ label: "Horarios", route: Routes.schedules },
+					{ label: "Horarios", route: AppRoutes.schedules },
 					{ label: isEdit() ? "Editar" : "Nuevo" },
 				]}
 			/>
@@ -114,7 +114,7 @@ const SchedulePage = () => {
 				title="Gestionar Horario"
 				links={[
 					{
-						href: Routes.schedule,
+						href: AppRoutes.schedule,
 						label: "Nuevo Horario",
 						disabled: !isEdit(),
 					},

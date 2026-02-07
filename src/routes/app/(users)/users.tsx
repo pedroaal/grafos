@@ -10,7 +10,7 @@ import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { usePagination } from "~/hooks/usePagination";
 import { listUsers } from "~/services/users/users";
 
@@ -32,7 +32,7 @@ const UsersPage = () => {
 	});
 
 	const goTo = (userId: string) => {
-		nav(`${Routes.user}/${userId}`);
+		nav(`${AppRoutes.user}/${userId}`);
 	};
 
 	const handleDelete = (userId: string, name: string) => {};
@@ -45,7 +45,7 @@ const UsersPage = () => {
 				title="Gestiónar Usuarios"
 				links={[
 					{
-						href: Routes.user,
+						href: AppRoutes.user,
 						label: "Nuevo Usuario",
 					},
 				]}

@@ -10,7 +10,7 @@ import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteProfile, listProfiles } from "~/services/users/profiles";
@@ -34,7 +34,7 @@ const ProfilesPage = () => {
 	});
 
 	const goTo = (profileId: string) => {
-		nav(`${Routes.profile}/${profileId}`);
+		nav(`${AppRoutes.profile}/${profileId}`);
 	};
 
 	const handleDelete = async (profileId: string, name: string) => {
@@ -63,7 +63,7 @@ const ProfilesPage = () => {
 				title="Gestionar Perfiles"
 				links={[
 					{
-						href: Routes.profile,
+						href: AppRoutes.profile,
 						label: "Nuevo Perfil",
 					},
 				]}

@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { TAXPAYER_TYPE_LABELS } from "~/config/taxes";
 import { useApp } from "~/context/app";
 import {
@@ -94,7 +94,7 @@ const ClientPage = () => {
 				});
 			}
 
-			nav(Routes.clients);
+			nav(AppRoutes.clients);
 		} catch (err: any) {
 			addAlert({
 				type: "error",
@@ -146,7 +146,7 @@ const ClientPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Ventas" },
-					{ label: "Clientes", route: Routes.clients },
+					{ label: "Clientes", route: AppRoutes.clients },
 					{ label: editMode() ? "Editar" : "Nuevo" },
 				]}
 			/>

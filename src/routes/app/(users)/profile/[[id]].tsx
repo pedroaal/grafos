@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 
@@ -128,7 +128,7 @@ const ProfilePage = () => {
 
 			await syncProfileFeatures(profileId, selectedFeatures());
 
-			nav(Routes.profiles);
+			nav(AppRoutes.profiles);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -145,7 +145,7 @@ const ProfilePage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Usuarios" },
-					{ label: "Perfiles", route: Routes.profiles },
+					{ label: "Perfiles", route: AppRoutes.profiles },
 					{ label: profile()?.name ?? "Nuevo" },
 				]}
 			/>

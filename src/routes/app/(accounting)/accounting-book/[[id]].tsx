@@ -9,7 +9,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { useAuth } from "~/context/auth";
 
@@ -79,7 +79,7 @@ const AccountingBookPage = () => {
 				});
 			}
 
-			nav(Routes.accountingBooks);
+			nav(AppRoutes.accountingBooks);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -96,7 +96,7 @@ const AccountingBookPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Contabilidad" },
-					{ label: "Libros Contables", route: Routes.accountingBooks },
+					{ label: "Libros Contables", route: AppRoutes.accountingBooks },
 					{ label: accountingBook()?.name ?? "Nuevo" },
 				]}
 			/>

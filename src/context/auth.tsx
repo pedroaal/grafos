@@ -2,7 +2,7 @@ import { useNavigate } from "@solidjs/router";
 import type { Models } from "appwrite";
 import { createContext, type ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Routes } from "~/config/routes";
+import { AppRoutes, PublicRoutes } from "~/config/routes";
 import { account, teams } from "~/lib/appwrite";
 import { listProfileFeatures } from "~/services/users/profileFeatures";
 import { getUserByAuthId } from "~/services/users/users";
@@ -97,7 +97,7 @@ export const AuthProvider: ParentComponent = (props) => {
 				tenantId: null,
 				features: [],
 			});
-			nav(Routes.login);
+			nav(PublicRoutes.login);
 			return;
 		}
 	};
@@ -106,7 +106,7 @@ export const AuthProvider: ParentComponent = (props) => {
 		try {
 			await account.createEmailPasswordSession({ email, password });
 			addAlert({ type: "success", message: "Inicio de sesión exitoso" });
-			nav(Routes.dashboard);
+			nav(AppRoutes.dashboard);
 			return;
 		} catch (error: any) {
 			addAlert({
@@ -127,7 +127,7 @@ export const AuthProvider: ParentComponent = (props) => {
 				features: [],
 			});
 			addAlert({ type: "success", message: "Sesión cerrada" });
-			nav(Routes.login);
+			nav(PublicRoutes.login);
 			return;
 		} catch (error: any) {
 			addAlert({
@@ -141,7 +141,7 @@ export const AuthProvider: ParentComponent = (props) => {
 	const checkGuest = async () => {
 		const session = await account.get();
 		if (session) {
-			nav(Routes.dashboard);
+			nav(AppRoutes.dashboard);
 			return;
 		}
 		return;
@@ -150,7 +150,7 @@ export const AuthProvider: ParentComponent = (props) => {
 	const checkProtected = async () => {
 		const session = await account.get();
 		if (!session) {
-			nav(Routes.login);
+			nav(PublicRoutes.login);
 			return;
 		}
 		await getAuth();

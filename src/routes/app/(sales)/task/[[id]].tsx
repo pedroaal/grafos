@@ -12,7 +12,7 @@ import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import Textarea from "~/components/core/Textarea";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { listActivities } from "~/services/sales/activities";
 import { listContacts } from "~/services/sales/contacts";
@@ -100,7 +100,7 @@ const TaskPage = () => {
 				addAlert({ type: "success", message: "Nueva tarea CRM creada" });
 			}
 
-			nav(Routes.tasks);
+			nav(AppRoutes.tasks);
 		} catch (errorObj: any) {
 			addAlert({
 				type: "error",
@@ -141,7 +141,7 @@ const TaskPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Ventas" },
-					{ label: "CRM", route: Routes.tasks },
+					{ label: "CRM", route: AppRoutes.tasks },
 					{ label: isUpdateMode() ? "Modificar" : "Nueva" },
 				]}
 			/>

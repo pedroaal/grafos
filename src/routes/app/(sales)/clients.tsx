@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { TAXPAYER_TYPE_LABELS } from "~/config/taxes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
@@ -36,7 +36,7 @@ const ClientsPage = () => {
 	});
 
 	const navigateToEdit = (clientId: string): void => {
-		nav(`${Routes.client}/${clientId}`);
+		nav(`${AppRoutes.client}/${clientId}`);
 	};
 
 	const removeClientRecord = async (
@@ -77,7 +77,7 @@ const ClientsPage = () => {
 				title="Administrar Clientes"
 				links={[
 					{
-						href: Routes.client,
+						href: AppRoutes.client,
 						label: "Agregar Cliente",
 					},
 				]}

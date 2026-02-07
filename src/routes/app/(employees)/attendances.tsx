@@ -9,7 +9,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import {
@@ -39,7 +39,7 @@ const AttendancesPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		nav(`${Routes.attendance}/${id}`);
+		nav(`${AppRoutes.attendance}/${id}`);
 	};
 
 	const handleDelete = async (id: string) => {
@@ -68,7 +68,7 @@ const AttendancesPage = () => {
 				title="Gestionar Asistencias"
 				links={[
 					{
-						href: Routes.attendance,
+						href: AppRoutes.attendance,
 						label: "Nueva Asistencia",
 					},
 				]}

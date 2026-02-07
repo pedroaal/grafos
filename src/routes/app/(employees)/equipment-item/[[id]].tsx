@@ -9,7 +9,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
 	createEquipment,
@@ -75,7 +75,7 @@ const EquipmentItemPage = () => {
 					message: "Equipo creado correctamente",
 				});
 			}
-			nav(Routes.equipment);
+			nav(AppRoutes.equipment);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -92,7 +92,7 @@ const EquipmentItemPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Empleados" },
-					{ label: "Equipos", route: Routes.equipment },
+					{ label: "Equipos", route: AppRoutes.equipment },
 					{ label: isEdit() ? "Editar" : "Nuevo" },
 				]}
 			/>
@@ -100,7 +100,7 @@ const EquipmentItemPage = () => {
 				title="Gestionar Equipo"
 				links={[
 					{
-						href: Routes.equipmentItem,
+						href: AppRoutes.equipmentItem,
 						label: "Nuevo Equipo",
 						disabled: !isEdit(),
 					},

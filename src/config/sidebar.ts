@@ -8,11 +8,11 @@ import {
 	FaSolidServer,
 	FaSolidUsers,
 } from "solid-icons/fa";
-import { Routes } from "./routes";
+import { AppRoutes } from "./routes";
 
 interface SidebarLink {
 	feature: string;
-	href: Routes;
+	href: AppRoutes;
 	label: string;
 	icon?: IconTypes;
 	children?: SidebarLink[];
@@ -21,184 +21,179 @@ interface SidebarLink {
 export const SidebarLinks: SidebarLink[] = [
 	{
 		feature: "admin_dashboard",
-		href: Routes.dashboard,
+		href: AppRoutes.dashboard,
 		label: "Dashboard",
 		icon: FaSolidGauge,
 	},
 	{
 		feature: "billing",
-		href: Routes.invoices,
+		href: AppRoutes.invoices,
 		label: "Facturacion",
 		icon: FaSolidFileInvoiceDollar,
 		children: [
 			{
 				feature: "billing",
-				href: Routes.invoices,
+				href: AppRoutes.invoices,
 				label: "Facturas",
 			},
 			{
 				feature: "accounting_books",
-				href: Routes.accountingBook,
+				href: AppRoutes.accountingBooks,
 				label: "Libros",
 			},
 			{
 				feature: "billing",
-				href: Routes.billingCompanies,
+				href: AppRoutes.billingCompanies,
 				label: "Empresas",
 			},
 			{
 				feature: "billing",
-				href: Routes.banks,
+				href: AppRoutes.banks,
 				label: "Bancos",
 			},
 			{
 				feature: "billing",
-				href: Routes.taxes,
+				href: AppRoutes.taxes,
 				label: "Ivas",
 			},
 		],
 	},
 	{
 		feature: "payroll",
-		href: Routes.rrhh,
+		href: AppRoutes.payrolls,
 		label: "RRHH",
 		icon: FaSolidCalendarDays,
 		children: [
 			{
 				feature: "payroll",
-				href: Routes.rrhh,
+				href: AppRoutes.payrolls,
 				label: "Nómina",
 			},
 			{
 				feature: "attendance",
-				href: Routes.attendance,
+				href: AppRoutes.attendances,
 				label: "Asistencia",
 			},
 			{
 				feature: "attendance",
-				href: Routes.schedules,
+				href: AppRoutes.schedules,
 				label: "Horarios",
 			},
 			{
 				feature: "payroll",
-				href: Routes.equipment,
+				href: AppRoutes.equipment,
 				label: "Equipo",
 			},
 		],
 	},
 	{
 		feature: "production",
-		href: Routes.orders,
+		href: AppRoutes.orders,
 		label: "Produccion",
 		icon: FaSolidIndustry,
 		children: [
 			{
 				feature: "production",
-				href: Routes.orders,
+				href: AppRoutes.orders,
 				label: "Pedidos",
 			},
 			{
 				feature: "order_report",
-				href: Routes.ordersReport,
+				href: AppRoutes.ordersReport,
 				label: "Reporte de Pedidos",
 			},
 			{
 				feature: "payment_report",
-				href: Routes.paymentsReport,
+				href: AppRoutes.paymentsReport,
 				label: "Reporte de Pagos",
 			},
 			{
 				feature: "processes_report",
-				href: Routes.processesReport,
+				href: AppRoutes.processesReport,
 				label: "Reporte de Procesos",
 			},
 			{
 				feature: "processes",
-				href: Routes.processes,
+				href: AppRoutes.processes,
 				label: "Procesos",
 			},
 			{
 				feature: "materials",
-				href: Routes.materials,
+				href: AppRoutes.materials,
 				label: "Materiales",
 			},
 		],
 	},
 	{
 		feature: "sales",
-		href: Routes.clients,
+		href: AppRoutes.clients,
 		label: "Ventas",
 		icon: FaSolidAddressBook,
 		children: [
 			{
 				feature: "sales",
-				href: Routes.companies,
+				href: AppRoutes.companies,
 				label: "Compañías",
 			},
 			{
 				feature: "sales",
-				href: Routes.contacts,
+				href: AppRoutes.contacts,
 				label: "Contactos",
 			},
 			{
 				feature: "contacts",
-				href: Routes.clients,
+				href: AppRoutes.clients,
 				label: "Clientes",
 			},
 			{
 				feature: "sales",
-				href: Routes.tasks,
+				href: AppRoutes.tasks,
 				label: "CRM",
 			},
 			{
 				feature: "activities",
-				href: Routes.templates,
+				href: AppRoutes.templates,
 				label: "Plantillas",
 			},
 			{
 				feature: "activities",
-				href: Routes.activities,
+				href: AppRoutes.activities,
 				label: "Actividades",
 			},
 		],
 	},
 	{
 		feature: "users",
-		href: Routes.users,
+		href: AppRoutes.users,
 		label: "Usuarios",
 		icon: FaSolidUsers,
 		children: [
 			{
 				feature: "profiles",
-				href: Routes.profiles,
+				href: AppRoutes.profiles,
 				label: "Perfiles",
 			},
 			{
 				feature: "users",
-				href: Routes.users,
+				href: AppRoutes.users,
 				label: "Usuarios",
 			},
 		],
 	},
 	{
 		feature: "system",
-		href: Routes.company,
+		href: AppRoutes.companyDetails,
 		label: "Sistema",
 		icon: FaSolidServer,
 		children: [
 			{
 				feature: "system",
-				href: Routes.company,
+				href: AppRoutes.companyDetails,
 				label: "Empresa",
 			},
 			{
-				feature: "billing_companies",
-				href: Routes.billingCompanies,
-				label: "Facturación",
-			},
-			{
 				feature: "credentials",
-				href: Routes.credentials,
+				href: AppRoutes.credentials,
 				label: "Credenciales",
 			},
 		],

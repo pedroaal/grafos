@@ -10,7 +10,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
 	createAttendance,
@@ -98,7 +98,7 @@ const AttendancePage = () => {
 					message: "Asistencia creada correctamente",
 				});
 			}
-			nav(Routes.attendances);
+			nav(AppRoutes.attendances);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -115,7 +115,7 @@ const AttendancePage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Empleados" },
-					{ label: "Asistencias", route: Routes.attendances },
+					{ label: "Asistencias", route: AppRoutes.attendances },
 					{ label: isEdit() ? "Editar" : "Nuevo" },
 				]}
 			/>
@@ -123,7 +123,7 @@ const AttendancePage = () => {
 				title="Gestionar Asistencia"
 				links={[
 					{
-						href: Routes.attendance,
+						href: AppRoutes.attendance,
 						label: "Nueva Asistencia",
 						disabled: !isEdit(),
 					},

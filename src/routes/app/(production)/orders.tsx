@@ -25,7 +25,7 @@ import Table from "~/components/core/Table";
 import ViewOrderModal from "~/components/production/ViewOrderModal";
 
 import { Modals } from "~/config/modals";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteOrder, listOrders } from "~/services/production/orders";
@@ -53,7 +53,7 @@ const OrdersPage = () => {
 	});
 
 	const goTo = (orderId: string) => {
-		nav(`${Routes.order}/${orderId}`);
+		nav(`${AppRoutes.order}/${orderId}`);
 	};
 
 	const handleViewOrder = (orderId: string) => {
@@ -86,7 +86,7 @@ const OrdersPage = () => {
 				title="Gestionar Perfiles"
 				links={[
 					{
-						href: Routes.order,
+						href: AppRoutes.order,
 						label: "Nueva Orden",
 					},
 				]}

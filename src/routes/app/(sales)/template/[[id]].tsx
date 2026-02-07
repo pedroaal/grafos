@@ -10,7 +10,7 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Textarea from "~/components/core/Textarea";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
 	createTemplate,
@@ -80,7 +80,7 @@ const TemplatePage = () => {
 				});
 			}
 
-			nav(Routes.templates);
+			nav(AppRoutes.templates);
 		} catch (errorInstance: any) {
 			addAlert({
 				type: "error",
@@ -97,7 +97,7 @@ const TemplatePage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Ventas" },
-					{ label: "Plantillas", route: Routes.templates },
+					{ label: "Plantillas", route: AppRoutes.templates },
 					{ label: existingTemplate()?.name ?? "Nueva" },
 				]}
 			/>

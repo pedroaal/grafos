@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteActivity, listActivities } from "~/services/sales/activities";
@@ -35,7 +35,7 @@ const ActivitiesPage = () => {
 	});
 
 	const navigateToForm = (activityId: string): void => {
-		nav(`${Routes.activity}/${activityId}`);
+		nav(`${AppRoutes.activity}/${activityId}`);
 	};
 
 	const removeActivity = async (
@@ -75,7 +75,7 @@ const ActivitiesPage = () => {
 				title="Catálogo de Actividades"
 				links={[
 					{
-						href: Routes.activity,
+						href: AppRoutes.activity,
 						label: "Agregar Actividad",
 					},
 				]}

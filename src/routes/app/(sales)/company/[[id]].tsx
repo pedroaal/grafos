@@ -9,7 +9,7 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
 	createCompany,
@@ -70,7 +70,7 @@ const CompanyPage = () => {
 				addAlert({ type: "success", message: "Empresa creada con éxito" });
 			}
 
-			nav(Routes.companies);
+			nav(AppRoutes.companies);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -87,7 +87,7 @@ const CompanyPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Ventas" },
-					{ label: "Empresas", route: Routes.companies },
+					{ label: "Empresas", route: AppRoutes.companies },
 					{ label: company()?.name ?? "Nueva" },
 				]}
 			/>

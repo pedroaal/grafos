@@ -3,7 +3,7 @@ import { FaSolidChevronRight } from "solid-icons/fa";
 import type { JSX, ParentComponent } from "solid-js";
 import { For } from "solid-js";
 import type { Modals } from "~/config/modals";
-import type { Routes } from "~/config/routes";
+import type { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 
 interface IAction {
@@ -16,7 +16,7 @@ interface IButton extends IAction {
 }
 
 interface ILink extends IAction {
-	href: Routes;
+	href: AppRoutes;
 }
 
 interface IModal extends IAction {

@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteEquipment, listEquipment } from "~/services/employees/equipment";
@@ -35,7 +35,7 @@ const EquipmentPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		nav(`${Routes.equipmentItem}/${id}`);
+		nav(`${AppRoutes.equipmentItem}/${id}`);
 	};
 
 	const handleDelete = async (id: string) => {
@@ -62,7 +62,7 @@ const EquipmentPage = () => {
 				title="Gestionar Equipos"
 				links={[
 					{
-						href: Routes.equipmentItem,
+						href: AppRoutes.equipmentItem,
 						label: "Nuevo Equipo",
 					},
 				]}

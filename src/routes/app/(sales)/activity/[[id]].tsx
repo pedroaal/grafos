@@ -11,7 +11,7 @@ import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
 	createActivity,
@@ -91,7 +91,7 @@ const ActivityPage = () => {
 				addAlert({ type: "success", message: "Actividad creada exitosamente" });
 			}
 
-			nav(Routes.activities);
+			nav(AppRoutes.activities);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -116,7 +116,7 @@ const ActivityPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Ventas" },
-					{ label: "Actividades", route: Routes.activities },
+					{ label: "Actividades", route: AppRoutes.activities },
 					{ label: loadedActivity()?.name ?? "Nueva" },
 				]}
 			/>

@@ -8,7 +8,7 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { usePagination } from "~/hooks/usePagination";
 import { deleteSchedule, listSchedules } from "~/services/employees/schedules";
@@ -35,7 +35,7 @@ const SchedulesPage = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		nav(`${Routes.schedule}/${id}`);
+		nav(`${AppRoutes.schedule}/${id}`);
 	};
 
 	const handleDelete = async (id: string) => {
@@ -62,7 +62,7 @@ const SchedulesPage = () => {
 				title="Gestionar Horarios"
 				links={[
 					{
-						href: Routes.schedule,
+						href: AppRoutes.schedule,
 						label: "Nuevo Horario",
 					},
 				]}

@@ -45,7 +45,7 @@ import {
 	PayrollGender,
 	PayrollMaritalStatus,
 } from "~/config/appwrite";
-import { Routes } from "~/config/routes";
+import { AppRoutes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { listCostCenters } from "~/services/accounting/costCenters";
 import {
@@ -396,7 +396,7 @@ const PayrollPage = () => {
 				type: "success",
 				message: "Nómina guardada correctamente",
 			});
-			nav(Routes.payrolls);
+			nav(AppRoutes.payrolls);
 		} catch (error: any) {
 			addAlert({
 				type: "error",
@@ -443,7 +443,7 @@ const PayrollPage = () => {
 			<Breadcrumb
 				links={[
 					{ label: "Empleados" },
-					{ label: "Nómina", route: Routes.payrolls },
+					{ label: "Nómina", route: AppRoutes.payrolls },
 					{ label: isEdit() ? "Editar" : "Nuevo" },
 				]}
 			/>
@@ -451,7 +451,7 @@ const PayrollPage = () => {
 				title="Gestionar Empleado"
 				links={[
 					{
-						href: Routes.payroll,
+						href: AppRoutes.payroll,
 						label: "Nuevo Empleado",
 						disabled: !isEdit(),
 					},

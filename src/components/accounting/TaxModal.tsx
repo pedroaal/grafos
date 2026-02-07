@@ -8,7 +8,7 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import { createTax, getTax, updateTax } from "~/services/accounting/taxes";
 import type { Taxes } from "~/types/appwrite.d";
@@ -26,7 +26,7 @@ const TaxSchema = object({
 type TaxForm = Omit<Taxes, keyof Models.Row>;
 
 export const TaxModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -70,7 +70,7 @@ export const TaxModal = (props: IProps) => {
 					message: "Impuesto actualizado con éxito",
 				});
 			} else {
-				await createTax(auth()?.tenantId!, values as Taxes);
+				await createTax(authStore?.tenantId!, values as Taxes);
 				addAlert({ type: "success", message: "Impuesto creado con éxito" });
 			}
 

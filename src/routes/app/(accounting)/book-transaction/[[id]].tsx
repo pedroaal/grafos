@@ -12,7 +12,7 @@ import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import { listAccountingBooks } from "~/services/accounting/accountingBooks";
 import { listBankAccounts } from "~/services/accounting/bankAccounts";
@@ -44,7 +44,7 @@ type BookTransactionForm = Omit<BookTransactions, keyof Models.Row | "userId">;
 const BookTransactionPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -116,7 +116,7 @@ const BookTransactionPage = () => {
 		try {
 			const payload = {
 				...formValues,
-				userId: auth()?.user!.$id,
+				userId: authStore?.user!.$id,
 			} as BookTransactions;
 
 			if (isEdit()) {
@@ -126,7 +126,7 @@ const BookTransactionPage = () => {
 					message: "Transacción actualizada con éxito",
 				});
 			} else {
-				await createBookTransaction(auth()?.tenantId!, payload);
+				await createBookTransaction(authStore?.tenantId!, payload);
 				addAlert({
 					type: "success",
 					message: "Transacción creada con éxito",

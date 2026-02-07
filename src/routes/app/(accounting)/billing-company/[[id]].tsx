@@ -12,7 +12,7 @@ import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import {
 	createBillingCompany,
@@ -45,7 +45,7 @@ type BillingCompanyForm = Omit<BillingCompanies, keyof Models.Row>;
 const BillingCompanyPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -119,7 +119,7 @@ const BillingCompanyPage = () => {
 				});
 			} else {
 				await createBillingCompany(
-					auth()?.tenantId!,
+					authStore?.tenantId!,
 					formValues as BillingCompanies,
 				);
 				addAlert({

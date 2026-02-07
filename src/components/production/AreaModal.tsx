@@ -6,10 +6,10 @@ import { number, object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useAuth } from "~/context/auth";
 import { createArea, getArea, updateArea } from "~/services/production/areas";
 import type { Areas } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
-import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -24,7 +24,7 @@ const AreaSchema = object({
 type AreaForm = Omit<Areas, keyof Models.Row>;
 
 const AreaModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -65,7 +65,7 @@ const AreaModal = (props: IProps) => {
 				await updateArea(appStore.modalProps!.id, values);
 				addAlert({ type: "success", message: "Área actualizada con éxito" });
 			} else {
-				await createArea(auth()?.tenantId!, values as Areas);
+				await createArea(authStore?.tenantId!, values as Areas);
 				addAlert({ type: "success", message: "Área creada con éxito" });
 			}
 

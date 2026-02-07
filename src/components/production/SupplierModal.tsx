@@ -6,6 +6,7 @@ import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useAuth } from "~/context/auth";
 import {
 	createSupplier,
 	getSupplier,
@@ -13,7 +14,6 @@ import {
 } from "~/services/production/suppliers";
 import type { Suppliers } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
-import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -29,7 +29,7 @@ const SupplierSchema = object({
 type SupplierForm = Omit<Suppliers, keyof Models.Row>;
 
 const SupplierModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -75,7 +75,7 @@ const SupplierModal = (props: IProps) => {
 					message: "Proveedor actualizado con éxito",
 				});
 			} else {
-				await createSupplier(auth()?.tenantId!, values as Suppliers);
+				await createSupplier(authStore?.tenantId!, values as Suppliers);
 				addAlert({ type: "success", message: "Proveedor creado con éxito" });
 			}
 

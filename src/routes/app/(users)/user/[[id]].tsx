@@ -13,7 +13,7 @@ import Select from "~/components/core/Select";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import { createAccount } from "~/services/users/accounts";
 import { listProfiles } from "~/services/users/profiles";
@@ -38,7 +38,7 @@ type UserForm = Omit<Users, keyof Models.Row | "authId" | "profileId"> & {
 const UserPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -108,10 +108,10 @@ const UserPage = () => {
 				);
 
 				// create tenant membership
-				// await createMembership(authId, auth()?.tenantId!);
+				// await createMembership(authId, authStore?.tenantId!);
 
 				// create db user
-				await createUser(auth()?.tenantId!, { ...payload, authId } as Users);
+				await createUser(authStore?.tenantId!, { ...payload, authId } as Users);
 				addAlert({ type: "success", message: "Usuario creado con éxito" });
 			}
 

@@ -10,7 +10,7 @@ import Textarea from "~/components/core/Textarea";
 import { Modals } from "~/config/modals";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import {
 	createComment,
@@ -37,7 +37,7 @@ const CommentValidationSchema = object({
 type CommentFormFields = Omit<Comments, keyof Models.Row>;
 
 const CommentModal = (props: CommentModalProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 
 	const isModifying = (): boolean => Boolean(appStore.modalProps?.id);
@@ -60,7 +60,7 @@ const CommentModal = (props: CommentModalProps) => {
 	const [commentForm, { Form, Field }] = createForm<CommentFormFields>({
 		validate: valiForm(CommentValidationSchema),
 		initialValues: {
-			userId: (auth()?.user?.$id || "") as any,
+			userId: (authStore?.user?.$id || "") as any,
 			contactId: (appStore.modalProps?.contactId || "") as any,
 			comment: "",
 			parentId: null,

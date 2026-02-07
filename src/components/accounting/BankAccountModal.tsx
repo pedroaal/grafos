@@ -7,7 +7,7 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import {
 	createBankAccount,
@@ -29,7 +29,7 @@ const BankAccountSchema = object({
 type BankAccountForm = Omit<BankAccounts, keyof Models.Row>;
 
 export const BankAccountModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -73,7 +73,7 @@ export const BankAccountModal = (props: IProps) => {
 					message: "Cuenta bancaria actualizada con éxito",
 				});
 			} else {
-				await createBankAccount(auth()?.tenantId!, values as BankAccounts);
+				await createBankAccount(authStore?.tenantId!, values as BankAccounts);
 				addAlert({
 					type: "success",
 					message: "Cuenta bancaria creada con éxito",

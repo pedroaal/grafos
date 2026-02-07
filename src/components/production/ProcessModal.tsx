@@ -8,6 +8,7 @@ import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useAuth } from "~/context/auth";
 import { listAreas } from "~/services/production/areas";
 import {
 	createProcess,
@@ -17,7 +18,6 @@ import {
 } from "~/services/production/processes";
 import type { Areas, Processes } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
-import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -49,7 +49,7 @@ const processDefaults: ProcessForm = {
 };
 
 const ProcessModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -104,7 +104,7 @@ const ProcessModal = (props: IProps) => {
 				await updateProcess(appStore.modalProps!.id, payload);
 				addAlert({ type: "success", message: "Proceso actualizado con éxito" });
 			} else {
-				await createProcess(auth()?.tenantId!, payload as Processes);
+				await createProcess(authStore?.tenantId!, payload as Processes);
 				addAlert({ type: "success", message: "Proceso creado con éxito" });
 			}
 

@@ -9,7 +9,7 @@ import { Modal } from "~/components/core/Modal";
 import Select from "~/components/core/Select";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import {
 	createWithholding,
@@ -38,7 +38,7 @@ const WITHHOLDING_TYPE_OPTIONS = [
 ];
 
 export const WithholdingModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -86,7 +86,7 @@ export const WithholdingModal = (props: IProps) => {
 					message: "Retención actualizada con éxito",
 				});
 			} else {
-				await createWithholding(auth()?.tenantId!, values as Withholdings);
+				await createWithholding(authStore?.tenantId!, values as Withholdings);
 				addAlert({ type: "success", message: "Retención creada con éxito" });
 			}
 

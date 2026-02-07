@@ -6,6 +6,7 @@ import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useAuth } from "~/context/auth";
 import {
 	createCategory,
 	getCategory,
@@ -13,7 +14,6 @@ import {
 } from "~/services/production/categories";
 import type { Categories } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
-import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -27,7 +27,7 @@ const CategorySchema = object({
 type CategoryForm = Omit<Categories, keyof Models.Row>;
 
 const CategoryModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -67,7 +67,7 @@ const CategoryModal = (props: IProps) => {
 					message: "Categoría actualizada con éxito",
 				});
 			} else {
-				await createCategory(auth()?.tenantId!, values as Categories);
+				await createCategory(authStore?.tenantId!, values as Categories);
 				addAlert({ type: "success", message: "Categoría creada con éxito" });
 			}
 

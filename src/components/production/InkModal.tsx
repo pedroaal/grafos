@@ -6,10 +6,10 @@ import { object, string } from "valibot";
 import Input from "~/components/core/Input";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useAuth } from "~/context/auth";
 import { createInk, getInk, updateInk } from "~/services/production/inks";
 import type { Inks } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
-import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -23,7 +23,7 @@ const InkSchema = object({
 type InkForm = Omit<Inks, keyof Models.Row>;
 
 const InkModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -62,7 +62,7 @@ const InkModal = (props: IProps) => {
 				await updateInk(appStore.modalProps!.id, values);
 				addAlert({ type: "success", message: "Tinta actualizada con éxito" });
 			} else {
-				await createInk(auth()?.tenantId!, values as Inks);
+				await createInk(authStore?.tenantId!, values as Inks);
 				addAlert({ type: "success", message: "Tinta creada con éxito" });
 			}
 

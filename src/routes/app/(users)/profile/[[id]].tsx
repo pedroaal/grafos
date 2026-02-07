@@ -12,7 +12,7 @@ import Input from "~/components/core/Input";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import { listFeatures } from "~/services/users/features";
 import {
@@ -37,7 +37,7 @@ type ProfileForm = Omit<Profiles, keyof Models.Row>;
 const ProfilePage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -119,7 +119,7 @@ const ProfilePage = () => {
 				addAlert({ type: "success", message: "Perfil actualizado con éxito" });
 			} else {
 				const newProfile = await createProfile(
-					auth()?.tenantId!,
+					authStore?.tenantId!,
 					formValues as Profiles,
 				);
 				profileId = newProfile.$id;

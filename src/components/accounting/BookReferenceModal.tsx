@@ -7,7 +7,7 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import {
 	createBookReference,
@@ -29,7 +29,7 @@ const BookReferenceSchema = object({
 type BookReferenceForm = Omit<BookReferences, keyof Models.Row>;
 
 export const BookReferenceModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -73,7 +73,10 @@ export const BookReferenceModal = (props: IProps) => {
 					message: "Referencia de libro actualizada con éxito",
 				});
 			} else {
-				await createBookReference(auth()?.tenantId!, values as BookReferences);
+				await createBookReference(
+					authStore?.tenantId!,
+					values as BookReferences,
+				);
 				addAlert({
 					type: "success",
 					message: "Referencia de libro creada con éxito",

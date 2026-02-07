@@ -11,7 +11,7 @@ import Input from "~/components/core/Input";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import {
 	createAccountingBook,
@@ -29,7 +29,7 @@ type AccountingBookForm = Omit<AccountingBooks, keyof Models.Row>;
 const AccountingBookPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -70,7 +70,7 @@ const AccountingBookPage = () => {
 				});
 			} else {
 				await createAccountingBook(
-					auth()?.tenantId!,
+					authStore?.tenantId!,
 					formValues as AccountingBooks,
 				);
 				addAlert({

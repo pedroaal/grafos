@@ -32,7 +32,7 @@ import ProcessesSection, {
 import { OrdersStatus } from "~/config/appwrite";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 import { listInks } from "~/services/production/inks";
 import { listOrderInks, syncOrderInks } from "~/services/production/orderInks";
 import {
@@ -113,7 +113,7 @@ const ordersDefault = {
 const OrderPage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -306,10 +306,10 @@ const OrderPage = () => {
 		const loader = addLoader();
 
 		try {
-			const tenantId = auth()?.tenantId;
+			const tenantId = authStore?.tenantId;
 			if (!tenantId) throw new Error("No hay sesión de tenant");
 
-			const userId = auth()?.user?.$id;
+			const userId = authStore?.user?.$id;
 			if (!userId) throw new Error("No hay sesión de usuario");
 
 			// Prepare order payload
@@ -387,7 +387,8 @@ const OrderPage = () => {
 						disabled: !isEdit(),
 					},
 					{
-						onClick: () => duplicateOrder(params.id || "", auth()?.tenantId!),
+						onClick: () =>
+							duplicateOrder(params.id || "", authStore?.tenantId!),
 						label: "Duplicar",
 						disabled: !isEdit(),
 					},

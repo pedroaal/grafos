@@ -7,7 +7,7 @@ import Input from "~/components/core/Input";
 import { Modal } from "~/components/core/Modal";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import {
 	createCostCenter,
@@ -28,7 +28,7 @@ const CostCenterSchema = object({
 type CostCenterForm = Omit<CostCenters, keyof Models.Row>;
 
 export const CostCenterModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -70,7 +70,7 @@ export const CostCenterModal = (props: IProps) => {
 					message: "Centro de costos actualizado con éxito",
 				});
 			} else {
-				await createCostCenter(auth()?.tenantId!, values as CostCenters);
+				await createCostCenter(authStore?.tenantId!, values as CostCenters);
 				addAlert({
 					type: "success",
 					message: "Centro de costos creado con éxito",

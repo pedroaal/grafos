@@ -8,6 +8,7 @@ import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
+import { useAuth } from "~/context/auth";
 import { listCategories } from "~/services/production/categories";
 import {
 	createMaterial,
@@ -16,7 +17,6 @@ import {
 } from "~/services/production/materials";
 import type { Materials } from "~/types/appwrite";
 import { Modal } from "../core/Modal";
-import { useUser } from "~/hooks/useUser";
 
 interface IProps {
 	onSuccess?: () => void;
@@ -50,7 +50,7 @@ const materialDefaults: MaterialForm = {
 };
 
 const MaterialModal = (props: IProps) => {
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { appStore, addLoader, removeLoader, addAlert, closeModal } = useApp();
 	const isEdit = () => Boolean(appStore.modalProps?.id);
 
@@ -98,7 +98,7 @@ const MaterialModal = (props: IProps) => {
 					message: "Material actualizado con éxito",
 				});
 			} else {
-				await createMaterial(auth()?.tenantId!, values as Materials);
+				await createMaterial(authStore?.tenantId!, values as Materials);
 				addAlert({ type: "success", message: "Material creado con éxito" });
 			}
 

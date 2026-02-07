@@ -20,7 +20,7 @@ import Select from "~/components/core/Select";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
-import { useUser } from "~/hooks/useUser";
+import { useAuth } from "~/context/auth";
 
 import { listBillingCompanies } from "~/services/accounting/billingCompanies";
 import {
@@ -103,7 +103,7 @@ interface InvoiceOrderItem {
 const InvoicePage = () => {
 	const params = useParams();
 	const nav = useNavigate();
-	const auth = useUser();
+	const { authStore } = useAuth();
 	const { addAlert, addLoader, removeLoader } = useApp();
 
 	const isEdit = () => Boolean(params.id);
@@ -320,7 +320,7 @@ const InvoicePage = () => {
 		try {
 			const payload = {
 				...formValues,
-				userId: auth()?.user!.$id,
+				userId: authStore?.user!.$id,
 			} as Invoices;
 
 			let invoiceId: string;
@@ -333,7 +333,7 @@ const InvoicePage = () => {
 					message: "Factura actualizada con éxito",
 				});
 			} else {
-				const newInvoice = await createInvoice(auth()?.tenantId!, payload);
+				const newInvoice = await createInvoice(authStore?.tenantId!, payload);
 				invoiceId = newInvoice.$id;
 				addAlert({
 					type: "success",
@@ -356,14 +356,14 @@ const InvoicePage = () => {
 					// Update existing product
 					await updateInvoiceProduct(product.id, productPayload);
 				} else {
-					await createInvoiceProduct(auth()?.tenantId!, productPayload);
+					await createInvoiceProduct(authStore?.tenantId!, productPayload);
 				}
 			}
 
 			// Save invoice orders
 			for (const order of invoiceOrders()) {
 				if (!order.id && order.orderId) {
-					await createInvoiceOrder(auth()?.tenantId!, {
+					await createInvoiceOrder(authStore?.tenantId!, {
 						invoiceId,
 						orderId: order.orderId,
 					} as any);

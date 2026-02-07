@@ -1,13 +1,12 @@
-import { createForm, setValues, valiForm, submit } from "@modular-forms/solid";
+import { createForm, setValues, submit, valiForm } from "@modular-forms/solid";
 import { Title } from "@solidjs/meta";
 import type { Models } from "appwrite";
 import { createEffect, createResource, on } from "solid-js";
-import { number, object, string, optional, nullable } from "valibot";
+import { nullable, number, object, optional, string } from "valibot";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { useApp } from "~/context/app";
 import {
@@ -113,226 +112,224 @@ const CompanyDetailsPage = () => {
 	return (
 		<>
 			<Title>Detalles de la Compañía - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[{ label: "Sistema" }, { label: "Detalles de la Compañía" }]}
-				/>
-				<BlueBoard
-					title="Detalles de la Compañía"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							{/* Name */}
-							<div class="md:col-span-6">
-								<Field name="name">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											placeholder="Nombre de la compañía"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Legal Representative */}
-							<div class="md:col-span-6">
-								<Field name="legalRepresentative">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Representante Legal"
-											placeholder="Nombre del representante"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* RUC */}
-							<div class="md:col-span-4">
-								<Field name="ruc">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="RUC"
-											placeholder="RUC de la compañía"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* City */}
-							<div class="md:col-span-4">
-								<Field name="city">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Ciudad"
-											placeholder="Ciudad"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Order Start */}
-							<div class="md:col-span-4">
-								<Field name="orderStart" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Número Inicial de Orden"
-											placeholder="0"
-											value={field.value ?? 0}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Address */}
-							<div class="md:col-span-12">
-								<Field name="address">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Dirección"
-											placeholder="Dirección completa"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Phone */}
-							<div class="md:col-span-4">
-								<Field name="phone">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Teléfono"
-											placeholder="Teléfono de contacto"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Mobile */}
-							<div class="md:col-span-4">
-								<Field name="mobile">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Móvil"
-											placeholder="Número de móvil"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Email */}
-							<div class="md:col-span-4">
-								<Field name="email">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="email"
-											label="Email"
-											placeholder="correo@empresa.com"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Website */}
-							<div class="md:col-span-6">
-								<Field name="website">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Sitio Web"
-											placeholder="https://www.empresa.com"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Cloud Storage */}
-							<div class="md:col-span-6">
-								<Field name="cloudStorage">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Almacenamiento en la Nube"
-											placeholder="Configuración de almacenamiento"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							{/* Mail Config */}
-							<div class="md:col-span-12">
-								<Field name="mailConfig">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Configuración de Correo"
-											placeholder="Configuración de servidor de correo"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[{ label: "Sistema" }, { label: "Detalles de la Compañía" }]}
+			/>
+			<BlueBoard
+				title="Detalles de la Compañía"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						{/* Name */}
+						<div class="md:col-span-6">
+							<Field name="name">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										placeholder="Nombre de la compañía"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						{/* Legal Representative */}
+						<div class="md:col-span-6">
+							<Field name="legalRepresentative">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Representante Legal"
+										placeholder="Nombre del representante"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* RUC */}
+						<div class="md:col-span-4">
+							<Field name="ruc">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="RUC"
+										placeholder="RUC de la compañía"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* City */}
+						<div class="md:col-span-4">
+							<Field name="city">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Ciudad"
+										placeholder="Ciudad"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Order Start */}
+						<div class="md:col-span-4">
+							<Field name="orderStart" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Número Inicial de Orden"
+										placeholder="0"
+										value={field.value ?? 0}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Address */}
+						<div class="md:col-span-12">
+							<Field name="address">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Dirección"
+										placeholder="Dirección completa"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Phone */}
+						<div class="md:col-span-4">
+							<Field name="phone">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Teléfono"
+										placeholder="Teléfono de contacto"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Mobile */}
+						<div class="md:col-span-4">
+							<Field name="mobile">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Móvil"
+										placeholder="Número de móvil"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Email */}
+						<div class="md:col-span-4">
+							<Field name="email">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="email"
+										label="Email"
+										placeholder="correo@empresa.com"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Website */}
+						<div class="md:col-span-6">
+							<Field name="website">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Sitio Web"
+										placeholder="https://www.empresa.com"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Cloud Storage */}
+						<div class="md:col-span-6">
+							<Field name="cloudStorage">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Almacenamiento en la Nube"
+										placeholder="Configuración de almacenamiento"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						{/* Mail Config */}
+						<div class="md:col-span-12">
+							<Field name="mailConfig">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Configuración de Correo"
+										placeholder="Configuración de servidor de correo"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

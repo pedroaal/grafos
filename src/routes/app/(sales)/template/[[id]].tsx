@@ -9,7 +9,6 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Textarea from "~/components/core/Textarea";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -95,75 +94,73 @@ const TemplatePage = () => {
 	return (
 		<>
 			<Title>Plantilla - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Ventas" },
-						{ label: "Plantillas", route: Routes.templates },
-						{ label: existingTemplate()?.name ?? "Nueva" },
-					]}
-				/>
-				<BlueBoard
-					title="Editor de Plantilla"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(templateEditor),
-						},
-					]}
-				>
-					<Form onSubmit={persistTemplate}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-8">
-								<Field name="name">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre de la Plantilla"
-											placeholder="Título descriptivo"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="logo">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="URL del Logo"
-											placeholder="https://..."
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-12">
-								<Field name="content">
-									{(field, props) => (
-										<Textarea
-											{...props}
-											label="Contenido de la Plantilla"
-											placeholder="Escriba el contenido completo aquí..."
-											value={field.value}
-											error={field.error}
-											rows={12}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Ventas" },
+					{ label: "Plantillas", route: Routes.templates },
+					{ label: existingTemplate()?.name ?? "Nueva" },
+				]}
+			/>
+			<BlueBoard
+				title="Editor de Plantilla"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(templateEditor),
+					},
+				]}
+			>
+				<Form onSubmit={persistTemplate}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-8">
+							<Field name="name">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre de la Plantilla"
+										placeholder="Título descriptivo"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						<div class="md:col-span-4">
+							<Field name="logo">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="URL del Logo"
+										placeholder="https://..."
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-12">
+							<Field name="content">
+								{(field, props) => (
+									<Textarea
+										{...props}
+										label="Contenido de la Plantilla"
+										placeholder="Escriba el contenido completo aquí..."
+										value={field.value}
+										error={field.error}
+										rows={12}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

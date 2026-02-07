@@ -10,7 +10,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -130,125 +129,123 @@ const UserPage = () => {
 	return (
 		<>
 			<Title>Usuario - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Usuarios" },
-						{ label: "Usuarios", route: Routes.users },
-						{
-							label: user()
-								? `${user()?.firstName} ${user()?.lastName}`
-								: "Nuevo",
-						},
-					]}
-				/>
-				<BlueBoard
-					title="Gesitonar Usuario"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-							<div class="md:col-span-2">
-								<Field name="idNumber">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Cedula"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-								<Field name="firstName">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-								<Field name="lastName">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Apellido"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-								<Field name="profileId">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={profileOptions()}
-											label="Perfil"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-1">
-								<Field name="active" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Activo"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-								<Field name="reserveOrder" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Reservar Ordenes"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-								<Field name="bookAccess" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Libros"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-								<Field name="profitAccess" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Utilidades"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Usuarios" },
+					{ label: "Usuarios", route: Routes.users },
+					{
+						label: user()
+							? `${user()?.firstName} ${user()?.lastName}`
+							: "Nuevo",
+					},
+				]}
+			/>
+			<BlueBoard
+				title="Gesitonar Usuario"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<div class="md:col-span-2">
+							<Field name="idNumber">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Cedula"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+							<Field name="firstName">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+							<Field name="lastName">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Apellido"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+							<Field name="profileId">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={profileOptions()}
+										label="Perfil"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+						<div class="md:col-span-1">
+							<Field name="active" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Activo"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+							<Field name="reserveOrder" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Reservar Ordenes"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+							<Field name="bookAccess" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Libros"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+							<Field name="profitAccess" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Utilidades"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

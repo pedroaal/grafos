@@ -9,7 +9,6 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -143,111 +142,109 @@ const ProfilePage = () => {
 	return (
 		<>
 			<Title>Perfil - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Usuarios" },
-						{ label: "Perfiles", route: Routes.profiles },
-						{ label: profile()?.name ?? "Nuevo" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Perfil"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					{/* Basic Info */}
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-5">
-								<Field name="name">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											placeholder="Nombre del perfil"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="description">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Descripción"
-											placeholder="Descripción del perfil"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-1 flex items-end">
-								<Field name="active" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Activo"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Usuarios" },
+					{ label: "Perfiles", route: Routes.profiles },
+					{ label: profile()?.name ?? "Nuevo" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Perfil"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				{/* Basic Info */}
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-5">
+							<Field name="name">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										placeholder="Nombre del perfil"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
 
-					{/* Features Permissions Table */}
-					<div class="overflow-x-auto">
-						<table class="table table-zebra table-sm">
-							<thead>
-								<tr>
-									<th class="w-2/5">Feature</th>
-									<th class="w-15 text-center">
-										<button
-											type="button"
-											class="btn btn-xs btn-ghost"
-											onClick={() => toggleAll()}
-										>
-											Seleccionar Todos
-										</button>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<For each={features()?.rows}>
-									{(item: Features) => (
-										<tr>
-											<td classList={{ "pl-10": !item.isMain }}>{item.name}</td>
-											<td class="text-center">
-												<input
-													type="checkbox"
-													class="checkbox checkbox-sm"
-													checked={selectedFeatures().includes(item.$id)}
-													onChange={() => handleCheckboxChange(item.$id)}
-												/>
-											</td>
-										</tr>
-									)}
-								</For>
-							</tbody>
-						</table>
+						<div class="md:col-span-6">
+							<Field name="description">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Descripción"
+										placeholder="Descripción del perfil"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-1 flex items-end">
+							<Field name="active" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Activo"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
 					</div>
-				</BlueBoard>
-			</DashboardLayout>
+				</Form>
+
+				{/* Features Permissions Table */}
+				<div class="overflow-x-auto">
+					<table class="table table-zebra table-sm">
+						<thead>
+							<tr>
+								<th class="w-2/5">Feature</th>
+								<th class="w-15 text-center">
+									<button
+										type="button"
+										class="btn btn-xs btn-ghost"
+										onClick={() => toggleAll()}
+									>
+										Seleccionar Todos
+									</button>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<For each={features()?.rows}>
+								{(item: Features) => (
+									<tr>
+										<td classList={{ "pl-10": !item.isMain }}>{item.name}</td>
+										<td class="text-center">
+											<input
+												type="checkbox"
+												class="checkbox checkbox-sm"
+												checked={selectedFeatures().includes(item.$id)}
+												onChange={() => handleCheckboxChange(item.$id)}
+											/>
+										</td>
+									</tr>
+								)}
+							</For>
+						</tbody>
+					</table>
+				</div>
+			</BlueBoard>
 		</>
 	);
 };

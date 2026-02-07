@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -66,62 +65,57 @@ const BookTransactionsPage = () => {
 	return (
 		<>
 			<Title>Transacciones de Libro - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Contabilidad" },
-						{ label: "Transacciones de Libro" },
-					]}
-				/>
-				<BlueBoard
-					title="Transacciones de Libro"
-					links={[
-						{
-							href: Routes.bookTransaction,
-							label: "Nueva Transacción",
-						},
+			<Breadcrumb
+				links={[{ label: "Contabilidad" }, { label: "Transacciones de Libro" }]}
+			/>
+			<BlueBoard
+				title="Transacciones de Libro"
+				links={[
+					{
+						href: Routes.bookTransaction,
+						label: "Nueva Transacción",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Libro" },
+						{ label: "Beneficiario" },
+						{ label: "Detalle" },
+						{ label: "Ingreso" },
+						{ label: "Egreso" },
+						{ label: "Banco" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Libro" },
-							{ label: "Beneficiario" },
-							{ label: "Detalle" },
-							{ label: "Ingreso" },
-							{ label: "Egreso" },
-							{ label: "Banco" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={bookTransactionsData()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.bookId?.name || ""}</td>
-									<td>{item.beneficiary}</td>
-									<td>{item.detail}</td>
-									<td>{item.income ? `$${item.income.toFixed(2)}` : "-"}</td>
-									<td>{item.expense ? `$${item.expense.toFixed(2)}` : "-"}</td>
-									<td>{item.bankId?.name || ""}</td>
-									<td>
-										<RowActions
-											onEdit={() => handleEdit(item.$id)}
-											onDelete={() => handleDelete(item.$id, item.detail)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pageControl.page()}
-						totalPages={pageControl.totalPages()}
-						totalItems={pageControl.totalItems()}
-						perPage={pageControl.perPage()}
-						onPageChange={pageControl.setPage}
-						onPerPageChange={pageControl.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={bookTransactionsData()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.bookId?.name || ""}</td>
+								<td>{item.beneficiary}</td>
+								<td>{item.detail}</td>
+								<td>{item.income ? `$${item.income.toFixed(2)}` : "-"}</td>
+								<td>{item.expense ? `$${item.expense.toFixed(2)}` : "-"}</td>
+								<td>{item.bankId?.name || ""}</td>
+								<td>
+									<RowActions
+										onEdit={() => handleEdit(item.$id)}
+										onDelete={() => handleDelete(item.$id, item.detail)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pageControl.page()}
+					totalPages={pageControl.totalPages()}
+					totalItems={pageControl.totalItems()}
+					perPage={pageControl.perPage()}
+					onPageChange={pageControl.setPage}
+					onPerPageChange={pageControl.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

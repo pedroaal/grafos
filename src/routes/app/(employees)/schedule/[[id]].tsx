@@ -8,7 +8,6 @@ import { number, object, string } from "valibot";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
@@ -104,136 +103,134 @@ const SchedulePage = () => {
 	return (
 		<>
 			<Title>Horario - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Empleados" },
-						{ label: "Horarios", route: Routes.schedules },
-						{ label: isEdit() ? "Editar" : "Nuevo" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Horario"
-					links={[
-						{
-							href: Routes.schedule,
-							label: "Nuevo Horario",
-							disabled: !isEdit(),
-						},
-					]}
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-12">
-								<Field name="name">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="morningArrival">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="time"
-											label="Entrada Mañana"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="morningDeparture">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="time"
-											label="Salida Mañana"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="afternoonArrival">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="time"
-											label="Entrada Tarde"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="afternoonDeparture">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="time"
-											label="Salida Tarde"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="waitMinutes" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Minutos de Espera"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-6">
-								<Field name="graceMinutes" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Minutos de Gracia"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Empleados" },
+					{ label: "Horarios", route: Routes.schedules },
+					{ label: isEdit() ? "Editar" : "Nuevo" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Horario"
+				links={[
+					{
+						href: Routes.schedule,
+						label: "Nuevo Horario",
+						disabled: !isEdit(),
+					},
+				]}
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-12">
+							<Field name="name">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						<div class="md:col-span-3">
+							<Field name="morningArrival">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="time"
+										label="Entrada Mañana"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="morningDeparture">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="time"
+										label="Salida Mañana"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="afternoonArrival">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="time"
+										label="Entrada Tarde"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="afternoonDeparture">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="time"
+										label="Salida Tarde"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="waitMinutes" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Minutos de Espera"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-6">
+							<Field name="graceMinutes" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Minutos de Gracia"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

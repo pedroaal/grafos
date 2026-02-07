@@ -17,7 +17,6 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -385,501 +384,493 @@ const InvoicePage = () => {
 	return (
 		<>
 			<Title>Factura - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Contabilidad" },
-						{ label: "Facturas", route: Routes.invoices },
-						{
-							label: invoice()
-								? `Factura #${invoice()!.invoiceNumber}`
-								: "Nueva",
-						},
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Factura"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						{/* Basic Info */}
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
-							<div class="md:col-span-3">
-								<Field name="invoiceNumber" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Número de Factura"
-											value={field.value ?? 1}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="issueDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fecha Emisión"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="dueDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fecha Vencimiento"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="status">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Estado"
-											options={INVOICE_STATUS_OPTIONS}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="billingCompanyId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Empresa de Facturación"
-											options={
-												billingCompaniesList()?.rows.map((company) => ({
-													key: company.$id,
-													label: company.businessName,
-												})) || []
-											}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="clientId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Cliente"
-											options={
-												clientsList()?.rows.map((client) => ({
-													key: client.$id,
-													label: `${client.contactId.firstName} ${client.contactId.lastName}`,
-												})) || []
-											}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="paymentType">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Tipo de Pago"
-											options={PAYMENT_TYPE_OPTIONS}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="paymentDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fecha de Pago"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="type" type="boolean">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Tipo de Factura"
-											options={[
-												{ key: "true", label: "Venta" },
-												{ key: "false", label: "Compra" },
-											]}
-											value={field.value ? "true" : "false"}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Contabilidad" },
+					{ label: "Facturas", route: Routes.invoices },
+					{
+						label: invoice() ? `Factura #${invoice()!.invoiceNumber}` : "Nueva",
+					},
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Factura"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					{/* Basic Info */}
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
+						<div class="md:col-span-3">
+							<Field name="invoiceNumber" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Número de Factura"
+										value={field.value ?? 1}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
 
-						{/* Financial Fields */}
-						<div class="divider">Información Financiera</div>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
-							<div class="md:col-span-3">
-								<Field name="subtotal" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Subtotal"
-											value={field.value ?? 0}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="discountPercentage" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="% Descuento"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="discount" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Descuento"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="tax" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Impuesto"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="taxExempt" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Exento de Impuesto"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="total" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Total"
-											value={field.value ?? 0}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="withholdingId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Retención"
-											options={
-												withholdingsList()?.rows.map((w) => ({
-													key: w.$id,
-													label: w.description,
-												})) || []
-											}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="withholding" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Valor Retención"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="sourceWithholdingId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Retención en Fuente"
-											options={
-												withholdingsList()?.rows.map((w) => ({
-													key: w.$id,
-													label: w.description,
-												})) || []
-											}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="sourceWithholding" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Valor Retención Fuente"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+						<div class="md:col-span-3">
+							<Field name="issueDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fecha Emisión"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
 
-					{/* Invoice Products */}
-					<div class="divider">Productos de Factura</div>
-					<div class="mb-4">
-						<button
-							type="button"
-							class="btn btn-sm btn-primary"
-							onClick={addProduct}
-						>
-							Agregar Producto
-						</button>
-					</div>
-					<div class="overflow-x-auto mb-6">
-						<table class="table table-sm">
-							<thead>
-								<tr>
-									<th>Cantidad</th>
-									<th>Detalle</th>
-									<th>Impuesto</th>
-									<th>Precio Unitario</th>
-									<th>Subtotal</th>
-									<th>Acciones</th>
-								</tr>
-							</thead>
-							<tbody>
-								<For each={invoiceProducts()}>
-									{(product, index) => (
-										<tr>
-											<td>
-												<input
-													type="number"
-													class="input input-sm input-bordered w-20"
-													value={product.quantity}
-													onChange={(e) =>
-														updateProduct(
-															index(),
-															"quantity",
-															Number(e.currentTarget.value) || 0,
-														)
-													}
-												/>
-											</td>
-											<td>
-												<input
-													type="text"
-													class="input input-sm input-bordered w-full"
-													value={product.detail}
-													onChange={(e) =>
-														updateProduct(
-															index(),
-															"detail",
-															e.currentTarget.value,
-														)
-													}
-												/>
-											</td>
-											<td>
-												<select
-													class="select select-sm select-bordered"
-													value={product.taxId}
-													onChange={(e) =>
-														updateProduct(
-															index(),
-															"taxId",
-															e.currentTarget.value,
-														)
-													}
-												>
-													<option value="">Seleccione...</option>
-													<For each={taxesList()?.rows || []}>
-														{(tax) => (
-															<option value={tax.$id}>{tax.percentage}%</option>
-														)}
-													</For>
-												</select>
-											</td>
-											<td>
-												<input
-													type="number"
-													class="input input-sm input-bordered w-28"
-													value={product.unitPrice}
-													onChange={(e) =>
-														updateProduct(
-															index(),
-															"unitPrice",
-															Number(e.currentTarget.value) || 0,
-														)
-													}
-												/>
-											</td>
-											<td>${product.subtotal.toFixed(2)}</td>
-											<td>
-												<button
-													type="button"
-													class="btn btn-sm btn-error"
-													onClick={() => removeProduct(index())}
-												>
-													Eliminar
-												</button>
-											</td>
-										</tr>
-									)}
-								</For>
-							</tbody>
-						</table>
+						<div class="md:col-span-3">
+							<Field name="dueDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fecha Vencimiento"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="status">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Estado"
+										options={INVOICE_STATUS_OPTIONS}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="billingCompanyId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Empresa de Facturación"
+										options={
+											billingCompaniesList()?.rows.map((company) => ({
+												key: company.$id,
+												label: company.businessName,
+											})) || []
+										}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="clientId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Cliente"
+										options={
+											clientsList()?.rows.map((client) => ({
+												key: client.$id,
+												label: `${client.contactId.firstName} ${client.contactId.lastName}`,
+											})) || []
+										}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="paymentType">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Tipo de Pago"
+										options={PAYMENT_TYPE_OPTIONS}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="paymentDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fecha de Pago"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="type" type="boolean">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Tipo de Factura"
+										options={[
+											{ key: "true", label: "Venta" },
+											{ key: "false", label: "Compra" },
+										]}
+										value={field.value ? "true" : "false"}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
 					</div>
 
-					{/* Invoice Orders */}
-					<div class="divider">Órdenes de Trabajo</div>
-					<div class="mb-4">
-						<button
-							type="button"
-							class="btn btn-sm btn-primary"
-							onClick={addOrder}
-						>
-							Agregar Orden
-						</button>
+					{/* Financial Fields */}
+					<div class="divider">Información Financiera</div>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
+						<div class="md:col-span-3">
+							<Field name="subtotal" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Subtotal"
+										value={field.value ?? 0}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="discountPercentage" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="% Descuento"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="discount" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Descuento"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="tax" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Impuesto"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="taxExempt" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Exento de Impuesto"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="total" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Total"
+										value={field.value ?? 0}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="withholdingId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Retención"
+										options={
+											withholdingsList()?.rows.map((w) => ({
+												key: w.$id,
+												label: w.description,
+											})) || []
+										}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="withholding" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Valor Retención"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="sourceWithholdingId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Retención en Fuente"
+										options={
+											withholdingsList()?.rows.map((w) => ({
+												key: w.$id,
+												label: w.description,
+											})) || []
+										}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="sourceWithholding" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Valor Retención Fuente"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
 					</div>
-					<div class="overflow-x-auto mb-6">
-						<table class="table table-sm">
-							<thead>
-								<tr>
-									<th>Orden de Trabajo</th>
-									<th>Acciones</th>
-								</tr>
-							</thead>
-							<tbody>
-								<For each={invoiceOrders()}>
-									{(order, index) => (
-										<tr>
-											<td>
-												<select
-													class="select select-sm select-bordered w-full"
-													value={order.orderId}
-													onChange={(e) =>
-														updateOrder(index(), e.currentTarget.value)
-													}
-												>
-													<option value="">Seleccione orden...</option>
-													<For each={ordersList()?.rows || []}>
-														{(o) => (
-															<option value={o.$id}>
-																Orden #{o.orderNumber} - {o.name}
-															</option>
-														)}
-													</For>
-												</select>
-											</td>
-											<td>
-												<button
-													type="button"
-													class="btn btn-sm btn-error"
-													onClick={() => removeOrder(index())}
-												>
-													Eliminar
-												</button>
-											</td>
-										</tr>
-									)}
-								</For>
-							</tbody>
-						</table>
-					</div>
-				</BlueBoard>
-			</DashboardLayout>
+				</Form>
+
+				{/* Invoice Products */}
+				<div class="divider">Productos de Factura</div>
+				<div class="mb-4">
+					<button
+						type="button"
+						class="btn btn-sm btn-primary"
+						onClick={addProduct}
+					>
+						Agregar Producto
+					</button>
+				</div>
+				<div class="overflow-x-auto mb-6">
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>Cantidad</th>
+								<th>Detalle</th>
+								<th>Impuesto</th>
+								<th>Precio Unitario</th>
+								<th>Subtotal</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<For each={invoiceProducts()}>
+								{(product, index) => (
+									<tr>
+										<td>
+											<input
+												type="number"
+												class="input input-sm input-bordered w-20"
+												value={product.quantity}
+												onChange={(e) =>
+													updateProduct(
+														index(),
+														"quantity",
+														Number(e.currentTarget.value) || 0,
+													)
+												}
+											/>
+										</td>
+										<td>
+											<input
+												type="text"
+												class="input input-sm input-bordered w-full"
+												value={product.detail}
+												onChange={(e) =>
+													updateProduct(
+														index(),
+														"detail",
+														e.currentTarget.value,
+													)
+												}
+											/>
+										</td>
+										<td>
+											<select
+												class="select select-sm select-bordered"
+												value={product.taxId}
+												onChange={(e) =>
+													updateProduct(index(), "taxId", e.currentTarget.value)
+												}
+											>
+												<option value="">Seleccione...</option>
+												<For each={taxesList()?.rows || []}>
+													{(tax) => (
+														<option value={tax.$id}>{tax.percentage}%</option>
+													)}
+												</For>
+											</select>
+										</td>
+										<td>
+											<input
+												type="number"
+												class="input input-sm input-bordered w-28"
+												value={product.unitPrice}
+												onChange={(e) =>
+													updateProduct(
+														index(),
+														"unitPrice",
+														Number(e.currentTarget.value) || 0,
+													)
+												}
+											/>
+										</td>
+										<td>${product.subtotal.toFixed(2)}</td>
+										<td>
+											<button
+												type="button"
+												class="btn btn-sm btn-error"
+												onClick={() => removeProduct(index())}
+											>
+												Eliminar
+											</button>
+										</td>
+									</tr>
+								)}
+							</For>
+						</tbody>
+					</table>
+				</div>
+
+				{/* Invoice Orders */}
+				<div class="divider">Órdenes de Trabajo</div>
+				<div class="mb-4">
+					<button
+						type="button"
+						class="btn btn-sm btn-primary"
+						onClick={addOrder}
+					>
+						Agregar Orden
+					</button>
+				</div>
+				<div class="overflow-x-auto mb-6">
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>Orden de Trabajo</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<For each={invoiceOrders()}>
+								{(order, index) => (
+									<tr>
+										<td>
+											<select
+												class="select select-sm select-bordered w-full"
+												value={order.orderId}
+												onChange={(e) =>
+													updateOrder(index(), e.currentTarget.value)
+												}
+											>
+												<option value="">Seleccione orden...</option>
+												<For each={ordersList()?.rows || []}>
+													{(o) => (
+														<option value={o.$id}>
+															Orden #{o.orderNumber} - {o.name}
+														</option>
+													)}
+												</For>
+											</select>
+										</td>
+										<td>
+											<button
+												type="button"
+												class="btn btn-sm btn-error"
+												onClick={() => removeOrder(index())}
+											>
+												Eliminar
+											</button>
+										</td>
+									</tr>
+								)}
+							</For>
+						</tbody>
+					</table>
+				</div>
+			</BlueBoard>
 		</>
 	);
 };

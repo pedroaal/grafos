@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -81,65 +80,61 @@ const TasksPage = () => {
 	return (
 		<>
 			<Title>CRM - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Ventas" }, { label: "CRM" }]} />
-				<BlueBoard
-					title="Gestión de CRM"
-					links={[
-						{
-							href: Routes.task,
-							label: "Nueva Tarea CRM",
-						},
+			<Breadcrumb links={[{ label: "Ventas" }, { label: "CRM" }]} />
+			<BlueBoard
+				title="Gestión de CRM"
+				links={[
+					{
+						href: Routes.task,
+						label: "Nueva Tarea CRM",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Fecha Programada" },
+						{ label: "Actividad" },
+						{ label: "Asignado a" },
+						{ label: "Contacto" },
+						{ label: "Estado" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Fecha Programada" },
-							{ label: "Actividad" },
-							{ label: "Asignado a" },
-							{ label: "Contacto" },
-							{ label: "Estado" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={crmRecords()?.rows || []}>
-							{(entry: Task) => (
-								<tr>
-									<td>{formatScheduledDate(entry.scheduled)}</td>
-									<td>{entry.activityId.name}</td>
-									<td>{getAssignedUserName(entry)}</td>
-									<td>{getContactName(entry)}</td>
-									<td>
-										<span
-											class={
-												entry.active
-													? "badge badge-primary"
-													: "badge badge-ghost"
-											}
-										>
-											{entry.active ? "Activo" : "Inactivo"}
-										</span>
-									</td>
-									<td>
-										<RowActions
-											onEdit={() => openEditForm(entry.$id)}
-											onDelete={() => deleteRecord(entry.$id)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={paginationState.page()}
-						totalPages={paginationState.totalPages()}
-						totalItems={paginationState.totalItems()}
-						perPage={paginationState.perPage()}
-						onPageChange={paginationState.setPage}
-						onPerPageChange={paginationState.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={crmRecords()?.rows || []}>
+						{(entry: Task) => (
+							<tr>
+								<td>{formatScheduledDate(entry.scheduled)}</td>
+								<td>{entry.activityId.name}</td>
+								<td>{getAssignedUserName(entry)}</td>
+								<td>{getContactName(entry)}</td>
+								<td>
+									<span
+										class={
+											entry.active ? "badge badge-primary" : "badge badge-ghost"
+										}
+									>
+										{entry.active ? "Activo" : "Inactivo"}
+									</span>
+								</td>
+								<td>
+									<RowActions
+										onEdit={() => openEditForm(entry.$id)}
+										onDelete={() => deleteRecord(entry.$id)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={paginationState.page()}
+					totalPages={paginationState.totalPages()}
+					totalItems={paginationState.totalItems()}
+					perPage={paginationState.perPage()}
+					onPageChange={paginationState.setPage}
+					onPerPageChange={paginationState.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

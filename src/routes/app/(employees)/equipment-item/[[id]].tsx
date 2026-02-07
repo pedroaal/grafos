@@ -9,7 +9,6 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import {
@@ -90,62 +89,60 @@ const EquipmentItemPage = () => {
 	return (
 		<>
 			<Title>Equipo - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Empleados" },
-						{ label: "Equipos", route: Routes.equipment },
-						{ label: isEdit() ? "Editar" : "Nuevo" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Equipo"
-					links={[
-						{
-							href: Routes.equipmentItem,
-							label: "Nuevo Equipo",
-							disabled: !isEdit(),
-						},
-					]}
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-10">
-								<Field name="name">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2 flex items-end pb-2">
-								<Field name="active" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Activo"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Empleados" },
+					{ label: "Equipos", route: Routes.equipment },
+					{ label: isEdit() ? "Editar" : "Nuevo" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Equipo"
+				links={[
+					{
+						href: Routes.equipmentItem,
+						label: "Nuevo Equipo",
+						disabled: !isEdit(),
+					},
+				]}
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-10">
+							<Field name="name">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+						<div class="md:col-span-2 flex items-end pb-2">
+							<Field name="active" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Activo"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

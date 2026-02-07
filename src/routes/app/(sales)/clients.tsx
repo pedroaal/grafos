@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { TAXPAYER_TYPE_LABELS } from "~/config/taxes";
@@ -73,68 +72,66 @@ const ClientsPage = () => {
 	return (
 		<>
 			<Title>Clientes - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Ventas" }, { label: "Clientes" }]} />
-				<BlueBoard
-					title="Administrar Clientes"
-					links={[
-						{
-							href: Routes.client,
-							label: "Agregar Cliente",
-						},
+			<Breadcrumb links={[{ label: "Ventas" }, { label: "Clientes" }]} />
+			<BlueBoard
+				title="Administrar Clientes"
+				links={[
+					{
+						href: Routes.client,
+						label: "Agregar Cliente",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Contacto" },
+						{ label: "Empresa" },
+						{ label: "Tipo Contribuyente" },
+						{ label: "Seguimiento" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Contacto" },
-							{ label: "Empresa" },
-							{ label: "Tipo Contribuyente" },
-							{ label: "Seguimiento" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={clientsData()?.rows || []}>
-							{(clientRecord: Clients) => (
-								<tr>
-									<td>{getContactFullName(clientRecord)}</td>
-									<td>{clientRecord.companyId.name}</td>
-									<td>{getTaxpayerLabel(clientRecord.taxpayerType)}</td>
-									<td>
-										<span
-											class={
-												clientRecord.followUp
-													? "badge badge-success"
-													: "badge badge-ghost"
-											}
-										>
-											{clientRecord.followUp ? "Activo" : "Inactivo"}
-										</span>
-									</td>
-									<td>
-										<RowActions
-											onEdit={() => navigateToEdit(clientRecord.$id)}
-											onDelete={() =>
-												removeClientRecord(
-													clientRecord.$id,
-													getContactFullName(clientRecord),
-												)
-											}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pageControl.page()}
-						totalPages={pageControl.totalPages()}
-						totalItems={pageControl.totalItems()}
-						perPage={pageControl.perPage()}
-						onPageChange={pageControl.setPage}
-						onPerPageChange={pageControl.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={clientsData()?.rows || []}>
+						{(clientRecord: Clients) => (
+							<tr>
+								<td>{getContactFullName(clientRecord)}</td>
+								<td>{clientRecord.companyId.name}</td>
+								<td>{getTaxpayerLabel(clientRecord.taxpayerType)}</td>
+								<td>
+									<span
+										class={
+											clientRecord.followUp
+												? "badge badge-success"
+												: "badge badge-ghost"
+										}
+									>
+										{clientRecord.followUp ? "Activo" : "Inactivo"}
+									</span>
+								</td>
+								<td>
+									<RowActions
+										onEdit={() => navigateToEdit(clientRecord.$id)}
+										onDelete={() =>
+											removeClientRecord(
+												clientRecord.$id,
+												getContactFullName(clientRecord),
+											)
+										}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pageControl.page()}
+					totalPages={pageControl.totalPages()}
+					totalItems={pageControl.totalItems()}
+					perPage={pageControl.perPage()}
+					onPageChange={pageControl.setPage}
+					onPerPageChange={pageControl.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

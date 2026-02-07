@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -69,60 +68,58 @@ const BillingCompaniesPage = () => {
 	return (
 		<>
 			<Title>Empresas de Facturación - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Contabilidad" },
-						{ label: "Empresas de Facturación" },
-					]}
-				/>
-				<BlueBoard
-					title="Empresas de Facturación"
-					links={[
-						{
-							href: Routes.billingCompany,
-							label: "Nueva Empresa de Facturación",
-						},
+			<Breadcrumb
+				links={[
+					{ label: "Contabilidad" },
+					{ label: "Empresas de Facturación" },
+				]}
+			/>
+			<BlueBoard
+				title="Empresas de Facturación"
+				links={[
+					{
+						href: Routes.billingCompany,
+						label: "Nueva Empresa de Facturación",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Razón Social" },
+						{ label: "Representante Legal" },
+						{ label: "Email" },
+						{ label: "Teléfono" },
+						{ label: "Ciudad" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Razón Social" },
-							{ label: "Representante Legal" },
-							{ label: "Email" },
-							{ label: "Teléfono" },
-							{ label: "Ciudad" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={billingCompaniesData()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.businessName}</td>
-									<td>{item.legalRepresentative}</td>
-									<td>{item.email}</td>
-									<td>{item.phone}</td>
-									<td>{item.city}</td>
-									<td>
-										<RowActions
-											onEdit={() => handleEdit(item.$id)}
-											onDelete={() => handleDelete(item.$id, item.businessName)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pageControl.page()}
-						totalPages={pageControl.totalPages()}
-						totalItems={pageControl.totalItems()}
-						perPage={pageControl.perPage()}
-						onPageChange={pageControl.setPage}
-						onPerPageChange={pageControl.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={billingCompaniesData()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.businessName}</td>
+								<td>{item.legalRepresentative}</td>
+								<td>{item.email}</td>
+								<td>{item.phone}</td>
+								<td>{item.city}</td>
+								<td>
+									<RowActions
+										onEdit={() => handleEdit(item.$id)}
+										onDelete={() => handleDelete(item.$id, item.businessName)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pageControl.page()}
+					totalPages={pageControl.totalPages()}
+					totalItems={pageControl.totalItems()}
+					perPage={pageControl.perPage()}
+					onPageChange={pageControl.setPage}
+					onPerPageChange={pageControl.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

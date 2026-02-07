@@ -1,14 +1,13 @@
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
-import { createEffect, createResource, For } from "solid-js";
 import dayjs from "dayjs";
+import { createEffect, createResource, For } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -64,63 +63,59 @@ const AttendancesPage = () => {
 	return (
 		<>
 			<Title>Asistencias - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[{ label: "Empleados" }, { label: "Asistencias" }]}
-				/>
-				<BlueBoard
-					title="Gestionar Asistencias"
-					links={[
-						{
-							href: Routes.attendance,
-							label: "Nueva Asistencia",
-						},
+			<Breadcrumb links={[{ label: "Empleados" }, { label: "Asistencias" }]} />
+			<BlueBoard
+				title="Gestionar Asistencias"
+				links={[
+					{
+						href: Routes.attendance,
+						label: "Nueva Asistencia",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Usuario" },
+						{ label: "Fecha" },
+						{ label: "Entrada Mañana" },
+						{ label: "Salida Mañana" },
+						{ label: "Entrada Tarde" },
+						{ label: "Salida Tarde" },
+						{ label: "Horas Totales" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Usuario" },
-							{ label: "Fecha" },
-							{ label: "Entrada Mañana" },
-							{ label: "Salida Mañana" },
-							{ label: "Entrada Tarde" },
-							{ label: "Salida Tarde" },
-							{ label: "Horas Totales" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={attendances()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>
-										{item.userId?.firstName} {item.userId?.lastName}
-									</td>
-									<td>{dayjs(item.date).format("DD/MM/YYYY")}</td>
-									<td>{item.morningArrival}</td>
-									<td>{item.morningDeparture || "-"}</td>
-									<td>{item.afternoonArrival || "-"}</td>
-									<td>{item.afternoonDeparture || "-"}</td>
-									<td>{item.totalHours || "-"}</td>
-									<td>
-										<RowActions
-											onEdit={() => handleEdit(item.$id)}
-											onDelete={() => handleDelete(item.$id)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pagination.page()}
-						totalPages={pagination.totalPages()}
-						totalItems={pagination.totalItems()}
-						perPage={pagination.perPage()}
-						onPageChange={pagination.setPage}
-						onPerPageChange={pagination.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={attendances()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>
+									{item.userId?.firstName} {item.userId?.lastName}
+								</td>
+								<td>{dayjs(item.date).format("DD/MM/YYYY")}</td>
+								<td>{item.morningArrival}</td>
+								<td>{item.morningDeparture || "-"}</td>
+								<td>{item.afternoonArrival || "-"}</td>
+								<td>{item.afternoonDeparture || "-"}</td>
+								<td>{item.totalHours || "-"}</td>
+								<td>
+									<RowActions
+										onEdit={() => handleEdit(item.$id)}
+										onDelete={() => handleDelete(item.$id)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pagination.page()}
+					totalPages={pagination.totalPages()}
+					totalItems={pagination.totalItems()}
+					perPage={pagination.perPage()}
+					onPageChange={pagination.setPage}
+					onPerPageChange={pagination.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

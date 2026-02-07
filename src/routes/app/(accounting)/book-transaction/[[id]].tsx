@@ -9,7 +9,6 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -148,228 +147,226 @@ const BookTransactionPage = () => {
 	return (
 		<>
 			<Title>Transacción de Libro - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Contabilidad" },
-						{ label: "Transacciones de Libro", route: Routes.bookTransactions },
-						{ label: bookTransaction()?.detail ?? "Nueva" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Transacción de Libro"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-4">
-								<Field name="bookId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Libro Contable"
-											options={
-												accountingBooksList()?.rows.map((book) => ({
-													key: book.$id,
-													label: book.name,
-												})) || []
-											}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="bookReferenceId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Referencia de Libro"
-											options={
-												bookReferencesList()?.rows.map((ref) => ({
-													key: ref.$id,
-													label: `${ref.reference} - ${ref.description}`,
-												})) || []
-											}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="date">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fecha"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="beneficiary">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Beneficiario"
-											placeholder="Nombre del beneficiario"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="idNumber">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Número de Identificación"
-											placeholder="Cédula/RUC (opcional)"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-12">
-								<Field name="detail">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Detalle"
-											placeholder="Descripción de la transacción"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="income" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Ingreso"
-											placeholder="0.00"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="expense" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Egreso"
-											placeholder="0.00"
-											value={field.value ?? 0}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="bankId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Banco"
-											options={
-												bankAccountsList()?.rows.map((bank) => ({
-													key: bank.$id,
-													label: bank.name,
-												})) || []
-											}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="accountNumber">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Número de Cuenta"
-											placeholder="Número de cuenta (opcional)"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="checkNumber">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Número de Cheque"
-											placeholder="Número de cheque (opcional)"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-12">
-								<Field name="type" type="boolean">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Tipo"
-											options={[
-												{ key: "true", label: "Ingreso" },
-												{ key: "false", label: "Egreso" },
-											]}
-											value={field.value ? "true" : "false"}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Contabilidad" },
+					{ label: "Transacciones de Libro", route: Routes.bookTransactions },
+					{ label: bookTransaction()?.detail ?? "Nueva" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Transacción de Libro"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-4">
+							<Field name="bookId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Libro Contable"
+										options={
+											accountingBooksList()?.rows.map((book) => ({
+												key: book.$id,
+												label: book.name,
+											})) || []
+										}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						<div class="md:col-span-4">
+							<Field name="bookReferenceId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Referencia de Libro"
+										options={
+											bookReferencesList()?.rows.map((ref) => ({
+												key: ref.$id,
+												label: `${ref.reference} - ${ref.description}`,
+											})) || []
+										}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-4">
+							<Field name="date">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fecha"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="beneficiary">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Beneficiario"
+										placeholder="Nombre del beneficiario"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="idNumber">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Número de Identificación"
+										placeholder="Cédula/RUC (opcional)"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-12">
+							<Field name="detail">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Detalle"
+										placeholder="Descripción de la transacción"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-4">
+							<Field name="income" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Ingreso"
+										placeholder="0.00"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-4">
+							<Field name="expense" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Egreso"
+										placeholder="0.00"
+										value={field.value ?? 0}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-4">
+							<Field name="bankId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Banco"
+										options={
+											bankAccountsList()?.rows.map((bank) => ({
+												key: bank.$id,
+												label: bank.name,
+											})) || []
+										}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="accountNumber">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Número de Cuenta"
+										placeholder="Número de cuenta (opcional)"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="checkNumber">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Número de Cheque"
+										placeholder="Número de cheque (opcional)"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-12">
+							<Field name="type" type="boolean">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Tipo"
+										options={[
+											{ key: "true", label: "Ingreso" },
+											{ key: "false", label: "Egreso" },
+										]}
+										value={field.value ? "true" : "false"}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

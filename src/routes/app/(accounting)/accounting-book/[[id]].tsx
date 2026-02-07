@@ -8,7 +8,6 @@ import { object, string } from "valibot";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -94,42 +93,40 @@ const AccountingBookPage = () => {
 	return (
 		<>
 			<Title>Libro Contable - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Contabilidad" },
-						{ label: "Libros Contables", route: Routes.accountingBooks },
-						{ label: accountingBook()?.name ?? "Nuevo" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Libro Contable"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 gap-4">
-							<Field name="name">
-								{(field, props) => (
-									<Input
-										{...props}
-										type="text"
-										label="Nombre"
-										placeholder="Nombre del libro contable"
-										value={field.value}
-										error={field.error}
-										required
-									/>
-								)}
-							</Field>
-						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+			<Breadcrumb
+				links={[
+					{ label: "Contabilidad" },
+					{ label: "Libros Contables", route: Routes.accountingBooks },
+					{ label: accountingBook()?.name ?? "Nuevo" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Libro Contable"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 gap-4">
+						<Field name="name">
+							{(field, props) => (
+								<Input
+									{...props}
+									type="text"
+									label="Nombre"
+									placeholder="Nombre del libro contable"
+									value={field.value}
+									error={field.error}
+									required
+								/>
+							)}
+						</Field>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

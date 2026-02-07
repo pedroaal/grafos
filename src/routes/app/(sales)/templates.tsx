@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -75,53 +74,51 @@ const TemplatesPage = () => {
 	return (
 		<>
 			<Title>Plantillas - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Ventas" }, { label: "Plantillas" }]} />
-				<BlueBoard
-					title="Biblioteca de Plantillas"
-					links={[
-						{
-							href: Routes.template,
-							label: "Nueva Plantilla",
-						},
+			<Breadcrumb links={[{ label: "Ventas" }, { label: "Plantillas" }]} />
+			<BlueBoard
+				title="Biblioteca de Plantillas"
+				links={[
+					{
+						href: Routes.template,
+						label: "Nueva Plantilla",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Nombre" },
+						{ label: "Contenido" },
+						{ label: "Logo" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Nombre" },
-							{ label: "Contenido" },
-							{ label: "Logo" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={templatesCollection()?.rows || []}>
-							{(tpl: Templates) => (
-								<tr>
-									<td>{tpl.name}</td>
-									<td class="max-w-md truncate">
-										{truncateContent(tpl.content)}
-									</td>
-									<td class="text-center">{hasLogoIcon(tpl.logo)}</td>
-									<td>
-										<RowActions
-											onEdit={() => openTemplateEditor(tpl.$id)}
-											onDelete={() => destroyTemplate(tpl.$id, tpl.name)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pager.page()}
-						totalPages={pager.totalPages()}
-						totalItems={pager.totalItems()}
-						perPage={pager.perPage()}
-						onPageChange={pager.setPage}
-						onPerPageChange={pager.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={templatesCollection()?.rows || []}>
+						{(tpl: Templates) => (
+							<tr>
+								<td>{tpl.name}</td>
+								<td class="max-w-md truncate">
+									{truncateContent(tpl.content)}
+								</td>
+								<td class="text-center">{hasLogoIcon(tpl.logo)}</td>
+								<td>
+									<RowActions
+										onEdit={() => openTemplateEditor(tpl.$id)}
+										onDelete={() => destroyTemplate(tpl.$id, tpl.name)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pager.page()}
+					totalPages={pager.totalPages()}
+					totalItems={pager.totalItems()}
+					perPage={pager.perPage()}
+					onPageChange={pager.setPage}
+					onPerPageChange={pager.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

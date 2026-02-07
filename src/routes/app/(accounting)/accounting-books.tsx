@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -66,46 +65,42 @@ const AccountingBooksPage = () => {
 	return (
 		<>
 			<Title>Libros Contables - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[{ label: "Contabilidad" }, { label: "Libros Contables" }]}
+			<Breadcrumb
+				links={[{ label: "Contabilidad" }, { label: "Libros Contables" }]}
+			/>
+			<BlueBoard
+				title="Libros Contables"
+				links={[
+					{
+						href: Routes.accountingBook,
+						label: "Nuevo Libro Contable",
+					},
+				]}
+			>
+				<Table headers={[{ label: "Nombre" }, { label: "", class: "w-1/12" }]}>
+					<For each={accountingBooksData()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.name}</td>
+								<td>
+									<RowActions
+										onEdit={() => handleEdit(item.$id)}
+										onDelete={() => handleDelete(item.$id, item.name)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pageControl.page()}
+					totalPages={pageControl.totalPages()}
+					totalItems={pageControl.totalItems()}
+					perPage={pageControl.perPage()}
+					onPageChange={pageControl.setPage}
+					onPerPageChange={pageControl.setPerPage}
 				/>
-				<BlueBoard
-					title="Libros Contables"
-					links={[
-						{
-							href: Routes.accountingBook,
-							label: "Nuevo Libro Contable",
-						},
-					]}
-				>
-					<Table
-						headers={[{ label: "Nombre" }, { label: "", class: "w-1/12" }]}
-					>
-						<For each={accountingBooksData()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.name}</td>
-									<td>
-										<RowActions
-											onEdit={() => handleEdit(item.$id)}
-											onDelete={() => handleDelete(item.$id, item.name)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pageControl.page()}
-						totalPages={pageControl.totalPages()}
-						totalItems={pageControl.totalItems()}
-						perPage={pageControl.perPage()}
-						onPageChange={pageControl.setPage}
-						onPerPageChange={pageControl.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+			</BlueBoard>
 		</>
 	);
 };

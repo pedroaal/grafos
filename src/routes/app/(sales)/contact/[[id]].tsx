@@ -9,7 +9,6 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -131,219 +130,217 @@ const ContactPage = () => {
 	return (
 		<>
 			<Title>Contacto - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Ventas" },
-						{ label: "Contactos", route: Routes.contacts },
-						{
-							label: contact()
-								? `${contact()?.firstName} ${contact()?.lastName}`
-								: "Nuevo",
-						},
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Contacto"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-2">
-								<Field name="title">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Título"
-											placeholder="Sr./Sra."
-											value={field.value ?? ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-5">
-								<Field name="firstName">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											placeholder="Nombre"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-5">
-								<Field name="lastName">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Apellido"
-											placeholder="Apellido"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="companyId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Empresa"
-											value={field.value}
-											error={field.error}
-											required
-										>
-											<option value="">Seleccione una empresa</option>
-											{companies()?.rows.map((company: Companies) => (
-												<option value={company.$id}>{company.name}</option>
-											))}
-										</Select>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="position">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Cargo"
-											placeholder="Cargo"
-											value={field.value ?? ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="address">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Dirección"
-											placeholder="Dirección"
-											value={field.value ?? ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="sector">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Sector"
-											placeholder="Sector"
-											value={field.value ?? ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="phone">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Teléfono"
-											placeholder="Teléfono"
-											value={field.value ?? ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="mobile">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Móvil"
-											placeholder="Móvil"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-2">
-								<Field name="extension" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Extensión"
-											placeholder="Ext."
-											value={field.value ?? undefined}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="email">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="email"
-											label="Email"
-											placeholder="email@example.com"
-											value={field.value ?? ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="website">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Sitio Web"
-											placeholder="https://example.com"
-											value={field.value ?? ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Ventas" },
+					{ label: "Contactos", route: Routes.contacts },
+					{
+						label: contact()
+							? `${contact()?.firstName} ${contact()?.lastName}`
+							: "Nuevo",
+					},
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Contacto"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-2">
+							<Field name="title">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Título"
+										placeholder="Sr./Sra."
+										value={field.value ?? ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						<div class="md:col-span-5">
+							<Field name="firstName">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										placeholder="Nombre"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-5">
+							<Field name="lastName">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Apellido"
+										placeholder="Apellido"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="companyId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Empresa"
+										value={field.value}
+										error={field.error}
+										required
+									>
+										<option value="">Seleccione una empresa</option>
+										{companies()?.rows.map((company: Companies) => (
+											<option value={company.$id}>{company.name}</option>
+										))}
+									</Select>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="position">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Cargo"
+										placeholder="Cargo"
+										value={field.value ?? ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="address">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Dirección"
+										placeholder="Dirección"
+										value={field.value ?? ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="sector">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Sector"
+										placeholder="Sector"
+										value={field.value ?? ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="phone">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Teléfono"
+										placeholder="Teléfono"
+										value={field.value ?? ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="mobile">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Móvil"
+										placeholder="Móvil"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-2">
+							<Field name="extension" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Extensión"
+										placeholder="Ext."
+										value={field.value ?? undefined}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-4">
+							<Field name="email">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="email"
+										label="Email"
+										placeholder="email@example.com"
+										value={field.value ?? ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="website">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Sitio Web"
+										placeholder="https://example.com"
+										value={field.value ?? ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

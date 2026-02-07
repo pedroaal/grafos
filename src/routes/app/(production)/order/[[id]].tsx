@@ -20,7 +20,6 @@ import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import MultiSelect from "~/components/core/Multiselect";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import MaterialsSection, {
 	type MaterialForm,
 } from "~/components/production/MaterialsSection";
@@ -363,318 +362,316 @@ const OrderPage = () => {
 	return (
 		<>
 			<Title>Orden - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Produccion" },
-						{ label: "Ordenes", route: Routes.orders },
-						{ label: "Nuevo" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Orden"
-					links={[
-						{
-							href: Routes.order,
-							label: "Nueva Orden",
-							disabled: !isEdit(),
+			<Breadcrumb
+				links={[
+					{ label: "Produccion" },
+					{ label: "Ordenes", route: Routes.orders },
+					{ label: "Nuevo" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Orden"
+				links={[
+					{
+						href: Routes.order,
+						label: "Nueva Orden",
+						disabled: !isEdit(),
+					},
+				]}
+				actions={[
+					{
+						onClick: () => {
+							// TODO: Implement print functionality
 						},
-					]}
-					actions={[
-						{
-							onClick: () => {
-								// TODO: Implement print functionality
-							},
-							label: "Imprimir",
-							disabled: !isEdit(),
-						},
-						{
-							onClick: () => duplicateOrder(params.id || "", auth()?.tenantId!),
-							label: "Duplicar",
-							disabled: !isEdit(),
-						},
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-3">
-								<Field name="number" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Numero"
-											value={field.value}
-											error={field.error}
-											required
-											readOnly
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-7"></div>
-							<div class="md:col-span-2">
-								<Field name="quotedPrice" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Cotizado $"
-											step="0.01"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="startDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Inicio"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="endDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fin"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2"></div>
-							<div class="md:col-span-2 flex items-end pb-2">
-								<Field name="priority" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Prioritario"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="status">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={orderStatuses()}
-											label="Estado"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="clientId">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={
-												clients()?.rows.map((client) => ({
-													key: client.$id,
-													label:
-														`${client.contactId?.firstName} ${client.contactId?.lastName} (${client.companyId?.name})` ||
-														"",
-												})) || []
-											}
-											label="Cliente"
-											value={field.value}
-											error={field.error}
-											onChange={(ev) => {
-												props.onChange(ev);
-												const value = (ev.target as HTMLSelectElement).value;
-												const client = clients()?.rows.find(
-													(client) => client.$id === value,
-												);
-												setPhone(formatClientPhone(client?.contactId || {}));
-											}}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-4">
-								<Input
-									name="clientPhone"
-									type="text"
-									label="Telefono"
-									value={phone()}
-									readOnly
-								/>
-							</div>
-							<div class="md:col-span-2"></div>
-
-							<div class="md:col-span-10">
-								<Field name="description">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Descripción"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="quantity" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Cantidad"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-4">
-								<Field name="paperType">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Material (papel)"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="cutHeight" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Corte A"
-											step="0.1"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="cutWidth" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Corte An"
-											step="0.1"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="numberingStart" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Numerado Inicio"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="numberingEnd" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Numerado Fin"
-											value={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<MultiSelect
-									name="frontInks"
-									options={inkOptions()}
-									label="Tintas tiro"
-									value={inks.front}
-									onChange={(values) => setInks("front", values)}
-								/>
-							</div>
-							<div class="md:col-span-6">
-								<MultiSelect
-									name="backInks"
-									options={inkOptions()}
-									label="Tintas retiro"
-									value={inks.back}
-									onChange={(values) => setInks("back", values)}
-								/>
-							</div>
+						label: "Imprimir",
+						disabled: !isEdit(),
+					},
+					{
+						onClick: () => duplicateOrder(params.id || "", auth()?.tenantId!),
+						label: "Duplicar",
+						disabled: !isEdit(),
+					},
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-3">
+							<Field name="number" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Numero"
+										value={field.value}
+										error={field.error}
+										required
+										readOnly
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-7"></div>
+						<div class="md:col-span-2">
+							<Field name="quotedPrice" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Cotizado $"
+										step="0.01"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
 						</div>
 
-						<MaterialsSection
-							state={materials}
-							setState={setMaterials}
-							totals={totals}
-							setTotals={setTotals}
-						/>
+						<div class="md:col-span-3">
+							<Field name="startDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Inicio"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="endDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fin"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2"></div>
+						<div class="md:col-span-2 flex items-end pb-2">
+							<Field name="priority" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Prioritario"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="status">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={orderStatuses()}
+										label="Estado"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
 
-						<ProcessesSection
-							state={processes}
-							setState={setProcesses}
-							totals={totals}
-							setTotals={setTotals}
-						/>
+						<div class="md:col-span-4">
+							<Field name="clientId">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={
+											clients()?.rows.map((client) => ({
+												key: client.$id,
+												label:
+													`${client.contactId?.firstName} ${client.contactId?.lastName} (${client.companyId?.name})` ||
+													"",
+											})) || []
+										}
+										label="Cliente"
+										value={field.value}
+										error={field.error}
+										onChange={(ev) => {
+											props.onChange(ev);
+											const value = (ev.target as HTMLSelectElement).value;
+											const client = clients()?.rows.find(
+												(client) => client.$id === value,
+											);
+											setPhone(formatClientPhone(client?.contactId || {}));
+										}}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-4">
+							<Input
+								name="clientPhone"
+								type="text"
+								label="Telefono"
+								value={phone()}
+								readOnly
+							/>
+						</div>
+						<div class="md:col-span-2"></div>
 
-						<PaymentsSection
-							state={payments}
-							setState={setPayments}
-							totals={totals}
-							setTotals={setTotals}
-						/>
+						<div class="md:col-span-10">
+							<Field name="description">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Descripción"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="quantity" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Cantidad"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
 
-						<Field name="notes">
-							{(field, props) => (
-								<Input
-									{...props}
-									label="Notas"
-									value={field.value || ""}
-									error={field.error}
-								/>
-							)}
-						</Field>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+						<div class="md:col-span-4">
+							<Field name="paperType">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Material (papel)"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="cutHeight" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Corte A"
+										step="0.1"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="cutWidth" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Corte An"
+										step="0.1"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="numberingStart" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Numerado Inicio"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="numberingEnd" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Numerado Fin"
+										value={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<MultiSelect
+								name="frontInks"
+								options={inkOptions()}
+								label="Tintas tiro"
+								value={inks.front}
+								onChange={(values) => setInks("front", values)}
+							/>
+						</div>
+						<div class="md:col-span-6">
+							<MultiSelect
+								name="backInks"
+								options={inkOptions()}
+								label="Tintas retiro"
+								value={inks.back}
+								onChange={(values) => setInks("back", values)}
+							/>
+						</div>
+					</div>
+
+					<MaterialsSection
+						state={materials}
+						setState={setMaterials}
+						totals={totals}
+						setTotals={setTotals}
+					/>
+
+					<ProcessesSection
+						state={processes}
+						setState={setProcesses}
+						totals={totals}
+						setTotals={setTotals}
+					/>
+
+					<PaymentsSection
+						state={payments}
+						setState={setPayments}
+						totals={totals}
+						setTotals={setTotals}
+					/>
+
+					<Field name="notes">
+						{(field, props) => (
+							<Input
+								{...props}
+								label="Notas"
+								value={field.value || ""}
+								error={field.error}
+							/>
+						)}
+					</Field>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

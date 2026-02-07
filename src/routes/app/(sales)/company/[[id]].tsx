@@ -8,7 +8,6 @@ import { object, string } from "valibot";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Input from "~/components/core/Input";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -85,76 +84,74 @@ const CompanyPage = () => {
 	return (
 		<>
 			<Title>Empresa - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Ventas" },
-						{ label: "Empresas", route: Routes.companies },
-						{ label: company()?.name ?? "Nueva" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Empresa"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-6">
-								<Field name="name">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											placeholder="Nombre de la empresa"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="ruc">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="RUC"
-											placeholder="RUC"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="activity">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Actividad"
-											placeholder="Actividad"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Ventas" },
+					{ label: "Empresas", route: Routes.companies },
+					{ label: company()?.name ?? "Nueva" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Empresa"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-6">
+							<Field name="name">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										placeholder="Nombre de la empresa"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						<div class="md:col-span-3">
+							<Field name="ruc">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="RUC"
+										placeholder="RUC"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-3">
+							<Field name="activity">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Actividad"
+										placeholder="Actividad"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -71,77 +70,75 @@ const ActivitiesPage = () => {
 	return (
 		<>
 			<Title>Actividades - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Ventas" }, { label: "Actividades" }]} />
-				<BlueBoard
-					title="Catálogo de Actividades"
-					links={[
-						{
-							href: Routes.activity,
-							label: "Agregar Actividad",
-						},
+			<Breadcrumb links={[{ label: "Ventas" }, { label: "Actividades" }]} />
+			<BlueBoard
+				title="Catálogo de Actividades"
+				links={[
+					{
+						href: Routes.activity,
+						label: "Agregar Actividad",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Nombre" },
+						{ label: "Objetivo" },
+						{ label: "Plantilla" },
+						{ label: "Evaluable" },
+						{ label: "Seguimiento" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Nombre" },
-							{ label: "Objetivo" },
-							{ label: "Plantilla" },
-							{ label: "Evaluable" },
-							{ label: "Seguimiento" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={activitiesList()?.rows || []}>
-							{(activityItem: Activities) => (
-								<tr>
-									<td>{activityItem.name}</td>
-									<td>{activityItem.goal ?? "N/A"}</td>
-									<td>{activityItem.templateId.name}</td>
-									<td>
-										<span
-											class={
-												activityItem.canEvaluate
-													? "badge badge-info"
-													: "badge badge-ghost"
-											}
-										>
-											{renderEvaluateBadge(activityItem.canEvaluate)}
-										</span>
-									</td>
-									<td>
-										<span
-											class={
-												activityItem.followUp
-													? "badge badge-success"
-													: "badge badge-ghost"
-											}
-										>
-											{renderFollowUpBadge(activityItem.followUp)}
-										</span>
-									</td>
-									<td>
-										<RowActions
-											onEdit={() => navigateToForm(activityItem.$id)}
-											onDelete={() =>
-												removeActivity(activityItem.$id, activityItem.name)
-											}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pageHandler.page()}
-						totalPages={pageHandler.totalPages()}
-						totalItems={pageHandler.totalItems()}
-						perPage={pageHandler.perPage()}
-						onPageChange={pageHandler.setPage}
-						onPerPageChange={pageHandler.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={activitiesList()?.rows || []}>
+						{(activityItem: Activities) => (
+							<tr>
+								<td>{activityItem.name}</td>
+								<td>{activityItem.goal ?? "N/A"}</td>
+								<td>{activityItem.templateId.name}</td>
+								<td>
+									<span
+										class={
+											activityItem.canEvaluate
+												? "badge badge-info"
+												: "badge badge-ghost"
+										}
+									>
+										{renderEvaluateBadge(activityItem.canEvaluate)}
+									</span>
+								</td>
+								<td>
+									<span
+										class={
+											activityItem.followUp
+												? "badge badge-success"
+												: "badge badge-ghost"
+										}
+									>
+										{renderFollowUpBadge(activityItem.followUp)}
+									</span>
+								</td>
+								<td>
+									<RowActions
+										onEdit={() => navigateToForm(activityItem.$id)}
+										onDelete={() =>
+											removeActivity(activityItem.$id, activityItem.name)
+										}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pageHandler.page()}
+					totalPages={pageHandler.totalPages()}
+					totalItems={pageHandler.totalItems()}
+					perPage={pageHandler.perPage()}
+					onPageChange={pageHandler.setPage}
+					onPerPageChange={pageHandler.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

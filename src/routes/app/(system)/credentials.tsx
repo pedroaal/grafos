@@ -6,7 +6,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import CredentialModal from "~/components/system/CredentialModal";
 
 import { Modals } from "~/config/modals";
@@ -70,69 +69,67 @@ const CredentialsPage = () => {
 	return (
 		<>
 			<Title>Credenciales - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Sistema" }, { label: "Credenciales" }]} />
-				<BlueBoard
-					title="Credenciales"
-					modals={[
-						{
-							key: Modals.Credential,
-							label: "Nueva Credencial",
-						},
+			<Breadcrumb links={[{ label: "Sistema" }, { label: "Credenciales" }]} />
+			<BlueBoard
+				title="Credenciales"
+				modals={[
+					{
+						key: Modals.Credential,
+						label: "Nueva Credencial",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Cuenta" },
+						{ label: "Usuario" },
+						{ label: "Contraseña" },
+						{ label: "Pista" },
+						{ label: "URL" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Cuenta" },
-							{ label: "Usuario" },
-							{ label: "Contraseña" },
-							{ label: "Pista" },
-							{ label: "URL" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={credentials()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.account}</td>
-									<td>{item.username}</td>
-									<td>{maskPassword(item.password)}</td>
-									<td>{item.hint || "-"}</td>
-									<td>
-										{item.url ? (
-											<a
-												href={item.url}
-												target="_blank"
-												rel="noopener noreferrer"
-												class="link link-primary"
-											>
-												{item.url}
-											</a>
-										) : (
-											"-"
-										)}
-									</td>
-									<td>
-										<RowActions
-											onEdit={() => editRow(item.$id)}
-											onDelete={() => handleDelete(item.$id, item.account)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pagination.page()}
-						totalPages={pagination.totalPages()}
-						totalItems={pagination.totalItems()}
-						perPage={pagination.perPage()}
-						onPageChange={pagination.setPage}
-						onPerPageChange={pagination.setPerPage}
-					/>
-				</BlueBoard>
-				<CredentialModal onSuccess={() => refetch()} />
-			</DashboardLayout>
+					<For each={credentials()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.account}</td>
+								<td>{item.username}</td>
+								<td>{maskPassword(item.password)}</td>
+								<td>{item.hint || "-"}</td>
+								<td>
+									{item.url ? (
+										<a
+											href={item.url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="link link-primary"
+										>
+											{item.url}
+										</a>
+									) : (
+										"-"
+									)}
+								</td>
+								<td>
+									<RowActions
+										onEdit={() => editRow(item.$id)}
+										onDelete={() => handleDelete(item.$id, item.account)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pagination.page()}
+					totalPages={pagination.totalPages()}
+					totalItems={pagination.totalItems()}
+					perPage={pagination.perPage()}
+					onPageChange={pagination.setPage}
+					onPerPageChange={pagination.setPerPage}
+				/>
+			</BlueBoard>
+			<CredentialModal onSuccess={() => refetch()} />
 		</>
 	);
 };

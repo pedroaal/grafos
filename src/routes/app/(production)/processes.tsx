@@ -1,5 +1,5 @@
 import { Title } from "@solidjs/meta";
-import { createResource, For, createEffect } from "solid-js";
+import { createEffect, createResource, For } from "solid-js";
 
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
@@ -7,7 +7,6 @@ import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
 import TrueFalse from "~/components/core/TrueFalse";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import AreaModal from "~/components/production/AreaModal";
 import InkModal from "~/components/production/InkModal";
 import ProcessModal from "~/components/production/ProcessModal";
@@ -130,135 +129,133 @@ const ProcessesPage = () => {
 	return (
 		<>
 			<Title>Procesos - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Produccion" }, { label: "Procesos" }]} />
-				<BlueBoard
-					title="Areas"
-					modals={[
-						{
-							key: Modals.Area,
-							label: "Nueva Area",
-						},
+			<Breadcrumb links={[{ label: "Produccion" }, { label: "Procesos" }]} />
+			<BlueBoard
+				title="Areas"
+				modals={[
+					{
+						key: Modals.Area,
+						label: "Nueva Area",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Nombre" },
+						{ label: "Orden" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Nombre" },
-							{ label: "Orden" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={areas()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.name}</td>
-									<td>{item.sortOrder}</td>
-									<td>
-										<RowActions
-											onEdit={() => editRow(Modals.Area, item.$id)}
-											onDelete={() => handleAreaDelete(item.$id, item.name)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={areasPagination.page()}
-						totalPages={areasPagination.totalPages()}
-						totalItems={areasPagination.totalItems()}
-						perPage={areasPagination.perPage()}
-						onPageChange={areasPagination.setPage}
-						onPerPageChange={areasPagination.setPerPage}
-					/>
-				</BlueBoard>
-				<BlueBoard
-					title="Procesos"
-					modals={[
-						{
-							key: Modals.Process,
-							label: "Nuevo Proceso",
-						},
+					<For each={areas()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.name}</td>
+								<td>{item.sortOrder}</td>
+								<td>
+									<RowActions
+										onEdit={() => editRow(Modals.Area, item.$id)}
+										onDelete={() => handleAreaDelete(item.$id, item.name)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={areasPagination.page()}
+					totalPages={areasPagination.totalPages()}
+					totalItems={areasPagination.totalItems()}
+					perPage={areasPagination.perPage()}
+					onPageChange={areasPagination.setPage}
+					onPerPageChange={areasPagination.setPerPage}
+				/>
+			</BlueBoard>
+			<BlueBoard
+				title="Procesos"
+				modals={[
+					{
+						key: Modals.Process,
+						label: "Nuevo Proceso",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Nombre" },
+						{ label: "Area" },
+						{ label: "Objetivo" },
+						{ label: "Interno" },
+						{ label: "Seguimiento" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Nombre" },
-							{ label: "Area" },
-							{ label: "Objetivo" },
-							{ label: "Interno" },
-							{ label: "Seguimiento" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={processes()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.name}</td>
-									<td>{item.areaId?.name || ""}</td>
-									<td>{item.goal}</td>
-									<td>
-										<TrueFalse value={item.internal} />
-									</td>
-									<td>
-										<TrueFalse value={item.followUp} />
-									</td>
-									<td>
-										<RowActions
-											onEdit={() => editRow(Modals.Process, item.$id)}
-											onDelete={() => handleProcessDelete(item.$id, item.name)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={processesPagination.page()}
-						totalPages={processesPagination.totalPages()}
-						totalItems={processesPagination.totalItems()}
-						perPage={processesPagination.perPage()}
-						onPageChange={processesPagination.setPage}
-						onPerPageChange={processesPagination.setPerPage}
-					/>
-				</BlueBoard>
-				<BlueBoard
-					title="Tintas"
-					modals={[
-						{
-							key: Modals.Ink,
-							label: "Nueva Tinta",
-						},
-					]}
-				>
-					<Table headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}>
-						<For each={inks()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.color}</td>
-									<td>
-										<RowActions
-											onEdit={() => editRow(Modals.Ink, item.$id)}
-											onDelete={() => handleInkDelete(item.$id, item.color)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={inksPagination.page()}
-						totalPages={inksPagination.totalPages()}
-						totalItems={inksPagination.totalItems()}
-						perPage={inksPagination.perPage()}
-						onPageChange={inksPagination.setPage}
-						onPerPageChange={inksPagination.setPerPage}
-					/>
-				</BlueBoard>
-				<AreaModal onSuccess={() => refetchAreas()} />
-				<ProcessModal onSuccess={() => refetchProcesses()} />
-				<InkModal onSuccess={() => refetchInks()} />
-			</DashboardLayout>
+					<For each={processes()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.name}</td>
+								<td>{item.areaId?.name || ""}</td>
+								<td>{item.goal}</td>
+								<td>
+									<TrueFalse value={item.internal} />
+								</td>
+								<td>
+									<TrueFalse value={item.followUp} />
+								</td>
+								<td>
+									<RowActions
+										onEdit={() => editRow(Modals.Process, item.$id)}
+										onDelete={() => handleProcessDelete(item.$id, item.name)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={processesPagination.page()}
+					totalPages={processesPagination.totalPages()}
+					totalItems={processesPagination.totalItems()}
+					perPage={processesPagination.perPage()}
+					onPageChange={processesPagination.setPage}
+					onPerPageChange={processesPagination.setPerPage}
+				/>
+			</BlueBoard>
+			<BlueBoard
+				title="Tintas"
+				modals={[
+					{
+						key: Modals.Ink,
+						label: "Nueva Tinta",
+					},
+				]}
+			>
+				<Table headers={[{ label: "Color" }, { label: "", class: "w-1/12" }]}>
+					<For each={inks()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.color}</td>
+								<td>
+									<RowActions
+										onEdit={() => editRow(Modals.Ink, item.$id)}
+										onDelete={() => handleInkDelete(item.$id, item.color)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={inksPagination.page()}
+					totalPages={inksPagination.totalPages()}
+					totalItems={inksPagination.totalItems()}
+					perPage={inksPagination.perPage()}
+					onPageChange={inksPagination.setPage}
+					onPerPageChange={inksPagination.setPerPage}
+				/>
+			</BlueBoard>
+			<AreaModal onSuccess={() => refetchAreas()} />
+			<ProcessModal onSuccess={() => refetchProcesses()} />
+			<InkModal onSuccess={() => refetchInks()} />
 		</>
 	);
 };

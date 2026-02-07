@@ -1,14 +1,12 @@
 import { Title } from "@solidjs/meta";
-import { createResource, For, createEffect } from "solid-js";
-
+import { createEffect, createResource, For } from "solid-js";
+import { BankAccountModal } from "~/components/accounting/BankAccountModal";
+import { BookReferenceModal } from "~/components/accounting/BookReferenceModal";
 import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
-import { BankAccountModal } from "~/components/accounting/BankAccountModal";
-import { BookReferenceModal } from "~/components/accounting/BookReferenceModal";
 
 import { Modals } from "~/config/modals";
 import { useApp } from "~/context/app";
@@ -112,95 +110,93 @@ const BanksPage = () => {
 	return (
 		<>
 			<Title>Bancos - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Contabilidad" }, { label: "Bancos" }]} />
-				<BlueBoard
-					title="Cuentas Bancarias"
-					modals={[
-						{
-							key: Modals.BankAccount,
-							label: "Nueva Cuenta Bancaria",
-						},
+			<Breadcrumb links={[{ label: "Contabilidad" }, { label: "Bancos" }]} />
+			<BlueBoard
+				title="Cuentas Bancarias"
+				modals={[
+					{
+						key: Modals.BankAccount,
+						label: "Nueva Cuenta Bancaria",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Banco" },
+						{ label: "Número de Cuenta" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Banco" },
-							{ label: "Número de Cuenta" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={bankAccounts()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.name}</td>
-									<td>{item.accountNumber}</td>
-									<td>
-										<RowActions
-											onEdit={() => editRow(Modals.BankAccount, item.$id)}
-											onDelete={() =>
-												handleBankAccountDelete(item.$id, item.name)
-											}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={bankAccountsPagination.page()}
-						totalPages={bankAccountsPagination.totalPages()}
-						totalItems={bankAccountsPagination.totalItems()}
-						perPage={bankAccountsPagination.perPage()}
-						onPageChange={bankAccountsPagination.setPage}
-						onPerPageChange={bankAccountsPagination.setPerPage}
-					/>
-				</BlueBoard>
-				<BlueBoard
-					title="Referencias de Libros"
-					modals={[
-						{
-							key: Modals.BookReference,
-							label: "Nueva Referencia de Libro",
-						},
+					<For each={bankAccounts()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.name}</td>
+								<td>{item.accountNumber}</td>
+								<td>
+									<RowActions
+										onEdit={() => editRow(Modals.BankAccount, item.$id)}
+										onDelete={() =>
+											handleBankAccountDelete(item.$id, item.name)
+										}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={bankAccountsPagination.page()}
+					totalPages={bankAccountsPagination.totalPages()}
+					totalItems={bankAccountsPagination.totalItems()}
+					perPage={bankAccountsPagination.perPage()}
+					onPageChange={bankAccountsPagination.setPage}
+					onPerPageChange={bankAccountsPagination.setPerPage}
+				/>
+			</BlueBoard>
+			<BlueBoard
+				title="Referencias de Libros"
+				modals={[
+					{
+						key: Modals.BookReference,
+						label: "Nueva Referencia de Libro",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Referencia" },
+						{ label: "Descripción" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Referencia" },
-							{ label: "Descripción" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={bookReferences()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.reference}</td>
-									<td>{item.description}</td>
-									<td>
-										<RowActions
-											onEdit={() => editRow(Modals.BookReference, item.$id)}
-											onDelete={() =>
-												handleBookReferenceDelete(item.$id, item.reference)
-											}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={bookReferencesPagination.page()}
-						totalPages={bookReferencesPagination.totalPages()}
-						totalItems={bookReferencesPagination.totalItems()}
-						perPage={bookReferencesPagination.perPage()}
-						onPageChange={bookReferencesPagination.setPage}
-						onPerPageChange={bookReferencesPagination.setPerPage}
-					/>
-				</BlueBoard>
-				<BankAccountModal onSuccess={() => refetchBankAccounts()} />
-				<BookReferenceModal onSuccess={() => refetchBookReferences()} />
-			</DashboardLayout>
+					<For each={bookReferences()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.reference}</td>
+								<td>{item.description}</td>
+								<td>
+									<RowActions
+										onEdit={() => editRow(Modals.BookReference, item.$id)}
+										onDelete={() =>
+											handleBookReferenceDelete(item.$id, item.reference)
+										}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={bookReferencesPagination.page()}
+					totalPages={bookReferencesPagination.totalPages()}
+					totalItems={bookReferencesPagination.totalItems()}
+					perPage={bookReferencesPagination.perPage()}
+					onPageChange={bookReferencesPagination.setPage}
+					onPerPageChange={bookReferencesPagination.setPerPage}
+				/>
+			</BlueBoard>
+			<BankAccountModal onSuccess={() => refetchBankAccounts()} />
+			<BookReferenceModal onSuccess={() => refetchBookReferences()} />
 		</>
 	);
 };

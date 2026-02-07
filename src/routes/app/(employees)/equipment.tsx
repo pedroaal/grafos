@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -58,59 +57,55 @@ const EquipmentPage = () => {
 	return (
 		<>
 			<Title>Equipos - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Empleados" }, { label: "Equipos" }]} />
-				<BlueBoard
-					title="Gestionar Equipos"
-					links={[
-						{
-							href: Routes.equipmentItem,
-							label: "Nuevo Equipo",
-						},
+			<Breadcrumb links={[{ label: "Empleados" }, { label: "Equipos" }]} />
+			<BlueBoard
+				title="Gestionar Equipos"
+				links={[
+					{
+						href: Routes.equipmentItem,
+						label: "Nuevo Equipo",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Nombre" },
+						{ label: "Estado" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Nombre" },
-							{ label: "Estado" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={equipment()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.name}</td>
-									<td>
-										<span
-											class={
-												item.active
-													? "badge badge-success"
-													: "badge badge-error"
-											}
-										>
-											{item.active ? "Activo" : "Inactivo"}
-										</span>
-									</td>
-									<td>
-										<RowActions
-											onEdit={() => handleEdit(item.$id)}
-											onDelete={() => handleDelete(item.$id)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pagination.page()}
-						totalPages={pagination.totalPages()}
-						totalItems={pagination.totalItems()}
-						perPage={pagination.perPage()}
-						onPageChange={pagination.setPage}
-						onPerPageChange={pagination.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={equipment()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.name}</td>
+								<td>
+									<span
+										class={
+											item.active ? "badge badge-success" : "badge badge-error"
+										}
+									>
+										{item.active ? "Activo" : "Inactivo"}
+									</span>
+								</td>
+								<td>
+									<RowActions
+										onEdit={() => handleEdit(item.$id)}
+										onDelete={() => handleDelete(item.$id)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pagination.page()}
+					totalPages={pagination.totalPages()}
+					totalItems={pagination.totalItems()}
+					perPage={pagination.perPage()}
+					onPageChange={pagination.setPage}
+					onPerPageChange={pagination.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

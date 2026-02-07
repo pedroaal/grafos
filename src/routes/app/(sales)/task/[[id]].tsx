@@ -11,7 +11,6 @@ import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
 import Textarea from "~/components/core/Textarea";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -139,146 +138,144 @@ const TaskPage = () => {
 	return (
 		<>
 			<Title>Entrada CRM - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Ventas" },
-						{ label: "CRM", route: Routes.tasks },
-						{ label: isUpdateMode() ? "Modificar" : "Nueva" },
-					]}
-				/>
-				<BlueBoard
-					title="Formulario CRM"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(formControl),
-						},
-					]}
-				>
-					<Form onSubmit={submitFormData}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-6">
-								<Field name="scheduled">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="datetime-local"
-											label="Fecha y Hora Programada"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="activityId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Actividad"
-											options={buildActivityChoices()}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="assignedId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Asignado a Usuario"
-											options={buildUserChoices()}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="contactId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Contacto"
-											options={buildContactChoices()}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="source">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Fuente"
-											placeholder="Origen del contacto"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="campaign">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Campaña"
-											placeholder="Nombre de campaña"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-12">
-								<Field name="note">
-									{(field, props) => (
-										<Textarea
-											{...props}
-											label="Nota"
-											placeholder="Observaciones adicionales"
-											value={field.value || ""}
-											error={field.error}
-											rows={3}
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-12">
-								<Field name="active" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Mantener Activo"
-											checked={field.value ?? true}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Ventas" },
+					{ label: "CRM", route: Routes.tasks },
+					{ label: isUpdateMode() ? "Modificar" : "Nueva" },
+				]}
+			/>
+			<BlueBoard
+				title="Formulario CRM"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(formControl),
+					},
+				]}
+			>
+				<Form onSubmit={submitFormData}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-6">
+							<Field name="scheduled">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="datetime-local"
+										label="Fecha y Hora Programada"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						<div class="md:col-span-6">
+							<Field name="activityId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Actividad"
+										options={buildActivityChoices()}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="assignedId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Asignado a Usuario"
+										options={buildUserChoices()}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="contactId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Contacto"
+										options={buildContactChoices()}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="source">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Fuente"
+										placeholder="Origen del contacto"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="campaign">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Campaña"
+										placeholder="Nombre de campaña"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-12">
+							<Field name="note">
+								{(field, props) => (
+									<Textarea
+										{...props}
+										label="Nota"
+										placeholder="Observaciones adicionales"
+										value={field.value || ""}
+										error={field.error}
+										rows={3}
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-12">
+							<Field name="active" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Mantener Activo"
+										checked={field.value ?? true}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

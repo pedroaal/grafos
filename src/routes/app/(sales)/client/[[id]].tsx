@@ -9,7 +9,6 @@ import BlueBoard from "~/components/core/BlueBoard";
 import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import { MAX_DROPDOWN_ITEMS } from "~/config/pagination";
 import { Routes } from "~/config/routes";
 import { TAXPAYER_TYPE_LABELS } from "~/config/taxes";
@@ -144,86 +143,84 @@ const ClientPage = () => {
 	return (
 		<>
 			<Title>Cliente - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb
-					links={[
-						{ label: "Ventas" },
-						{ label: "Clientes", route: Routes.clients },
-						{ label: editMode() ? "Editar" : "Nuevo" },
-					]}
-				/>
-				<BlueBoard
-					title="Formulario de Cliente"
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(formInstance),
-						},
-					]}
-				>
-					<Form onSubmit={processSubmit}>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-6">
-								<Field name="contactId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Contacto"
-											options={buildContactOptions()}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="companyId">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Empresa"
-											options={buildCompanyOptions()}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="taxpayerType">
-									{(field, props) => (
-										<Select
-											{...props}
-											label="Tipo de Contribuyente"
-											options={taxpayerOptions}
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6 flex items-end">
-								<Field name="followUp" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Activar Seguimiento"
-											checked={field.value ?? false}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Ventas" },
+					{ label: "Clientes", route: Routes.clients },
+					{ label: editMode() ? "Editar" : "Nuevo" },
+				]}
+			/>
+			<BlueBoard
+				title="Formulario de Cliente"
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(formInstance),
+					},
+				]}
+			>
+				<Form onSubmit={processSubmit}>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-6">
+							<Field name="contactId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Contacto"
+										options={buildContactOptions()}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-					</Form>
-				</BlueBoard>
-			</DashboardLayout>
+
+						<div class="md:col-span-6">
+							<Field name="companyId">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Empresa"
+										options={buildCompanyOptions()}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6">
+							<Field name="taxpayerType">
+								{(field, props) => (
+									<Select
+										{...props}
+										label="Tipo de Contribuyente"
+										options={taxpayerOptions}
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+
+						<div class="md:col-span-6 flex items-end">
+							<Field name="followUp" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Activar Seguimiento"
+										checked={field.value ?? false}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };

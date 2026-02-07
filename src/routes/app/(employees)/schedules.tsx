@@ -7,7 +7,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Pagination from "~/components/core/Pagination";
 import RowActions from "~/components/core/RowActions";
 import Table from "~/components/core/Table";
-import DashboardLayout from "~/components/layouts/Dashboard";
 
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
@@ -58,59 +57,57 @@ const SchedulesPage = () => {
 	return (
 		<>
 			<Title>Horarios - Grafos</Title>
-			<DashboardLayout>
-				<Breadcrumb links={[{ label: "Empleados" }, { label: "Horarios" }]} />
-				<BlueBoard
-					title="Gestionar Horarios"
-					links={[
-						{
-							href: Routes.schedule,
-							label: "Nuevo Horario",
-						},
+			<Breadcrumb links={[{ label: "Empleados" }, { label: "Horarios" }]} />
+			<BlueBoard
+				title="Gestionar Horarios"
+				links={[
+					{
+						href: Routes.schedule,
+						label: "Nuevo Horario",
+					},
+				]}
+			>
+				<Table
+					headers={[
+						{ label: "Nombre" },
+						{ label: "Entrada Mañana" },
+						{ label: "Salida Mañana" },
+						{ label: "Entrada Tarde" },
+						{ label: "Salida Tarde" },
+						{ label: "Espera (min)" },
+						{ label: "Gracia (min)" },
+						{ label: "", class: "w-1/12" },
 					]}
 				>
-					<Table
-						headers={[
-							{ label: "Nombre" },
-							{ label: "Entrada Mañana" },
-							{ label: "Salida Mañana" },
-							{ label: "Entrada Tarde" },
-							{ label: "Salida Tarde" },
-							{ label: "Espera (min)" },
-							{ label: "Gracia (min)" },
-							{ label: "", class: "w-1/12" },
-						]}
-					>
-						<For each={schedules()?.rows || []}>
-							{(item) => (
-								<tr>
-									<td>{item.name}</td>
-									<td>{item.morningArrival}</td>
-									<td>{item.morningDeparture}</td>
-									<td>{item.afternoonArrival}</td>
-									<td>{item.afternoonDeparture}</td>
-									<td>{item.waitMinutes}</td>
-									<td>{item.graceMinutes}</td>
-									<td>
-										<RowActions
-											onEdit={() => handleEdit(item.$id)}
-											onDelete={() => handleDelete(item.$id)}
-										/>
-									</td>
-								</tr>
-							)}
-						</For>
-					</Table>
-					<Pagination
-						page={pagination.page()}
-						totalPages={pagination.totalPages()}
-						totalItems={pagination.totalItems()}
-						perPage={pagination.perPage()}
-						onPageChange={pagination.setPage}
-						onPerPageChange={pagination.setPerPage}
-					/>
-				</BlueBoard>
-			</DashboardLayout>
+					<For each={schedules()?.rows || []}>
+						{(item) => (
+							<tr>
+								<td>{item.name}</td>
+								<td>{item.morningArrival}</td>
+								<td>{item.morningDeparture}</td>
+								<td>{item.afternoonArrival}</td>
+								<td>{item.afternoonDeparture}</td>
+								<td>{item.waitMinutes}</td>
+								<td>{item.graceMinutes}</td>
+								<td>
+									<RowActions
+										onEdit={() => handleEdit(item.$id)}
+										onDelete={() => handleDelete(item.$id)}
+									/>
+								</td>
+							</tr>
+						)}
+					</For>
+				</Table>
+				<Pagination
+					page={pagination.page()}
+					totalPages={pagination.totalPages()}
+					totalItems={pagination.totalItems()}
+					perPage={pagination.perPage()}
+					onPageChange={pagination.setPage}
+					onPerPageChange={pagination.setPerPage}
+				/>
+			</BlueBoard>
 		</>
 	);
 };

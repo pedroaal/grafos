@@ -19,7 +19,6 @@ import Breadcrumb from "~/components/core/Breadcrumb";
 import Checkbox from "~/components/core/Checkbox";
 import Input from "~/components/core/Input";
 import Select from "~/components/core/Select";
-import DashboardLayout from "~/components/layouts/Dashboard";
 import PayrollDocumentsSection, {
 	type DocumentForm,
 	documentDefault,
@@ -49,21 +48,31 @@ import {
 import { Routes } from "~/config/routes";
 import { useApp } from "~/context/app";
 import { listCostCenters } from "~/services/accounting/costCenters";
-import { syncPayrollDocuments } from "~/services/employees/payrollDocuments";
-import { syncPayrollEducation } from "~/services/employees/payrollEducation";
-import { syncPayrollEquipment } from "~/services/employees/payrollEquipment";
-import { syncPayrollFamily } from "~/services/employees/payrollFamily";
-import { syncPayrollReferences } from "~/services/employees/payrollReferences";
 import {
 	createPayroll,
 	getPayroll,
 	updatePayroll,
 } from "~/services/employees/payroll";
-import { listPayrollDocuments } from "~/services/employees/payrollDocuments";
-import { listPayrollEducation } from "~/services/employees/payrollEducation";
-import { listPayrollEquipment } from "~/services/employees/payrollEquipment";
-import { listPayrollFamily } from "~/services/employees/payrollFamily";
-import { listPayrollReferences } from "~/services/employees/payrollReferences";
+import {
+	listPayrollDocuments,
+	syncPayrollDocuments,
+} from "~/services/employees/payrollDocuments";
+import {
+	listPayrollEducation,
+	syncPayrollEducation,
+} from "~/services/employees/payrollEducation";
+import {
+	listPayrollEquipment,
+	syncPayrollEquipment,
+} from "~/services/employees/payrollEquipment";
+import {
+	listPayrollFamily,
+	syncPayrollFamily,
+} from "~/services/employees/payrollFamily";
+import {
+	listPayrollReferences,
+	syncPayrollReferences,
+} from "~/services/employees/payrollReferences";
 import { listSchedules } from "~/services/employees/schedules";
 import type { Payroll } from "~/types/appwrite";
 
@@ -431,7 +440,6 @@ const PayrollPage = () => {
 	return (
 		<>
 			<Title>Nómina - Grafos</Title>
-			<DashboardLayout>
 				<Breadcrumb
 					links={[
 						{ label: "Empleados" },
@@ -1007,7 +1015,38 @@ const PayrollPage = () => {
 						/>
 					</Form>
 				</BlueBoard>
-			</DashboardLayout>
+		</>
+	);
+};
+
+export default PayrollPage;
+						/>
+					</Form>
+				</BlueBoard>
+		</>
+	);
+};
+
+export default PayrollPage;
+						/>
+					</Form>
+				</BlueBoard>
+		</>
+	);
+};
+
+export default PayrollPage;
+						/>
+					</Form>
+				</BlueBoard>
+		</>
+	);
+};
+
+export default PayrollPage;
+						/>
+					</Form>
+				</BlueBoard>
 		</>
 	);
 };

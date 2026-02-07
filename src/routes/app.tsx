@@ -29,18 +29,18 @@ const Notifications = [
 ];
 
 const AppLayout: ParentComponent = (props) => {
-	const { authStore, logout, checkProtected } = useAuth();
+	const { authStore, logout, checkProtected, checkFeature } = useAuth();
 	const { width } = useWindowSize();
 	const [sidebarOpen, setSidebarOpen] = createSignal(false);
+
+	const sidebarLinksFiltered = () =>
+		SidebarLinks.filter((link) => checkFeature(link.feature));
 
 	onMount(() => {
 		checkProtected();
 	});
 
 	const iconsSize = () => (sidebarOpen() ? 16 : 24);
-
-	const checkFeature = (featureId: string) =>
-		authStore?.features.includes(featureId);
 
 	return (
 		<Show when={authStore}>
@@ -70,75 +70,70 @@ const AppLayout: ParentComponent = (props) => {
 									<img src="/iso_blue.svg" alt="logo min" class="h-10 mb-4" />
 								</Match>
 							</Switch>
-							<For each={SidebarLinks}>
-								{(item) => {
-									if (!checkFeature(item.feature)) return null;
-									return (
-										<Switch>
-											<Match
-												when={!item.children || item.children.length === 0}
-											>
+							<For each={sidebarLinksFiltered()}>
+								{(item) => (
+									<Switch>
+										<Match when={!item.children || item.children.length === 0}>
+											<li>
+												<A href={item.href}>
+													<Dynamic
+														component={item.icon}
+														size={iconsSize()}
+													></Dynamic>
+													<span class="is-drawer-close:hidden">
+														{item.label}
+													</span>
+												</A>
+											</li>
+										</Match>
+										<Match when={item.children && item.children.length > 0}>
+											<div class="dropdown dropdown-right is-drawer-open:hidden">
 												<li>
-													<A href={item.href}>
+													<button tabindex={0} type="button">
 														<Dynamic
 															component={item.icon}
 															size={iconsSize()}
 														></Dynamic>
-														<span class="is-drawer-close:hidden">
-															{item.label}
-														</span>
-													</A>
+													</button>
+													<ul
+														tabindex={0}
+														class="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-52"
+													>
+														<For each={item.children}>
+															{(child) => (
+																<li>
+																	<A href={child.href}>{child.label}</A>
+																</li>
+															)}
+														</For>
+													</ul>
 												</li>
-											</Match>
-											<Match when={item.children && item.children.length > 0}>
-												<div class="dropdown dropdown-right is-drawer-open:hidden">
-													<li>
-														<button tabindex={0} type="button">
-															<Dynamic
-																component={item.icon}
-																size={iconsSize()}
-															></Dynamic>
-														</button>
-														<ul
-															tabindex={0}
-															class="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-52"
-														>
-															<For each={item.children}>
-																{(child) => (
-																	<li>
-																		<A href={child.href}>{child.label}</A>
-																	</li>
-																)}
-															</For>
-														</ul>
-													</li>
-												</div>
-												<li>
-													<details class="is-drawer-close:hidden">
-														<summary>
-															<Dynamic
-																component={item.icon}
-																size={iconsSize()}
-															></Dynamic>
-															<span>{item.label}</span>
-														</summary>
-														<ul>
-															<For each={item.children}>
-																{(child) => (
-																	<li>
-																		<A href={child.href}>
-																			<span>{child.label}</span>
-																		</A>
-																	</li>
-																)}
-															</For>
-														</ul>
-													</details>
-												</li>
-											</Match>
-										</Switch>
-									);
-								}}
+											</div>
+											<li>
+												<details class="is-drawer-close:hidden">
+													<summary>
+														<Dynamic
+															component={item.icon}
+															size={iconsSize()}
+														></Dynamic>
+														<span>{item.label}</span>
+													</summary>
+													<ul>
+														<For each={item.children}>
+															{(child) => (
+																<li>
+																	<A href={child.href}>
+																		<span>{child.label}</span>
+																	</A>
+																</li>
+															)}
+														</For>
+													</ul>
+												</details>
+											</li>
+										</Match>
+									</Switch>
+								)}
 							</For>
 						</ul>
 						<ul class="menu w-full items-end 2xl:hidden">

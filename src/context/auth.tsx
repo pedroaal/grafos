@@ -142,6 +142,7 @@ export const AuthProvider: ParentComponent = (props) => {
 		const session = await account.get();
 		if (session) {
 			nav(Routes.dashboard);
+			return;
 		}
 		return;
 	};
@@ -150,7 +151,9 @@ export const AuthProvider: ParentComponent = (props) => {
 		const session = await account.get();
 		if (!session) {
 			nav(Routes.login);
+			return;
 		}
+		await getAuth();
 		return;
 	};
 

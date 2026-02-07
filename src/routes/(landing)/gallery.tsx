@@ -40,7 +40,7 @@ const GalleryPage = () => {
 						<For each={images}>
 							{(image) => (
 								<div class="card bg-base-100 shadow-xl hover:scale-105 transition-transform">
-									<figure class="h-64 bg-gradient-to-br from-blue-100 to-blue-300 flex items-center justify-center">
+									<figure class="h-64 bg-linear-to-br from-blue-100 to-blue-300 flex items-center justify-center">
 										<div class="text-center p-6">
 											<div class="text-6xl mb-4">🖨️</div>
 											<p class="text-gray-700 font-semibold">{image.name}</p>

@@ -440,613 +440,572 @@ const PayrollPage = () => {
 	return (
 		<>
 			<Title>Nómina - Grafos</Title>
-				<Breadcrumb
-					links={[
-						{ label: "Empleados" },
-						{ label: "Nómina", route: Routes.payrolls },
-						{ label: isEdit() ? "Editar" : "Nuevo" },
-					]}
-				/>
-				<BlueBoard
-					title="Gestionar Empleado"
-					links={[
-						{
-							href: Routes.payroll,
-							label: "Nuevo Empleado",
-							disabled: !isEdit(),
-						},
-					]}
-					actions={[
-						{
-							label: "Guardar",
-							onClick: () => submit(form),
-						},
-					]}
-				>
-					<Form onSubmit={handleSubmit}>
-						<h6 class="font-semibold mb-4">Información Personal</h6>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-3">
-								<Field name="idNumber">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Cédula"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="firstName">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombres"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="lastName">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Apellidos"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="birthDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fecha Nacimiento"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="birthPlace">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Lugar Nacimiento"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="nationality">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nacionalidad"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="nativeLanguage">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Idioma Nativo"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="gender">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={genders()}
-											label="Género"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-6">
-								<Field name="address">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Dirección"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="sector">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Sector"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="maritalStatus">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={maritalStatuses()}
-											label="Estado Civil"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-
-							<div class="md:col-span-3">
-								<Field name="phone">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Teléfono"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="mobile">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Celular"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-6">
-								<Field name="email">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="email"
-											label="Email"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+			<Breadcrumb
+				links={[
+					{ label: "Empleados" },
+					{ label: "Nómina", route: Routes.payrolls },
+					{ label: isEdit() ? "Editar" : "Nuevo" },
+				]}
+			/>
+			<BlueBoard
+				title="Gestionar Empleado"
+				links={[
+					{
+						href: Routes.payroll,
+						label: "Nuevo Empleado",
+						disabled: !isEdit(),
+					},
+				]}
+				actions={[
+					{
+						label: "Guardar",
+						onClick: () => submit(form),
+					},
+				]}
+			>
+				<Form onSubmit={handleSubmit}>
+					<h6 class="font-semibold mb-4">Información Personal</h6>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-3">
+							<Field name="idNumber">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Cédula"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="firstName">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombres"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="lastName">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Apellidos"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="birthDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fecha Nacimiento"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
 
-						<h6 class="font-semibold mb-4 mt-6">Información Médica</h6>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-3">
-								<Field name="bloodType">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={bloodTypes()}
-											label="Tipo de Sangre"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-5">
-								<Field name="medicalConditions">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Condiciones Médicas"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-4">
-								<Field name="allergies">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Alergias"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+						<div class="md:col-span-3">
+							<Field name="birthPlace">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Lugar Nacimiento"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="nationality">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nacionalidad"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="nativeLanguage">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Idioma Nativo"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="gender">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={genders()}
+										label="Género"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
 
-						<h6 class="font-semibold mb-4 mt-6">Contacto de Emergencia</h6>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-4">
-								<Field name="emergencyContactName">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Nombre"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-4">
-								<Field name="emergencyContactAddress">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Dirección"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="emergencyContactMobile">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Celular"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2">
-								<Field name="emergencyContactOffice">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Oficina"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+						<div class="md:col-span-6">
+							<Field name="address">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Dirección"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="sector">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Sector"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="maritalStatus">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={maritalStatuses()}
+										label="Estado Civil"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
 
-						<h6 class="font-semibold mb-4 mt-6">Información Laboral</h6>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-3">
-								<Field name="hireDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fecha Contratación"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="terminationDate">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="date"
-											label="Fecha Terminación"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="position">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Cargo"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="costCenterId">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={
-												costCenters()?.rows.map((cc) => ({
-													key: cc.$id,
-													label: cc.name,
-												})) || []
-											}
-											label="Centro de Costo"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+						<div class="md:col-span-3">
+							<Field name="phone">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Teléfono"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="mobile">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Celular"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-6">
+							<Field name="email">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="email"
+										label="Email"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
 
-							<div class="md:col-span-4">
-								<Field name="scheduleId">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={
-												schedules()?.rows.map((s) => ({
-													key: s.$id,
-													label: s.name,
-												})) || []
-											}
-											label="Horario"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-4">
-								<Field name="salary" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="Salario"
-											step="0.01"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2 flex items-end pb-2">
-								<Field name="canOvertime" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Horas Extras"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-2 flex items-end pb-2">
-								<Field name="active" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Activo"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+					<h6 class="font-semibold mb-4 mt-6">Información Médica</h6>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-3">
+							<Field name="bloodType">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={bloodTypes()}
+										label="Tipo de Sangre"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-5">
+							<Field name="medicalConditions">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Condiciones Médicas"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-4">
+							<Field name="allergies">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Alergias"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+
+					<h6 class="font-semibold mb-4 mt-6">Contacto de Emergencia</h6>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-4">
+							<Field name="emergencyContactName">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Nombre"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-4">
+							<Field name="emergencyContactAddress">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Dirección"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="emergencyContactMobile">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Celular"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-2">
+							<Field name="emergencyContactOffice">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Oficina"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
+
+					<h6 class="font-semibold mb-4 mt-6">Información Laboral</h6>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-3">
+							<Field name="hireDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fecha Contratación"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="terminationDate">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="date"
+										label="Fecha Terminación"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="position">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Cargo"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="costCenterId">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={
+											costCenters()?.rows.map((cc) => ({
+												key: cc.$id,
+												label: cc.name,
+											})) || []
+										}
+										label="Centro de Costo"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
 
-						<h6 class="font-semibold mb-4 mt-6">Seguridad Social</h6>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-6">
-								<Field name="socialSecurityEnrollment">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Número Afiliación"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3 flex items-end pb-2">
-								<Field name="socialSecurityEmployerPaid" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Pagado por Empleador"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3 flex items-end pb-2">
-								<Field name="monthlySettlement" type="boolean">
-									{(field, props) => (
-										<Checkbox
-											{...props}
-											label="Liquidación Mensual"
-											checked={field.value}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+						<div class="md:col-span-4">
+							<Field name="scheduleId">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={
+											schedules()?.rows.map((s) => ({
+												key: s.$id,
+												label: s.name,
+											})) || []
+										}
+										label="Horario"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-
-						<h6 class="font-semibold mb-4 mt-6">Información Bancaria</h6>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-							<div class="md:col-span-3">
-								<Field name="bankId" type="number">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="number"
-											label="ID Banco"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-3">
-								<Field name="bankAccountType">
-									{(field, props) => (
-										<Select
-											{...props}
-											options={accountTypes()}
-											label="Tipo Cuenta"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
-							<div class="md:col-span-6">
-								<Field name="bankAccountNumber">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Número de Cuenta"
-											value={field.value}
-											error={field.error}
-											required
-										/>
-									)}
-								</Field>
-							</div>
+						<div class="md:col-span-4">
+							<Field name="salary" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="Salario"
+										step="0.01"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
 						</div>
-
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-6">
-							<div class="md:col-span-12">
-								<Field name="notes">
-									{(field, props) => (
-										<Input
-											{...props}
-											type="text"
-											label="Notas"
-											value={field.value || ""}
-											error={field.error}
-										/>
-									)}
-								</Field>
-							</div>
+						<div class="md:col-span-2 flex items-end pb-2">
+							<Field name="canOvertime" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Horas Extras"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
 						</div>
+						<div class="md:col-span-2 flex items-end pb-2">
+							<Field name="active" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Activo"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
 
-						<PayrollDocumentsSection
-							state={documents}
-							setState={setDocuments}
-						/>
+					<h6 class="font-semibold mb-4 mt-6">Seguridad Social</h6>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-6">
+							<Field name="socialSecurityEnrollment">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Número Afiliación"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3 flex items-end pb-2">
+							<Field name="socialSecurityEmployerPaid" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Pagado por Empleador"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3 flex items-end pb-2">
+							<Field name="monthlySettlement" type="boolean">
+								{(field, props) => (
+									<Checkbox
+										{...props}
+										label="Liquidación Mensual"
+										checked={field.value}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
 
-						<PayrollEducationSection
-							state={education}
-							setState={setEducation}
-						/>
+					<h6 class="font-semibold mb-4 mt-6">Información Bancaria</h6>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+						<div class="md:col-span-3">
+							<Field name="bankId" type="number">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="number"
+										label="ID Banco"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-3">
+							<Field name="bankAccountType">
+								{(field, props) => (
+									<Select
+										{...props}
+										options={accountTypes()}
+										label="Tipo Cuenta"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+						<div class="md:col-span-6">
+							<Field name="bankAccountNumber">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Número de Cuenta"
+										value={field.value}
+										error={field.error}
+										required
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
 
-						<PayrollEquipmentSection
-							state={equipment}
-							setState={setEquipment}
-						/>
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-6">
+						<div class="md:col-span-12">
+							<Field name="notes">
+								{(field, props) => (
+									<Input
+										{...props}
+										type="text"
+										label="Notas"
+										value={field.value || ""}
+										error={field.error}
+									/>
+								)}
+							</Field>
+						</div>
+					</div>
 
-						<PayrollFamilySection state={family} setState={setFamily} />
+					<PayrollDocumentsSection state={documents} setState={setDocuments} />
 
-						<PayrollReferencesSection
-							state={references}
-							setState={setReferences}
-						/>
-					</Form>
-				</BlueBoard>
-		</>
-	);
-};
+					<PayrollEducationSection state={education} setState={setEducation} />
 
-export default PayrollPage;
-						/>
-					</Form>
-				</BlueBoard>
-		</>
-	);
-};
+					<PayrollEquipmentSection state={equipment} setState={setEquipment} />
 
-export default PayrollPage;
-						/>
-					</Form>
-				</BlueBoard>
-		</>
-	);
-};
+					<PayrollFamilySection state={family} setState={setFamily} />
 
-export default PayrollPage;
-						/>
-					</Form>
-				</BlueBoard>
-		</>
-	);
-};
-
-export default PayrollPage;
-						/>
-					</Form>
-				</BlueBoard>
+					<PayrollReferencesSection
+						state={references}
+						setState={setReferences}
+					/>
+				</Form>
+			</BlueBoard>
 		</>
 	);
 };
